@@ -87,7 +87,7 @@ header{position:relative;z-index:2000;height:70px;display:flex;align-items:cente
 .modal-box{width:min(380px,100%);background:white;box-shadow:0 12px 55px #0004;border-radius:20px;text-align:center;padding:36px 30px 27px}
 .modal-box .spark{font-size:45px}.modal-box h2{font-size:30px;letter-spacing:-1px;margin:8px 0;color:#122e50}.modal-box p{line-height:1.6;color:#6a7b8c;font-size:14px}.modal-box .button{margin-top:15px;width:100%;font-size:14px;padding:11px}
 .capital-tooltip{background:#fff;border:2px solid #d62b2b;box-shadow:0 2px 6px #2339a42b;color:#182b43;font-weight:800;font-size:12px;border-radius:5px;padding:3px 6px}
-.capital-star-icon{background:none!important;border:0!important}.capital-star-icon span{display:block;width:32px;height:32px;line-height:32px;text-align:center;color:#e02020;font-size:29px;font-family:Arial,sans-serif;-webkit-text-stroke:1px #971111;text-shadow:0 0 5px #fff,0 1px 2px #fff;filter:drop-shadow(0 1px 2px #ffffffb3)}
+
 .capital-tooltip:before{border-top-color:#d62b2b!important}
 .leaflet-tooltip-left.capital-tooltip:before{border-left-color:#d62b2b!important}
 .climate-tooltip{background:#ebf6fd;color:#164776;border:1px solid #5b95c5;font-weight:700}
@@ -395,25 +395,184 @@ body.cf-dialog-open{overflow:hidden}
  .cf-result-buttons .button{flex:1;min-width:0;font-size:12px;padding:11px 8px}
 }
 @media(max-width:360px){.cf-result-dialog{padding:13px 11px calc(13px + env(safe-area-inset-bottom))}.cf-result-fact{padding:8px}.cf-result-head h2{font-size:19px}}
+
+/* ============================================================
+   지리가 보인다! 시작 화면 + 지도 국가 검색 (2026-11)
+   기존 정보·비교·나라찾기·퀴즈 로직은 그대로 재사용합니다.
+   ============================================================ */
+#homeScreen[hidden]{display:none!important}
+#homeScreen{display:flex;flex-direction:column;background:#fafdff;min-height:calc(100dvh - 78px);overflow:hidden}
+body.home-active header{height:78px;box-shadow:none;border-bottom:1px solid #e7f1f5}
+body.home-active .brand{font-size:26px;line-height:1.12}
+body.home-active .brand small{font-size:12px;margin-top:2px}
+body.home-active .tabs{display:none}
+.home-menu-toggle{display:none;align-items:center;justify-content:center;width:43px;height:43px;background:white;border:1px solid #e2ebf0;border-radius:12px;color:#173b55;font-size:21px;font-weight:900}
+.home-shell{max-width:1320px;width:100%;margin:0 auto;padding:0 30px 10px;display:flex;flex:1;flex-direction:column}
+.home-hero{position:relative;background:linear-gradient(110deg,#dff5ff 0%,#e7fbff 48%,#effdf7 100%);border-radius:0 0 27px 27px;min-height:315px;overflow:hidden;isolation:isolate;box-shadow:inset 0 -1px 0 #d7f0e9}
+.home-hero::before{content:'';position:absolute;inset:0;z-index:-1;opacity:.36;background:radial-gradient(circle at 10% 18%,#fff 0 18px,transparent 19px),radial-gradient(ellipse at 25% 66%,#fff 0 48px,transparent 49px),radial-gradient(ellipse at 88% 20%,#fff 0 60px,transparent 61px)}
+.home-hero::after{content:'';position:absolute;bottom:-70px;left:-6%;width:115%;height:148px;background:linear-gradient(130deg,#c5efdf,#a9e8e8);border-radius:48% 52% 0 0 / 62% 40% 0 0;opacity:.48;z-index:-1}
+.home-hero-inner{max-width:1240px;margin:auto;display:grid;grid-template-columns:minmax(0,1fr) minmax(340px,.97fr);align-items:center;gap:12px;min-height:315px;padding:14px 6% 12px}
+.home-hero-text{position:relative;z-index:2}.home-kicker{display:inline-flex;align-items:center;gap:7px;color:#137f8e;background:#ffffffb5;border:1px solid #bce5eb;border-radius:30px;padding:7px 12px;font-weight:800;font-size:12px;letter-spacing:.02em}
+.home-hero h1{margin:17px 0 11px;font-size:clamp(32px,3.5vw,51px);line-height:1.23;letter-spacing:-2.5px;font-weight:920;color:#073e57;word-break:keep-all}
+.home-hero h1 span{color:#128b9c}.home-hero-desc{margin:0;font-weight:670;color:#527488;font-size:15px;line-height:1.6;word-break:keep-all}
+.home-hero-illustration{width:100%;max-width:500px;height:auto;display:block;margin-left:auto;filter:drop-shadow(0 9px 11px #2b809020)}
+.home-intro{max-width:1300px;margin:22px auto 14px;display:flex;align-items:center;justify-content:space-between;gap:15px;padding:0 6px}
+.home-intro h2{font-size:22px;letter-spacing:-.8px;margin:0;color:#183550;font-weight:900}.home-intro p{margin:0;color:#708292;font-size:13px}
+.home-cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;max-width:1300px;margin:0 auto}
+.home-tile{appearance:none;position:relative;width:100%;border:1px solid #d7e7ee;border-radius:23px;min-height:168px;display:grid;grid-template-columns:124px minmax(0,1fr) 36px;gap:22px;align-items:center;text-align:left;box-shadow:0 6px 15px #173c5914;cursor:pointer;padding:20px 24px;transition:transform .18s,box-shadow .18s,border-color .18s}
+.home-tile:hover{transform:translateY(-4px);box-shadow:0 12px 26px #173c5921;border-color:#8accca}.home-tile:focus-visible{outline:4px solid #348cb6;outline-offset:3px}
+.home-tile.map{background:linear-gradient(135deg,#eaf8ff,#e2f4ff)}.home-tile.compare{background:linear-gradient(135deg,#effcf6,#e6f8f4)}
+.home-tile.find{background:linear-gradient(135deg,#effaf0,#e2f8eb)}.home-tile.quiz{background:linear-gradient(135deg,#eff5ff,#e9f0ff)}
+.home-tile-image{width:120px;height:100px;object-fit:contain;display:grid;place-items:center}
+.home-tile-image svg{width:100%;height:100%}.home-tile-content{display:flex;flex-direction:column;min-width:0;gap:3px}
+.home-tile-title{font-size:clamp(24px,2.6vw,36px);font-weight:920;letter-spacing:-1.3px;color:#111a21;line-height:1.15}
+.home-tile-en{font-size:17px;font-weight:650;color:#80909a;letter-spacing:.01em}
+.home-tile-description{font-size:14px;font-weight:680;line-height:1.46;color:#344b5d;margin-top:7px;word-break:keep-all}
+.home-tile-arrow{width:35px;height:35px;border-radius:50%;display:grid;place-items:center;background:#5ac4dd;color:white;font-size:31px;font-weight:400;line-height:1}
+.home-tile.compare .home-tile-arrow{background:#69cec2}.home-tile.find .home-tile-arrow{background:#75c88e}.home-tile.quiz .home-tile-arrow{background:#8caef3}
+.home-landscape{display:block;width:100%;height:85px;max-height:100px;margin:auto 0 -10px;opacity:.95}
+
+/* 지도에서 한글·영문·약칭으로 국가 검색 */
+#toolbar{flex-direction:column;align-items:stretch;gap:9px;width:355px;max-width:calc(100% - 470px);padding:11px 12px}
+#toolbar .toolbar-top{display:flex;align-items:center;gap:9px;min-width:0}
+#toolbar .toolbar-top #theme{flex:1;min-width:0}
+#toolbar .toolbar-top #refresh{flex-shrink:0}
+.country-search{position:relative;width:100%;min-width:0}
+#countrySearchInput{width:100%;height:42px;outline:none;border:1px solid #b9d1e3;background:#fafdff;border-radius:10px;color:#1a3650;padding:10px 40px 10px 35px;font-size:13px;font-weight:650;transition:border-color .15s,box-shadow .15s}
+#countrySearchInput:focus{border-color:#3d98bd;box-shadow:0 0 0 3px #55b7d32b;background:#fff}
+#countrySearchInput::placeholder{color:#8899a6;font-weight:550}
+#countrySearchInput::-webkit-search-cancel-button{display:none}
+.country-search-icon{position:absolute;left:11px;top:12px;color:#597f98;font-size:17px;line-height:1;pointer-events:none}
+.country-search-clear{position:absolute;right:8px;top:7px;width:29px;height:29px;border:0;border-radius:7px;background:transparent;color:#687d8c;display:none;place-items:center;font-size:21px;line-height:1}
+.country-search-clear.visible{display:grid}.country-search-clear:hover{background:#edf4f9}
+#countrySearchResults{position:absolute;z-index:2000;left:0;right:0;top:calc(100% + 7px);background:#fff;border:1px solid #cbdde9;box-shadow:0 14px 32px #0d314738;border-radius:12px;overflow-y:auto;max-height:min(390px,52dvh);padding:5px;overscroll-behavior:contain}
+#countrySearchResults[hidden]{display:none!important}
+.country-search-item{display:flex;align-items:center;gap:11px;width:100%;padding:10px 9px;border:0;border-radius:8px;background:transparent;color:#18384e;text-align:left;cursor:pointer}
+.country-search-item:hover,.country-search-item.is-active{background:#e8f5fc}
+.country-search-item:focus-visible{outline:2px solid #4b9cca;outline-offset:-2px}
+.country-search-flag{font-size:24px;line-height:1;min-width:28px}
+.country-search-detail{display:flex;flex-direction:column;min-width:0;line-height:1.4}
+.country-search-detail b{font-size:13px;font-weight:850;color:#163c54;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.country-search-detail small{font-size:11px;font-weight:600;color:#7c8a96;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.country-search-message{padding:12px;font-size:12px;color:#6d7e8c;line-height:1.5}
+/* 기존의 빨간 수도 별표를 지도 핀으로 변경 */
+.capital-pin-icon{background:transparent;border:0}.capital-pin-icon svg{display:block;width:31px;height:42px;filter:drop-shadow(0 2px 2px #1c28384a)}
+@media (min-width:651px) and (max-width:1050px){#toolbar{max-width:calc(100% - min(370px,46vw) - 52px);min-width:240px}}
+@media(max-width:800px){
+ .home-shell{padding:0 18px 18px}.home-hero-inner{grid-template-columns:1fr 240px;min-height:280px;padding:20px 6%}.home-hero{min-height:280px}
+ .home-hero h1{font-size:36px}.home-hero-illustration{width:100%}
+ .home-tile{grid-template-columns:85px minmax(0,1fr) 28px;gap:10px;padding:15px 14px;min-height:148px;border-radius:18px}.home-tile-image{width:82px;height:90px}.home-tile-title{font-size:25px}.home-tile-en{font-size:13px}.home-tile-description{font-size:12px}.home-tile-arrow{width:28px;height:28px;font-size:24px}
+}
+@media(max-width:650px){
+ body.home-active header{height:66px;display:flex;align-items:center;justify-content:space-between;padding:5px 15px 5px 12px;gap:9px}
+ body.home-active .brand{font-size:19px}.home-menu-toggle{display:none}
+ body.home-active .home-menu-toggle{display:flex}
+ body.home-active.home-menu-open header{height:auto;min-height:66px;display:grid;grid-template-columns:minmax(0,1fr) 43px;grid-template-rows:55px auto;gap:0}
+ body.home-active.home-menu-open .tabs{display:grid;grid-column:1/-1;grid-row:2;grid-template-columns:repeat(4,minmax(0,1fr));height:48px;width:100%;border-top:1px solid #e3edf3}
+ body.home-active.home-menu-open .tab{height:48px}
+ #homeScreen{min-height:calc(100dvh - 66px)}
+ .home-shell{padding:0 11px 15px}.home-hero{min-height:166px;border-radius:0 0 19px 19px}
+ .home-hero-inner{display:grid;grid-template-columns:minmax(0,1fr) 135px;gap:0;min-height:166px;padding:13px 8px 10px 17px}
+ .home-kicker{font-size:9px;padding:4px 7px;margin-bottom:0}
+ .home-hero h1{font-size:clamp(20px,5.4vw,27px);letter-spacing:-.9px;line-height:1.23;margin:10px 0 7px}
+ .home-hero-desc{font-size:10px;line-height:1.4;max-width:220px}
+ .home-hero-illustration{max-width:143px}
+ .home-intro{margin:18px 3px 11px;align-items:flex-start;flex-direction:column;gap:3px}
+ .home-intro h2{font-size:16px}.home-intro p{font-size:11px}
+ .home-cards{grid-template-columns:minmax(0,1fr);gap:9px}
+ .home-tile{grid-template-columns:83px minmax(0,1fr) 28px;gap:11px;padding:9px 13px;min-height:97px;border-radius:15px}
+ .home-tile-image{width:80px;height:76px}
+ .home-tile-title{font-size:23px;letter-spacing:-.7px}.home-tile-en{font-size:11px}.home-tile-description{font-size:11px;margin-top:1px;line-height:1.4}
+ .home-tile-arrow{width:27px;height:27px;font-size:23px}
+ .home-landscape{height:55px;margin-top:auto;margin-bottom:-6px;max-height:63px}
+ .home-footer-note{font-size:10px;margin:6px 0 15px}
+ #toolbar{position:absolute;top:8px;left:10px;right:10px;width:auto;min-width:0;max-width:none;padding:8px 10px;gap:6px}
+ #toolbar .toolbar-top{gap:8px;width:100%}
+ #toolbar .toolbar-top label{flex:none;font-size:12px}
+ #toolbar .toolbar-top #theme{flex:1;min-width:0;padding:8px}
+ #toolbar .toolbar-top #refresh{flex:0 0 auto}
+ #countrySearchInput{height:40px;font-size:13px}
+ #countrySearchResults{max-height:min(295px,40dvh)}
+}
+@media(max-width:365px){
+ .home-hero-inner{grid-template-columns:minmax(0,1fr) 112px}.home-hero-illustration{max-width:116px}
+ .home-hero h1{font-size:19px}.home-kicker{font-size:8px}.home-hero-desc{font-size:9px}
+ .home-tile{grid-template-columns:68px minmax(0,1fr) 26px;gap:8px;padding:10px}
+ .home-tile-image{width:67px;height:73px}.home-tile-title{font-size:21px}.home-tile-description{font-size:10px}
+}
+
 </style>
 </head>
-<body>
+<body class="home-active">
 <header>
-  <button class="brand" id="homeButton" type="button" aria-label="지리가 보인다! 지도 화면으로 돌아가기">🌍 지리가 보인다!<small>눈으로 확인하는 지리 정보</small></button>
-  <nav class="tabs" role="tablist" aria-label="학습 기능">
-    <button id="tab-map" class="tab" type="button" role="tab" aria-selected="true" aria-controls="mapScreen" data-tab="map"><span class="tab-ko">지도</span><span class="tab-en" lang="en">Map</span></button>
+  <button class="brand" id="homeButton" type="button" aria-label="지리가 보인다! 첫 화면으로 돌아가기">🌍 지리가 보인다!<small>눈으로 확인하는 지리 정보</small></button>
+  <nav id="mainTabs" class="tabs" role="tablist" aria-label="학습 기능">
+    <button id="tab-map" class="tab" type="button" role="tab" aria-selected="false" aria-controls="mapScreen" data-tab="map"><span class="tab-ko">지도</span><span class="tab-en" lang="en">Map</span></button>
     <button id="tab-compare" class="tab" type="button" role="tab" aria-selected="false" aria-controls="compareScreen" data-tab="compare"><span class="tab-ko">비교하기</span><span class="tab-en" lang="en">Compare</span></button>
     <button id="tab-find" class="tab" type="button" role="tab" aria-selected="false" aria-controls="findScreen" data-tab="find"><span class="tab-ko">나라찾기</span><span class="tab-en" lang="en">Find</span></button>
     <button id="tab-quiz" class="tab" type="button" role="tab" aria-selected="false" aria-controls="quizScreen" data-tab="quiz"><span class="tab-ko">퀴즈</span><span class="tab-en" lang="en">Quiz</span></button>
   </nav>
+  <button class="home-menu-toggle" id="homeMenuButton" type="button" aria-expanded="false" aria-label="학습 기능 메뉴 열기" aria-controls="mainTabs">☰</button>
 </header>
-<section id="mapScreen" role="tabpanel" aria-labelledby="tab-map">
+<section id="homeScreen" aria-labelledby="homeTitle">
+  <div class="home-shell">
+    <div class="home-hero"><div class="home-hero-inner">
+      <div class="home-hero-text"><span class="home-kicker">🌎 즐거운 세계지리 탐구</span>
+        <h1 id="homeTitle">세상을 지도 위에서<br><span>탐험해 보세요</span></h1>
+        <p class="home-hero-desc">지도를 누르고, 나라를 비교하고, 퀴즈로 배워보세요.</p></div>
+      <svg class="home-hero-illustration" viewBox="0 0 500 298" role="img" aria-label="지구본과 세계지도, 책과 돋보기가 있는 지리 탐험 일러스트" xmlns="http://www.w3.org/2000/svg">
+<defs><linearGradient id="globeOcean" x1="0" x2=".85" y1="0" y2="1"><stop stop-color="#28a8d7"/><stop offset="1" stop-color="#8ee4df"/></linearGradient><linearGradient id="bookCover" x1="0" x2="1"><stop stop-color="#4cb5db"/><stop offset="1" stop-color="#2378be"/></linearGradient></defs>
+<ellipse cx="240" cy="275" rx="212" ry="15" fill="#5aafbe" opacity=".13"/>
+<!-- 펼친 세계지도 -->
+<path d="M274 83 L343 62 L409 77 L463 63 L463 216 L404 225 L344 206 L274 228 Z" fill="#fff" stroke="#82bfd2" stroke-width="4" stroke-linejoin="round"/>
+<path d="M343 62 V206 M409 77 V225" fill="none" stroke="#b4dce2" stroke-width="2"/>
+<path d="M290 118 L316 108 L334 113 L333 131 L318 144 L308 166 L294 153Z M356 95L383 102L388 116L378 135L366 130L360 150L349 135Z M422 101 L443 111L449 130L434 136L435 165L421 156 Z M357 166L375 150L391 160L385 178L361 188Z" fill="#80c78b"/>
+<!-- 책 -->
+<path d="M56 220 L170 212L198 232L86 242 Z" fill="#ffd772" stroke="#e5b94e" stroke-width="3"/><path d="M82 241 L197 230 L197 244 L86 255 Z" fill="#fff8dc" stroke="#e2bc5c" stroke-width="3"/>
+<path d="M62 200 L178 189 L199 206 L82 218Z" fill="url(#bookCover)" stroke="#3478ad" stroke-width="3"/><path d="M82 218L199 205L199 221L83 234 Z" fill="#eaffff" stroke="#3478ad" stroke-width="3"/>
+<!-- 지구본 받침 -->
+<path d="M213 218 L225 267 M265 219 L252 267" stroke="#295f7a" stroke-width="10" stroke-linecap="round"/>
+<ellipse cx="240" cy="267" rx="62" ry="9" fill="#28738f"/><ellipse cx="240" cy="260" rx="40" ry="6" fill="#4b8fad"/>
+<!-- 원형 지구본 -->
+<circle cx="237" cy="136" r="99" fill="url(#globeOcean)" stroke="#246a89" stroke-width="5"/>
+<path d="M178 58 L195 46L212 49L221 70L242 76L236 97L210 103L203 126L184 134L174 152L159 136L158 114L145 103L151 77Z M247 72L272 55L291 76L306 92L293 105L278 103L269 122L246 124L229 109L234 88Z M246 139 L268 127L294 143L289 163L274 176L272 197L250 211L239 193L244 175L226 163Z" fill="#a9d76a"/>
+<path d="M171 178L184 158L203 165L216 190L203 218L190 217Z M299 172L314 165L325 183L314 206L292 204Z" fill="#70c488"/>
+<path d="M146 94Q237 8 318 91 M137 132Q237 95 332 132 M152 182Q239 227 319 181 M238 37Q194 137 238 233 M238 37Q281 136 238 233" stroke="#d8f9fa" stroke-width="1.6" opacity=".32" fill="none"/>
+<path d="M152 69Q177 47 200 47" stroke="#f1ffff" stroke-width="7" stroke-linecap="round" opacity=".5" fill="none"/>
+<!-- 돋보기 -->
+<circle cx="410" cy="216" r="29" stroke="#2a708b" stroke-width="9" fill="#d9f8f3" fill-opacity=".60"/><path d="M431 239L469 277" stroke="#2a708b" stroke-width="15" stroke-linecap="round"/>
+<!-- 느낌표 / 탐험 포인트 -->
+<g stroke="#1e968e" stroke-width="5" stroke-linecap="round"><path d="M338 17L334 34 M366 26L352 39 M373 55L357 56 M123 50L112 40"/></g>
+</svg>
+    </div></div>
+    <div class="home-intro"><h2>어떤 탐험을 시작할까요?</h2><p>학습하고 싶은 기능을 선택해 보세요.</p></div>
+    <div class="home-cards" role="group" aria-label="세계지리 학습 기능"><button class="home-tile map" type="button" data-open-tab="map" aria-label="지도 열기">
+<span class="home-tile-image"><svg viewBox="0 0 120 90" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path fill="#69c46f" d="M6 33L24 15L43 18L46 29L36 38L44 48L35 55L28 71L18 60L12 48ZM44 22L59 13L71 20L78 29L65 33L57 42L46 37ZM64 51L74 45L87 50L95 60L88 70L77 75L68 64ZM87 17L99 14L112 27L105 41L93 38L84 29ZM5 13L17 8L24 14L17 22Z"/></svg></span>
+<span class="home-tile-content"><strong class="home-tile-title">지도</strong><span class="home-tile-en" lang="en">MAP</span><span class="home-tile-description">국가의 위치와 지리 정보를 알아보세요</span></span>
+<span class="home-tile-arrow" aria-hidden="true">›</span></button>
+<button class="home-tile compare" type="button" data-open-tab="compare" aria-label="비교하기 열기">
+<span class="home-tile-image"><svg viewBox="0 0 120 90" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect x="14" y="49" width="22" height="32" rx="5" fill="#58aaf0"/><rect x="47" y="34" width="22" height="47" rx="5" fill="#f8c55b"/><rect x="80" y="17" width="22" height="64" rx="5" fill="#59bd9a"/><path d="M19 31L51 12L67 21L94 4" fill="none" stroke="#31b5c1" stroke-width="5" stroke-linecap="round"/><circle cx="19" cy="31" r="5" fill="#2aadb9"/><circle cx="51" cy="12" r="5" fill="#2aadb9"/><circle cx="67" cy="21" r="5" fill="#2aadb9"/><circle cx="94" cy="4" r="5" fill="#2aadb9"/></svg></span>
+<span class="home-tile-content"><strong class="home-tile-title">비교하기</strong><span class="home-tile-en" lang="en">COMPARE</span><span class="home-tile-description">최대 3개 국가의 특징을 비교해요</span></span>
+<span class="home-tile-arrow" aria-hidden="true">›</span></button>
+<button class="home-tile find" type="button" data-open-tab="find" aria-label="나라찾기 열기">
+<span class="home-tile-image"><svg viewBox="0 0 120 90" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M8 29L42 20L80 29L112 19V76L79 85L43 75L8 85Z" fill="#b6edc8" stroke="#61b888" stroke-width="3" stroke-linejoin="round"/><path d="M43 21V75M79 29V85" stroke="#82caa0" stroke-width="3"/><path d="M70 23C70 10 79 3 91 3S111 10 111 23C111 35 91 57 91 57S70 35 70 23Z" fill="#f0564f" stroke="#b73738" stroke-width="2"/><circle cx="91" cy="23" r="8" fill="white"/></svg></span>
+<span class="home-tile-content"><strong class="home-tile-title">나라찾기</strong><span class="home-tile-en" lang="en">FIND COUNTRY</span><span class="home-tile-description">백지도에서 국가의 위치를 맞혀 보세요</span></span>
+<span class="home-tile-arrow" aria-hidden="true">›</span></button>
+<button class="home-tile quiz" type="button" data-open-tab="quiz" aria-label="퀴즈 Quiz 열기">
+<span class="home-tile-image"><svg viewBox="0 0 120 90" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect x="13" y="13" width="80" height="72" rx="6" fill="#f4fbff" stroke="#548fbc" stroke-width="5"/><rect x="35" y="6" width="34" height="15" rx="6" fill="#8bc6e7" stroke="#477ca8" stroke-width="3"/><g stroke="#51bba6" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M23 37L28 43L38 31M23 56L28 62L38 50M23 74L28 80L38 68"/></g><g stroke="#9ab5ca" stroke-width="3"><path d="M46 38H80M46 56H75M46 74H73"/></g><path d="M75 76L102 34L112 42L85 83L72 88Z" fill="#ffca55" stroke="#d29431" stroke-width="2"/><path d="M72 88L77 76L85 83Z" fill="#517b9d"/></svg></span>
+<span class="home-tile-content"><strong class="home-tile-title">퀴즈 Quiz</strong><span class="home-tile-en" lang="en">QUIZ</span><span class="home-tile-description">기후·종교·인구를 복습해요</span></span>
+<span class="home-tile-arrow" aria-hidden="true">›</span></button></div>
+    <svg class="home-landscape" viewBox="0 0 1300 105" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" aria-hidden="true"><path d="M0 65L65 29L111 61L166 14L224 63L310 44L360 73L440 39L523 72L620 54L718 76L786 48L850 67L912 35L966 62L1054 15L1113 68L1166 36L1240 64L1300 43V105H0Z" fill="#bce8ed"/><path d="M0 83L44 53L112 91L166 35L211 87L280 59L368 94L460 68L540 102L620 75L711 99L793 68L875 100L946 62L1035 93L1119 38L1202 101L1300 67V105H0Z" fill="#79cfce" opacity=".9"/><path d="M148 52L166 35L185 55L174 54L167 44L159 55Z M1105 53L1119 38L1139 58L1126 54L1119 46L1111 54Z" fill="white" opacity=".8"/></svg>
+  </div>
+</section>
+<section id="mapScreen" role="tabpanel" aria-labelledby="tab-map" style="display:none">
   <div id="map" aria-label="국가 선택 지도"></div>
-  <div id="toolbar"><label for="theme">지도 주제</label><select id="theme"><option value="population">총인구</option><option value="gdp">명목 GDP</option></select><button id="refresh" class="button" type="button" title="World Bank 자료 다시 불러오기">↻ 통계</button></div>
+  <div id="toolbar"><div class="toolbar-top"><label for="theme">지도 주제</label><select id="theme"><option value="population">총인구</option><option value="gdp">명목 GDP</option></select><button id="refresh" class="button" type="button" title="World Bank 자료 다시 불러오기">↻ 통계</button></div>
+  <div class="country-search" id="countrySearchWrap"><label for="countrySearchInput" class="visually-hidden">국가 검색 (한글, 영어, 약칭)</label><span class="country-search-icon" aria-hidden="true">⌕</span><input id="countrySearchInput" type="search" placeholder="나라 검색 · 한국, Korea, USA…" autocomplete="off" role="combobox" aria-autocomplete="list" aria-controls="countrySearchResults" aria-expanded="false" spellcheck="false"><button id="countrySearchClear" class="country-search-clear" type="button" aria-label="검색어 지우기">×</button><div id="countrySearchResults" role="listbox" aria-label="국가 검색 결과" hidden></div></div></div>
   <button id="panelToggle" class="panel-toggle" type="button" aria-controls="panel" aria-expanded="false"><span aria-hidden="true">⌃</span> <span id="panelToggleLabel">정보 넓게 보기</span></button>
   <aside id="panel"><h2>눈으로 확인하는 지리 정보</h2><p class="loading">지도와 국가 정보를 불러오고 있습니다...</p></aside>
 </section>
-<section id="compareScreen" role="tabpanel" aria-labelledby="tab-compare">
+<section id="compareScreen" role="tabpanel" aria-labelledby="tab-compare" style="display:none">
   <div id="compareContainer">
     <h1 class="page-title">국가 비교하기</h1>
     <p class="page-sub">국가를 최대 3개까지 선택하여 인구·경제·인구 구조·종교·기후와 인구 피라미드를 나란히 비교해 보세요.</p>
@@ -768,7 +927,7 @@ const POP_CACHE_STALE_MS=90*24*60*60*1000;
 const PYRAMID_AGES=Array.from({length:16},(_,i)=>({label:`${i*5}~${i*5+4}세`,code:String(i*5).padStart(2,'0')+String(i*5+4).padStart(2,'0')})).concat([{label:'80세 이상',code:'80UP'}]);
 const PYRAMID_AGE_INDICATORS=PYRAMID_AGES.flatMap(a=>['MA','FE'].map(sex=>`SP.POP.${a.code}.${sex}.5Y`));
 const PYRAMID_INDICATORS=[...PYRAMID_AGE_INDICATORS,'SP.POP.TOTL.MA.IN','SP.POP.TOTL.FE.IN'];
-const state={tab:'map',selectedId:null,siteIndex:null,compare:[null,null,null],statsLoading:false,pyramidUnit:'share',comparePyramidUnit:'share'};
+const state={tab:'home',selectedId:null,siteIndex:null,compare:[null,null,null],statsLoading:false,pyramidUnit:'share',comparePyramidUnit:'share'};
 let geo=null,layer=null,capitalMarker=null,climateMarker=null;
 
 function key(id){return String(id??'').padStart(3,'0')}
@@ -834,11 +993,147 @@ function draw(){if(!geo)return;if(layer)map.removeLayer(layer);
 function clearMarkers(){if(capitalMarker){map.removeLayer(capitalMarker);capitalMarker=null}if(climateMarker){map.removeLayer(climateMarker);climateMarker=null}}
 function setCapitalMarker(id){if(capitalMarker){map.removeLayer(capitalMarker);capitalMarker=null}
  const c=countries[key(id)];if(!c)return;const p=capitalCoords[c.cca3];if(!p)return;
- const star=L.divIcon({className:'capital-star-icon',html:'<span aria-hidden="true">★</span>',iconSize:[32,32],iconAnchor:[16,16]});
- capitalMarker=L.marker([p.lat,p.lon],{icon:star,zIndexOffset:1000,title:'수도 · '+capitalPinName(c,p),keyboard:true}).addTo(map);
- capitalMarker.bindTooltip('수도 · '+capitalPinName(c,p),{permanent:true,offset:[0,-13],direction:'top',className:'capital-tooltip'}).openTooltip();
+ const pin=L.divIcon({className:'capital-pin-icon',html:'<svg viewBox="0 0 36 46" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M18 2C9.2 2 2 9.1 2 18c0 12.7 16 25.8 16 25.8S34 30.7 34 18C34 9.1 26.8 2 18 2Z" fill="#ef4349" stroke="#a5252b" stroke-width="2.5"/><circle cx="18" cy="18" r="7.4" fill="white"/></svg>',iconSize:[32,43],iconAnchor:[16,43],popupAnchor:[0,-37]});
+ capitalMarker=L.marker([p.lat,p.lon],{icon:pin,zIndexOffset:1000,title:'수도 · '+capitalPinName(c,p),keyboard:true}).addTo(map);
+ capitalMarker.bindTooltip('수도 · '+capitalPinName(c,p),{permanent:true,offset:[0,-42],direction:'top',className:'capital-tooltip'}).openTooltip();
  capitalMarker.bindPopup(`<b>${safe(nameKR(c))}</b><br>수도: ${safe(capitalName(c))}`);
 }
+
+/* 나라 검색: 한글 정식·약칭, 영문명, ISO 코드, 별칭 지원 */
+const countrySearchAliases={
+ KR:['한국','대한민국','남한','South Korea','Republic of Korea','ROK','Korea'],
+ KP:['북한','조선','조선민주주의인민공화국','North Korea','DPRK','Democratic Peoples Republic of Korea'],
+ US:['미국','미합중국','USA','US','America','United States','United States of America'],
+ GB:['영국','UK','Britain','Great Britain','United Kingdom','잉글랜드'],
+ RU:['러시아','러시아연방','Russia','Russian Federation'],CN:['중국','중화인민공화국','China','PRC'],
+ JP:['일본','Japan'],FR:['프랑스','France'],DE:['독일','Germany','Deutschland'],
+ IT:['이탈리아','Italy'],ES:['스페인','Spain'],PT:['포르투갈','Portugal'],
+ NL:['네덜란드','Netherlands','Holland'],CH:['스위스','Switzerland'],
+ TR:['튀르키예','터키','Turkey','Türkiye'],CZ:['체코','Czech Republic','Czechia'],
+ SK:['슬로바키아','Slovakia'],PL:['폴란드','Poland'],AT:['오스트리아','Austria'],
+ HU:['헝가리','Hungary'],UA:['우크라이나','Ukraine'],GR:['그리스','Greece'],
+ FI:['핀란드','Finland'],SE:['스웨덴','Sweden'],NO:['노르웨이','Norway'],
+ DK:['덴마크','Denmark'],IS:['아이슬란드','Iceland'],IE:['아일랜드','Ireland'],
+ BE:['벨기에','Belgium'],CA:['캐나다','Canada'],MX:['멕시코','Mexico'],
+ BR:['브라질','Brazil'],AR:['아르헨티나','Argentina'],CL:['칠레','Chile'],
+ AU:['호주','오스트레일리아','Australia'],NZ:['뉴질랜드','New Zealand'],
+ IN:['인도','India','Bharat'],ID:['인도네시아','Indonesia'],MY:['말레이시아','Malaysia'],
+ TH:['태국','Thailand'],VN:['베트남','Vietnam','Viet Nam'],LA:['라오스','Laos','Lao PDR'],
+ KH:['캄보디아','Cambodia'],MM:['미얀마','버마','Myanmar','Burma'],
+ PH:['필리핀','Philippines'],SG:['싱가포르','Singapore'],BN:['브루나이','Brunei'],
+ AE:['아랍에미리트','아랍에미리트연합','UAE','United Arab Emirates'],
+ SA:['사우디','사우디아라비아','Saudi Arabia'],IR:['이란','Iran'],IQ:['이라크','Iraq'],
+ IL:['이스라엘','Israel'],PS:['팔레스타인','Palestine'],EG:['이집트','Egypt'],
+ ZA:['남아공','남아프리카공화국','South Africa'],NG:['나이지리아','Nigeria'],
+ ET:['에티오피아','Ethiopia'],KE:['케냐','Kenya'],CD:['콩고민주공화국','민주콩고','DR Congo','DRC'],
+ CG:['콩고공화국','콩고','Republic of the Congo'],TW:['대만','타이완','Taiwan'],
+ VA:['바티칸','Vatican','Holy See'],CI:['코트디부아르','아이보리코스트','Ivory Coast','Cote dIvoire'],
+ SZ:['에스와티니','스와질란드','Eswatini','Swaziland'],
+ MK:['북마케도니아','North Macedonia','Macedonia']
+};
+const countrySearchIndex=[];
+let countrySearchMatches=[],countrySearchActive=-1;
+const countrySearchInput=document.getElementById('countrySearchInput');
+const countrySearchResults=document.getElementById('countrySearchResults');
+const countrySearchClear=document.getElementById('countrySearchClear');
+const countrySearchWrap=document.getElementById('countrySearchWrap');
+function normalizeCountryQuery(s){return String(s??'').normalize('NFKD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^\p{L}\p{N}]/gu,'');}
+function countryFlagEmoji(c){const iso=c?.cca2;if(!/^[A-Z]{2}$/.test(iso||''))return '🌐';return [...iso].map(x=>String.fromCodePoint(x.codePointAt(0)-65+0x1f1e6)).join('');}
+function buildCountrySearchIndex(){
+ countrySearchIndex.length=0;
+ for(const c of allCountries){
+  const raw=[nameKR(c),c.translations?.kor?.common,c.translations?.kor?.official,c.translations?.eng?.common,c.translations?.eng?.official,c.name?.common,c.name?.official,
+   new Intl.DisplayNames(['en'],{type:'region'}).of(c.cca2),c.cca2,c.cca3,...(c.altSpellings||[]),...(countrySearchAliases[c.cca2]||[])];
+  for(const name of Object.values(c.name?.nativeName||{})){raw.push(name?.common,name?.official);}
+  const names=[...new Set(raw.filter(x=>typeof x==='string'&&x.trim()).map(normalizeCountryQuery))];
+  countrySearchIndex.push({id:key(c.ccn3),c,names});
+ }
+}
+function getCountrySearchMatches(text){
+ const q=normalizeCountryQuery(text);if(!q)return [];
+ return countrySearchIndex.map(entry=>{
+  const score=entry.names.reduce((best,name)=>{
+   if(name===q)return Math.min(best,0);
+   if(name.startsWith(q))return Math.min(best,1);
+   if(q.length>=2&&name.includes(q))return Math.min(best,2);
+   return best;
+  },Infinity);
+  return {entry,score};
+ }).filter(x=>Number.isFinite(x.score)).sort((a,b)=>a.score-b.score||nameKR(a.entry.c).localeCompare(nameKR(b.entry.c),'ko')).slice(0,8).map(x=>x.entry);
+}
+function closeCountrySearch(){countrySearchResults.hidden=true;countrySearchInput.setAttribute('aria-expanded','false');countrySearchActive=-1;}
+function showCountrySearchResults(){
+ countrySearchClear.classList.toggle('visible',!!countrySearchInput.value);
+ if(!countrySearchInput.value.trim()){closeCountrySearch();return;}
+ if(!countrySearchIndex.length){countrySearchResults.innerHTML='<div class="country-search-message">국가 데이터를 불러오는 중입니다. 잠시 후 다시 검색해 주세요.</div>';countrySearchResults.hidden=false;countrySearchInput.setAttribute('aria-expanded','true');return;}
+ countrySearchMatches=getCountrySearchMatches(countrySearchInput.value);countrySearchActive=-1;
+ countrySearchResults.innerHTML=countrySearchMatches.length?countrySearchMatches.map(({c,id},i)=>`<button class="country-search-item" type="button" role="option" id="country-option-${i}" data-search-country="${safe(id)}" aria-selected="false"><span class="country-search-flag" aria-hidden="true">${countryFlagEmoji(c)}</span><span class="country-search-detail"><b>${safe(nameKR(c))}</b><small>${safe(c.name?.common||c.cca3)} · ${safe(regionNames[c.region]||c.region||'')}</small></span></button>`).join(''):'<div class="country-search-message">검색 결과가 없습니다. 다른 이름·영문명·국가 약칭을 입력해 주세요.</div>';
+ countrySearchResults.hidden=false;countrySearchInput.setAttribute('aria-expanded','true');
+}
+function setCountrySearchActive(index){
+ if(!countrySearchMatches.length)return;
+ countrySearchActive=Math.max(0,Math.min(countrySearchMatches.length-1,index));
+ countrySearchResults.querySelectorAll('.country-search-item').forEach((el,i)=>{
+  const yes=i===countrySearchActive;el.classList.toggle('is-active',yes);el.setAttribute('aria-selected',String(yes));if(yes)el.scrollIntoView({block:'nearest'});
+ });
+ countrySearchInput.setAttribute('aria-activedescendant','country-option-'+countrySearchActive);
+}
+function countryFeatureBounds(id){
+ const f=geo?.features?.find(g=>key(g.id)===key(id));if(!f)return null;
+ const all=L.geoJSON(f).getBounds();if(!all.isValid())return null;
+ const lngSpan=all.getEast()-all.getWest();
+ // 날짜변경선 섬이나 해외 영토로 인해 세계 전체가 잡히지 않도록 주요 본토 부분을 찾습니다.
+ if(lngSpan<125)return all;
+ const polygons=f.geometry.type==='MultiPolygon'?f.geometry.coordinates:[f.geometry.coordinates];
+ const parts=polygons.map(p=>{
+  const ring=p[0];if(!ring?.length)return null;
+  const bounds=L.latLngBounds(ring.map(pos=>[pos[1],pos[0]]));
+  if(!bounds.isValid())return null;
+  const latitude=bounds.getCenter().lat*Math.PI/180;
+  const weight=(bounds.getEast()-bounds.getWest())*(bounds.getNorth()-bounds.getSouth())*Math.max(.2,Math.cos(latitude));
+  return {bounds,weight};
+ }).filter(Boolean).sort((a,b)=>b.weight-a.weight);
+ return parts[0]?.bounds||all;
+}
+function focusSearchedCountry(id){
+ const c=countries[key(id)];if(!c)return;
+ const mobile=window.matchMedia('(max-width:650px)').matches;
+ const toolbar=document.getElementById('toolbar');
+ const panelEl=document.getElementById('panel');
+ const topPad=toolbar.getBoundingClientRect().height+35;
+ const left=mobile?17:36,right=mobile?17:Math.min(456,Math.floor(map.getSize().x*.40));
+ const bottom=mobile?Math.min(map.getSize().y*.55,panelEl.getBoundingClientRect().height+20):24;
+ const paddingTopLeft=L.point(left,topPad),paddingBottomRight=L.point(right,bottom);
+ // 여러 대륙에 걸친 영토는 대표적인 본토 지역을 중심으로 보여줍니다.
+ const manual={RU:[[62,95],3],US:[[40,-99],4],CA:[[56,-105],3],FR:[[46.5,2.5],5],FJ:[[-17.7,178.1],6],NZ:[[-41,174],5]};
+ if(manual[c.cca2]){const [center,z]=manual[c.cca2];map.setView(center,z,{animate:!window.matchMedia('(prefers-reduced-motion: reduce)').matches});return;}
+ const bounds=countryFeatureBounds(id);
+ if(bounds){map.fitBounds(bounds.pad(.10),{maxZoom:7,paddingTopLeft,paddingBottomRight,animate:!window.matchMedia('(prefers-reduced-motion: reduce)').matches});}
+ else {const p=capitalCoords[c.cca3];if(p)map.setView([p.lat,p.lon],6,{animate:true});}
+}
+function chooseCountrySearch(id){
+ const c=countries[key(id)];if(!c)return;
+ closeCountrySearch();countrySearchInput.value=nameKR(c);countrySearchClear.classList.add('visible');
+ if(state.tab!=='map')switchTab('map');selectCountry(id);
+ setTimeout(()=>{map.invalidateSize();focusSearchedCountry(id);},110);
+}
+countrySearchInput.addEventListener('input',showCountrySearchResults);
+countrySearchInput.addEventListener('focus',()=>{if(countrySearchInput.value.trim())showCountrySearchResults();});
+countrySearchInput.addEventListener('keydown',e=>{
+ if(e.key==='Escape'){closeCountrySearch();return;}
+ if(e.key==='ArrowDown'||e.key==='ArrowUp'){
+  if(countrySearchResults.hidden)showCountrySearchResults();if(!countrySearchMatches.length)return;
+  e.preventDefault();setCountrySearchActive(countrySearchActive+(e.key==='ArrowDown'?1:-1));return;
+ }
+ if(e.key==='Enter'){
+  e.preventDefault();if(countrySearchResults.hidden)showCountrySearchResults();
+  const chosen=countrySearchMatches[countrySearchActive<0?0:countrySearchActive];if(chosen)chooseCountrySearch(chosen.id);
+ }
+});
+countrySearchResults.addEventListener('click',e=>{const b=e.target.closest('button[data-search-country]');if(b)chooseCountrySearch(b.dataset.searchCountry);});
+countrySearchClear.addEventListener('click',()=>{countrySearchInput.value='';countrySearchClear.classList.remove('visible');closeCountrySearch();countrySearchInput.focus();});
+document.addEventListener('pointerdown',e=>{if(!countrySearchWrap.contains(e.target))closeCountrySearch();});
+
 function setClimateMarker(site){if(climateMarker){map.removeLayer(climateMarker);climateMarker=null}if(!site)return;
  climateMarker=L.circleMarker([site.lat,site.lon],{radius:6,color:'#fff',weight:2,fillColor:'#367bad',fillOpacity:1}).addTo(map);
  climateMarker.bindTooltip('기후 자료 지점: '+site.city,{direction:'right',className:'climate-tooltip'});
@@ -916,7 +1211,7 @@ async function loadCountries(){let rc;for(const url of ['https://cdn.jsdelivr.ne
  allCountries.length=0;for(const c of rc){if(!c.ccn3||!c.cca3||!c.cca2)continue;countries[key(c.ccn3)]=c;allCountries.push(c)}
  // 통계에 없는 국가의 인구는 국가 기본정보의 참고값으로 보충하고, 자료 연도를 명확히 구분합니다.
  for(const c of allCountries){const n=Number(c.population);if(Number.isFinite(n)&&n>0){stat.population[key(c.ccn3)]=n;statYear.population[key(c.ccn3)]='미상';statSource.population[key(c.ccn3)]='국가 기본정보(참고값)'}}
- populateCompare();draw();if(state.tab==='find')setTimeout(cfInit,40);
+ populateCompare();draw();buildCountrySearchIndex();if(state.tab==='find')setTimeout(cfInit,40);
 }
 async function loadCapitalMetadata(){
  // World Bank 국가 메타데이터는 정식 수도 좌표를 제공합니다. 없는 국가는 REST Countries로 보완합니다.
@@ -966,7 +1261,7 @@ async function load(){try{
  }catch(e){console.error(e);panel.innerHTML=`<h2 class="error">자료 로딩 오류</h2><p>외부 데이터 연결 상태를 확인하고 페이지를 새로고침해 주세요.</p><p class="muted">${safe(e.message)}</p>`;
   if(state.tab==='find')cfPanel.innerHTML=`<h2 class="error">지도 데이터 로딩 오류</h2><p>${safe(e.message)}</p>`;}
 }
-function welcome(){if(state.selectedId)return;panel.innerHTML=`<h2>세계를 탐색해 보세요 🌏</h2><p class="lead">지도에서 국가를 선택하면 수도, 인구 피라미드, 종교, 쾨펜 기후와 실제 지역의 기후 그래프를 확인할 수 있습니다.</p><div class="section"><h3>수업 활용 방법</h3><p class="mini-fact">① 지도의 색상은 인구 또는 GDP에 따라 다릅니다.<br>② 국가를 클릭하면 노란색으로 강조되고 수도가 표시됩니다.<br>③ 기후 유형과 지역을 선택하면 월별 기온·강수량 그래프가 나타납니다.<br>④ <b>인구 피라미드</b>에서 연령·성별 인구 분포를 분석할 수 있습니다.<br>⑤ <b>비교하기</b> 탭에서 세 나라를 나란히 비교할 수 있습니다.</p></div><p class="muted">통계 출처: World Bank WDI·HNP (UN 인구추계 기반). 기후 그래프: NASA POWER / Open-Meteo 재분석 자료(1991~2020).</p>`}
+function welcome(){if(state.selectedId)return;panel.innerHTML=`<h2>세계를 탐색해 보세요 🌏</h2><p class="lead">지도에서 국가를 선택하면 수도, 인구 피라미드, 종교, 쾨펜 기후와 실제 지역의 기후 그래프를 확인할 수 있습니다.</p><div class="section"><h3>수업 활용 방법</h3><p class="mini-fact">① 지도의 색상은 인구 또는 GDP에 따라 다릅니다.<br>② 국가를 검색하거나 클릭하면 노란색으로 강조되고 수도 위치에 빨간 핀이 표시됩니다.<br>③ 기후 유형과 지역을 선택하면 월별 기온·강수량 그래프가 나타납니다.<br>④ <b>인구 피라미드</b>에서 연령·성별 인구 분포를 분석할 수 있습니다.<br>⑤ <b>비교하기</b> 탭에서 세 나라를 나란히 비교할 수 있습니다.</p></div><p class="muted">통계 출처: World Bank WDI·HNP (UN 인구추계 기반). 기후 그래프: NASA POWER / Open-Meteo 재분석 자료(1991~2020).</p>`}
 function selectCountry(id){const normalized=key(id);if(state.selectedId!==normalized)state.siteIndex=null;
  state.selectedId=normalized;clearMarkers();draw();setCapitalMarker(normalized);showInfo();
  if(window.matchMedia('(max-width:650px)').matches)panel.scrollTop=0;
@@ -1067,7 +1362,7 @@ function showInfo(){const id=state.selectedId,c=countries[id];if(!c){panel.inner
   <div class="nav-buttons" style="justify-content:space-between;align-items:center"><span class="pill">국가 정보</span><button class="button" data-action="add-compare" type="button">＋ 비교하기에 담기</button></div>
   ${/^[A-Z]{2}$/.test(c.cca2)?`<p><img class="flag" src="https://flagcdn.com/w160/${c.cca2.toLowerCase()}.png" alt="${safe(nameKR(c))} 국기" loading="lazy"></p>`:''}
   <h2>${safe(nameKR(c))}</h2>
-  ${statsFact('수도',safe(capitalName(c)),capitalCoords[c.cca3]?'지도에 빨간 별로 표시':'수도 좌표 확인 중 또는 미제공')}
+  ${statsFact('수도',safe(capitalName(c)),capitalCoords[c.cca3]?'지도에 빨간 핀으로 표시':'수도 좌표 확인 중 또는 미제공')}
   ${statsFact('지역',safe(countryRegion(c)))}
   ${statsFact('주요 언어',safe(countryLanguages(c)))}
   <div class="section"><h3>인구와 경제</h3>
@@ -1371,13 +1666,24 @@ window.addEventListener('resize',repositionZoomBelowToolbar);
 requestAnimationFrame(repositionZoomBelowToolbar);
 
 function switchTab(next){
- state.tab=next;document.getElementById('mapScreen').style.display=next==='map'?'block':'none';
+ if(!['home','map','compare','find','quiz'].includes(next))next='home';
+ state.tab=next;
+ const isHome=next==='home';
+ document.body.classList.toggle('home-active',isHome);
+ document.body.classList.remove('home-menu-open');
+ document.getElementById('homeMenuButton').setAttribute('aria-expanded','false');
+ document.getElementById('homeMenuButton').setAttribute('aria-label','학습 기능 메뉴 열기');
+ document.getElementById('homeScreen').hidden=!isHome;
+ document.getElementById('mapScreen').style.display=next==='map'?'block':'none';
  document.getElementById('compareScreen').style.display=next==='compare'?'block':'none';
  document.getElementById('findScreen').hidden=next!=='find';
  document.getElementById('findScreen').style.display=next==='find'?'block':'none';
  document.getElementById('quizScreen').hidden=next!=='quiz';
  for(const b of document.querySelectorAll('.tab'))b.setAttribute('aria-selected',String(b.dataset.tab===next));
- if(next==='compare')renderCompare();else if(next==='map')setTimeout(()=>{map.invalidateSize();repositionZoomBelowToolbar()},60);else if(next==='find'){window.scrollTo(0,0);setTimeout(cfInit,60);}
+ if(next==='compare')renderCompare();
+ else if(next==='map')setTimeout(()=>{map.invalidateSize({pan:false});if(!window.__geoInitialMapVisible&&!state.selectedId)map.setView([20,0],2,{animate:false});window.__geoInitialMapVisible=true;repositionZoomBelowToolbar();},90);
+ else if(next==='find')setTimeout(cfInit,75);
+ if(next!=='map')window.scrollTo({top:0,behavior:'auto'});
 }
 function populateCompare(){const sorter=new Intl.Collator('ko');const list=allCountries.slice().sort((a,b)=>sorter.compare(nameKR(a),nameKR(b)));
  compareSelectors.innerHTML=state.compare.map((v,i)=>`<div class="compare-slot"><label for="cmp-${i}">국가 ${i+1}</label><select id="cmp-${i}" class="select" data-compare="${i}"><option value="">국가 선택</option>${list.map(c=>`<option value="${safe(key(c.ccn3))}" ${v===key(c.ccn3)?'selected':''}>${safe(nameKR(c))}</option>`).join('')}</select><button class="button" data-clear="${i}" type="button">선택 해제</button></div>`).join('');
@@ -1807,7 +2113,13 @@ comparePyramids.addEventListener('click',e=>{
  void requestComparePyramid(id,{force:true});renderComparePyramids();
 });
 for(const tab of document.querySelectorAll('.tab'))tab.addEventListener('click',()=>switchTab(tab.dataset.tab));
-document.getElementById('homeButton').addEventListener('click',()=>switchTab('map'));
+document.getElementById('homeButton').addEventListener('click',()=>switchTab('home'));
+document.querySelectorAll('[data-open-tab]').forEach(el=>el.addEventListener('click',()=>switchTab(el.dataset.openTab)));
+document.getElementById('homeMenuButton').addEventListener('click',()=>{
+ const opened=document.body.classList.toggle('home-menu-open');
+ const b=document.getElementById('homeMenuButton');b.setAttribute('aria-expanded',String(opened));
+ b.setAttribute('aria-label',opened?'학습 기능 메뉴 닫기':'학습 기능 메뉴 열기');
+});
 // 모바일 지도: 지도를 보면서 필요할 때만 정보 패널을 넓혀 읽습니다.
 const panelToggle=document.getElementById('panelToggle');
 panelToggle.addEventListener('click',()=>{
