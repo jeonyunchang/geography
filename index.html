@@ -257,6 +257,85 @@ header{position:relative;z-index:2000;height:70px;display:flex;align-items:cente
  #panelToggle{right:9px}
 }
 
+
+/* Nation location game: separate blank map, existing charts and Firebase unaffected. */
+#findScreen{display:none;min-height:calc(100dvh - 70px);padding:28px 24px 56px;background:#f3f7fb}
+.cf-container{max-width:1340px;margin:auto}
+.cf-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+.cf-heading h1{margin:0 0 5px;color:#182e45;font-size:28px;letter-spacing:-.8px}
+.cf-heading p{margin:0;color:#657589;line-height:1.6;font-size:13px}
+.cf-live-score{background:#fff;border:1px solid #dce6ee;box-shadow:0 2px 8px #193c5011;border-radius:13px;padding:10px 17px;min-width:148px;text-align:center;display:grid;gap:1px}
+.cf-live-score span{font-size:12px;color:#556779;font-weight:800}
+.cf-live-score strong{font-size:25px;font-weight:850;color:#174e83;font-variant-numeric:tabular-nums}
+.cf-layout{display:grid;grid-template-columns:minmax(300px,355px) minmax(0,1fr);gap:17px;align-items:start}
+.cf-card,.cf-map-card{background:#fff;border:1px solid #e0e8f0;border-radius:16px;box-shadow:0 4px 17px #1b354a0b;min-width:0}
+.cf-card{padding:19px 18px 21px;line-height:1.65}
+.cf-card h2{font-size:19px;color:#152e4a;margin:0 0 9px}
+.cf-card p{margin:6px 0 12px;color:#52657a;font-size:13px;line-height:1.65}
+.cf-pill{background:#eaf2fa;border-radius:50px;padding:4px 9px;display:inline-block;font-size:12px;font-weight:800;color:#215780}
+.cf-target{margin:6px 0 11px!important;font-size:28px!important;font-weight:850;line-height:1.35!important;color:#152e48!important;letter-spacing:-.5px}
+.cf-meta{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;color:#63768b;font-size:12px;margin-bottom:11px;font-weight:750}
+.cf-attempts{display:flex;align-items:center;gap:7px;padding:6px 0 12px;color:#52677b;font-size:12px;font-weight:700}
+.cf-attempt{width:21px;height:9px;border-radius:12px;background:#4e8abe}
+.cf-attempt.used{background:#d9e1e8}
+.cf-hint{border:1px solid #cbdcf0;background:#f3f8fe;border-radius:10px;padding:10px 11px;margin:7px 0;font-size:13px;line-height:1.6;color:#234b72}
+.cf-hint b{color:#173d65}
+.cf-hint-flag{display:inline-flex;align-items:center;gap:8px;flex-wrap:wrap;margin:4px 0 0}
+.cf-hint-flag img{display:inline-block;width:47px;height:31px;object-fit:cover;border-radius:4px;border:1px solid #c9d4df}
+.cf-emoji-flag{font-size:27px;line-height:1.1}
+.cf-feedback{border-radius:10px;margin:12px 0;padding:10px 12px;font-size:13px;font-weight:750;line-height:1.6}
+.cf-feedback.info{background:#eaf3fc;color:#224b71}
+.cf-feedback.success{background:#e7f7ed;color:#196b42}
+.cf-feedback.failure{background:#fff0ed;color:#9c3533}
+.cf-choice{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:12px 0;font-size:12px;font-weight:780;color:#293d50}
+.cf-choice select{flex:1;min-width:120px;max-width:190px}
+.cf-actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:15px}
+.cf-actions .button{min-height:43px;padding:10px 13px}
+.cf-map-card{overflow:hidden;padding:11px}
+.cf-map-top{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:4px 6px 11px;flex-wrap:wrap;font-size:12px;color:#4d6175;font-weight:760}
+#cfMap{height:clamp(435px,65dvh,660px);width:100%;border:1px solid #d5e0e8;border-radius:12px;background:linear-gradient(180deg,#e9f5fc,#dbeff9);z-index:0;overflow:hidden}
+#cfMap .leaflet-container{background:transparent}
+#cfMap .leaflet-control-zoom a{color:#284b6e}
+#cfMap path.leaflet-interactive{cursor:crosshair}
+.cf-legend{display:flex;gap:15px;flex-wrap:wrap;align-items:center;padding:12px 6px 5px;color:#4e6377;font-size:12px;font-weight:730}
+.cf-dot{display:inline-block;vertical-align:-2px;width:14px;height:14px;border:2px solid #9baeba;border-radius:3px;margin-right:5px;background:#e1e8ee}
+.cf-dot.correct{background:#37b575;border-color:#176d45}.cf-dot.wrong{background:#f07772;border-color:#aa302c}
+.cf-note{color:#718195;font-size:11px;line-height:1.65;margin:9px 6px 3px}
+.cf-round-result{font-size:41px!important;font-weight:850!important;color:#1e598b!important;line-height:1.15!important;font-variant-numeric:tabular-nums}
+.cf-round-list{margin:12px 0;border:1px solid #e1e9ef;border-radius:11px;max-height:235px;overflow-y:auto;scrollbar-width:thin}
+.cf-round-row{display:flex;align-items:center;gap:8px;padding:8px 9px;border-bottom:1px solid #edf1f4;font-size:12px;color:#203b54;cursor:pointer}
+.cf-round-row:last-child{border-bottom:0}.cf-round-row input{width:18px;height:18px;accent-color:#2477aa;flex-shrink:0}
+.cf-round-row .cf-country-label{flex:1;font-weight:750;overflow-wrap:anywhere}.cf-round-row .cf-selection-label{color:#61788c;font-size:11px;white-space:nowrap}
+.cf-round-row .cf-dot{flex-shrink:0;width:12px;height:12px;margin:0}
+.cf-load{color:#64788d;font-size:13px;line-height:1.6}
+.cf-card .button:disabled{opacity:.52;cursor:not-allowed}
+@media(max-width:960px){.cf-layout{grid-template-columns:minmax(250px,310px) minmax(0,1fr)}#cfMap{height:clamp(425px,60dvh,620px)}}
+@media(max-width:650px){
+  .tabs{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .tab{padding:0 3px;gap:3px}.tab-ko{font-size:12px}.tab-en{font-size:9px}
+  #findScreen{min-height:calc(100dvh - var(--mobile-header-height));padding:15px 10px 34px}
+  .cf-heading{align-items:center;gap:8px;margin-bottom:12px}
+  .cf-heading>div:first-child{flex:1 1 175px;min-width:0}
+  .cf-heading h1{font-size:22px;margin-bottom:2px}.cf-heading p{font-size:11px;line-height:1.45}
+  .cf-live-score{flex:0 0 112px;min-width:0;padding:7px 9px}.cf-live-score strong{font-size:20px}.cf-live-score span{font-size:10px}
+  .cf-layout{display:flex;flex-direction:column;gap:11px}
+  .cf-card,.cf-map-card{width:100%;border-radius:13px}
+  .cf-card{padding:13px 14px 14px;min-height:0}
+  .cf-card h2{font-size:17px;margin-bottom:5px}.cf-card p{margin:4px 0 8px;font-size:12px}
+  .cf-target{font-size:24px!important;margin:2px 0 6px!important}
+  .cf-hint{padding:7px 9px;margin:6px 0;font-size:12px}
+  .cf-feedback{margin:8px 0;padding:8px 10px;font-size:12px}
+  .cf-attempts{padding:3px 0 6px}
+  .cf-choice{margin:8px 0}.cf-actions{margin-top:9px}
+  .cf-actions .button{flex:1;min-height:42px}
+  .cf-map-card{padding:7px}
+  .cf-map-top{padding:4px 4px 9px;font-size:11px}
+  #cfMap{height:clamp(315px,51dvh,530px);min-height:315px;border-radius:10px}
+  .cf-legend{gap:10px;padding:9px 4px 4px;font-size:11px}
+  .cf-note{font-size:10px}
+}
+@media(max-width:360px){.tab{padding:0 1px;gap:0;flex-direction:column}.tab-ko{font-size:12px;line-height:16px}.tab-en{font-size:9px;line-height:13px}.cf-heading h1{font-size:20px}.cf-live-score{min-width:100px}#cfMap{height:340px}}
+
 </style>
 </head>
 <body>
@@ -265,6 +344,7 @@ header{position:relative;z-index:2000;height:70px;display:flex;align-items:cente
   <nav class="tabs" role="tablist" aria-label="학습 기능">
     <button id="tab-map" class="tab" type="button" role="tab" aria-selected="true" aria-controls="mapScreen" data-tab="map"><span class="tab-ko">지도</span><span class="tab-en" lang="en">Map</span></button>
     <button id="tab-compare" class="tab" type="button" role="tab" aria-selected="false" aria-controls="compareScreen" data-tab="compare"><span class="tab-ko">비교하기</span><span class="tab-en" lang="en">Compare</span></button>
+    <button id="tab-find" class="tab" type="button" role="tab" aria-selected="false" aria-controls="findScreen" data-tab="find"><span class="tab-ko">나라찾기</span><span class="tab-en" lang="en">Find</span></button>
     <button id="tab-quiz" class="tab" type="button" role="tab" aria-selected="false" aria-controls="quizScreen" data-tab="quiz"><span class="tab-ko">퀴즈</span><span class="tab-en" lang="en">Quiz</span></button>
   </nav>
 </header>
@@ -308,6 +388,23 @@ header{position:relative;z-index:2000;height:70px;display:flex;align-items:cente
       <p id="comparePyramidYearNote" class="foot" style="margin-top:12px"></p>
     </section>
     <p class="foot" style="margin-top:18px">통계 출처: World Bank Open Data(국가별 최신 비결측 연도), 일부 총인구는 국가 기본정보 참고값. 종교·쾨펜 기후는 주요 국가의 대표적 특성을 제시하며 국가 전체를 단일 구분으로 단정하지 않습니다.</p>
+  </div>
+</section>
+<section id="findScreen" role="tabpanel" aria-labelledby="tab-find" hidden>
+  <div class="cf-container">
+    <div class="cf-heading">
+      <div><h1>나라찾기 <span class="tab-en" lang="en">Find Countries</span></h1><p>백지도를 눌러 나라를 찾는 10문제 퀴즈 · 3번의 기회와 단계별 힌트</p></div>
+      <div class="cf-live-score" role="status" aria-live="polite"><span>맞힌 개수 / 총 문제 수</span><strong id="cfScore">0 / 10</strong></div>
+    </div>
+    <div class="cf-layout">
+      <div id="cfGamePanel" class="cf-card" aria-live="polite"><h2>백지도 퀴즈</h2><p class="cf-load">지도를 준비하고 있어요.</p></div>
+      <div class="cf-map-card">
+        <div class="cf-map-top"><strong>나라 이름이 없는 백지도</strong><span>작은 나라는 확대해서 선택해 주세요.</span></div>
+        <div id="cfMap" role="group" aria-label="국가 경계만 표시된 퀴즈 백지도. 지도에서 국가를 클릭하세요."></div>
+        <div class="cf-legend" aria-label="퀴즈 지도 색상 범례"><span><i class="cf-dot"></i> 미출제</span><span><i class="cf-dot correct"></i> 정답</span><span><i class="cf-dot wrong"></i> 3번 오답</span></div>
+        <p class="cf-note">국경: Natural Earth 50m(연결 실패 시 110m). 실제 국경을 단순화한 학습용 지도로, 섬·소국 및 분쟁 지역의 표현에 한계가 있습니다. 정답을 확인한 국가의 색은 이번 10문제가 끝날 때까지 유지됩니다.</p>
+      </div>
+    </div>
   </div>
 </section>
 <section id="quizScreen" role="tabpanel" aria-labelledby="tab-quiz" hidden>
@@ -757,7 +854,7 @@ async function loadCountries(){let rc;for(const url of ['https://cdn.jsdelivr.ne
  allCountries.length=0;for(const c of rc){if(!c.ccn3||!c.cca3||!c.cca2)continue;countries[key(c.ccn3)]=c;allCountries.push(c)}
  // 통계에 없는 국가의 인구는 국가 기본정보의 참고값으로 보충하고, 자료 연도를 명확히 구분합니다.
  for(const c of allCountries){const n=Number(c.population);if(Number.isFinite(n)&&n>0){stat.population[key(c.ccn3)]=n;statYear.population[key(c.ccn3)]='미상';statSource.population[key(c.ccn3)]='국가 기본정보(참고값)'}}
- populateCompare();draw();
+ populateCompare();draw();if(state.tab==='find')setTimeout(cfInit,40);
 }
 async function loadCapitalMetadata(){
  // World Bank 국가 메타데이터는 정식 수도 좌표를 제공합니다. 없는 국가는 REST Countries로 보완합니다.
@@ -804,7 +901,8 @@ async function load(){try{
  await loadBorders();await loadCountries();welcome();
  // 수도 좌표 및 통계를 독립적으로 로드하므로 한쪽 제공자가 응답하지 않아도 지도는 유지됩니다.
  await Promise.allSettled([loadCapitalMetadata(),loadStatistics()]);
- }catch(e){console.error(e);panel.innerHTML=`<h2 class="error">자료 로딩 오류</h2><p>외부 데이터 연결 상태를 확인하고 페이지를 새로고침해 주세요.</p><p class="muted">${safe(e.message)}</p>`}
+ }catch(e){console.error(e);panel.innerHTML=`<h2 class="error">자료 로딩 오류</h2><p>외부 데이터 연결 상태를 확인하고 페이지를 새로고침해 주세요.</p><p class="muted">${safe(e.message)}</p>`;
+  if(state.tab==='find')cfPanel.innerHTML=`<h2 class="error">지도 데이터 로딩 오류</h2><p>${safe(e.message)}</p>`;}
 }
 function welcome(){if(state.selectedId)return;panel.innerHTML=`<h2>세계를 탐색해 보세요 🌏</h2><p class="lead">지도에서 국가를 선택하면 수도, 인구 피라미드, 종교, 쾨펜 기후와 실제 지역의 기후 그래프를 확인할 수 있습니다.</p><div class="section"><h3>수업 활용 방법</h3><p class="mini-fact">① 지도의 색상은 인구 또는 GDP에 따라 다릅니다.<br>② 국가를 클릭하면 노란색으로 강조되고 수도가 표시됩니다.<br>③ 기후 유형과 지역을 선택하면 월별 기온·강수량 그래프가 나타납니다.<br>④ <b>인구 피라미드</b>에서 연령·성별 인구 분포를 분석할 수 있습니다.<br>⑤ <b>비교하기</b> 탭에서 세 나라를 나란히 비교할 수 있습니다.</p></div><p class="muted">통계 출처: World Bank WDI·HNP (UN 인구추계 기반). 기후 그래프: NASA POWER / Open-Meteo 재분석 자료(1991~2020).</p>`}
 function selectCountry(id){const normalized=key(id);if(state.selectedId!==normalized)state.siteIndex=null;
@@ -1213,9 +1311,11 @@ requestAnimationFrame(repositionZoomBelowToolbar);
 function switchTab(next){
  state.tab=next;document.getElementById('mapScreen').style.display=next==='map'?'block':'none';
  document.getElementById('compareScreen').style.display=next==='compare'?'block':'none';
+ document.getElementById('findScreen').hidden=next!=='find';
+ document.getElementById('findScreen').style.display=next==='find'?'block':'none';
  document.getElementById('quizScreen').hidden=next!=='quiz';
  for(const b of document.querySelectorAll('.tab'))b.setAttribute('aria-selected',String(b.dataset.tab===next));
- if(next==='compare')renderCompare();else if(next==='map')setTimeout(()=>{map.invalidateSize();repositionZoomBelowToolbar()},60);
+ if(next==='compare')renderCompare();else if(next==='map')setTimeout(()=>{map.invalidateSize();repositionZoomBelowToolbar()},60);else if(next==='find'){window.scrollTo(0,0);setTimeout(cfInit,60);}
 }
 function populateCompare(){const sorter=new Intl.Collator('ko');const list=allCountries.slice().sort((a,b)=>sorter.compare(nameKR(a),nameKR(b)));
  compareSelectors.innerHTML=state.compare.map((v,i)=>`<div class="compare-slot"><label for="cmp-${i}">국가 ${i+1}</label><select id="cmp-${i}" class="select" data-compare="${i}"><option value="">국가 선택</option>${list.map(c=>`<option value="${safe(key(c.ccn3))}" ${v===key(c.ccn3)?'selected':''}>${safe(nameKR(c))}</option>`).join('')}</select><button class="button" data-clear="${i}" type="button">선택 해제</button></div>`).join('');
@@ -1310,6 +1410,185 @@ function addToCompare(){if(!state.selectedId)return;
  const id=state.selectedId;if(!state.compare.includes(id)){const empty=state.compare.findIndex(c=>!c);if(empty<0){alert('비교는 최대 3개 국가까지 가능합니다. 기존 국가를 먼저 해제해 주세요.');return}state.compare[empty]=id;}
  populateCompare();switchTab('compare');
 }
+
+
+/* Find Countries: independent Leaflet map, reuses already loaded world boundaries and metadata. */
+const CF_EXCLUSION_KEY='geography-finder-excluded-v1';
+function cfReadExcluded(){
+ try{const raw=JSON.parse(localStorage.getItem(CF_EXCLUSION_KEY)||'[]');return new Set(Array.isArray(raw)?raw.filter(v=>/^\d{3}$/.test(v)):[])}
+ catch{return new Set()}
+}
+const cfState={map:null,layer:null,layers:new Map(),pool:[],excluded:cfReadExcluded(),round:[],index:0,attempts:0,score:0,answers:new Map(),phase:'intro',notice:'',lastPickId:null,lastPickAt:0};
+const cfPanel=document.getElementById('cfGamePanel');
+function cfWriteExcluded(){try{localStorage.setItem(CF_EXCLUSION_KEY,JSON.stringify([...cfState.excluded]))}catch(e){console.warn('나라찾기 제외 목록 저장 불가',e)}}
+function cfContinent(c){
+ const mixed={RUS:'유럽·아시아',TUR:'유럽·아시아',KAZ:'아시아·유럽',EGY:'아프리카·아시아',AZE:'아시아·유럽',GEO:'아시아·유럽'};
+ if(mixed[c?.cca3])return mixed[c.cca3];
+ if(c?.region==='Americas')return c.subregion==='South America'?'남아메리카':'북아메리카';
+ return regionNames[c?.region]||'확인 중';
+}
+function cfFlag(c){
+ if(!c)return '';
+ const flag=typeof c.flag==='string'&&c.flag.length>=2?c.flag:(/^[A-Z]{2}$/.test(c.cca2||'')?String.fromCodePoint(...[...c.cca2].map(ch=>127397+ch.charCodeAt(0))):'');
+ const src=/^[A-Z]{2}$/.test(c.cca2||'')?`https://flagcdn.com/w80/${c.cca2.toLowerCase()}.png`:'';
+ return `<span class="cf-hint-flag"><span class="cf-emoji-flag" aria-label="국기">${safe(flag)}</span>${src?`<img src="${src}" alt="국기 이미지" loading="lazy" referrerpolicy="no-referrer">`:''}</span>`;
+}
+function cfStyle(id){
+ const resolved=cfState.answers.get(key(id));
+ if(resolved==='correct')return {fillColor:'#37b575',fillOpacity:.93,color:'#176d45',opacity:1,weight:1.9};
+ if(resolved==='wrong')return {fillColor:'#f07772',fillOpacity:.93,color:'#aa302c',opacity:1,weight:1.9};
+ return {fillColor:'#e2e9ef',fillOpacity:.98,color:'#9aaebd',opacity:1,weight:.8};
+}
+function cfRestyle(){for(const [id,featureLayer] of cfState.layers)featureLayer.setStyle(cfStyle(id))}
+function cfWorldView(){
+ if(!cfState.map)return;
+ cfState.map.fitBounds([[-65,-180],[84,180]],{padding:[12,12],animate:false});
+}
+function cfGetCandidates(){
+ if(!geo||!allCountries.length)return [];
+ const byGeo=new Map(geo.features.filter(f=>f.geometry?.coordinates?.length).map(f=>[key(f.id),f]));
+ return allCountries.filter(c=>{
+  const id=key(c.ccn3),outline=byGeo.get(id);
+  if(!outline||c.region==='Antarctic'||!regionNames[c.region])return false;
+  if(!(c.unMember===true||c.independent===true||['TWN','PSE'].includes(c.cca3)))return false;
+  if(Number.isFinite(Number(c.area))&&Number(c.area)>0&&Number(c.area)<250)return false;
+  const cap=capitalName(c);
+  return cap&&!/확인 중|정보 없음/.test(cap) && /^[A-Z]{2}$/.test(c.cca2||'');
+ }).map(c=>key(c.ccn3));
+}
+function cfAvailable(){return cfState.pool.filter(id=>!cfState.excluded.has(id))}
+function cfInit(){
+ if(state.tab!=='find')return;
+ if(!geo||!allCountries.length){cfPanel.innerHTML='<h2>나라찾기</h2><p class="cf-load" role="status">세계 지도와 국가 정보를 불러오는 중입니다. 잠시 후 자동으로 준비됩니다.</p>';return;}
+ if(!cfState.map){
+  const m=L.map('cfMap',{minZoom:0,maxZoom:8,zoomSnap:.25,zoomDelta:.5,doubleClickZoom:false,scrollWheelZoom:false,worldCopyJump:false,preferCanvas:false});
+  cfState.map=m;
+  const shapes=L.geoJSON(geo,{
+   style:f=>cfStyle(f.id),
+   onEachFeature:(f,l)=>{
+    const id=key(f.id);cfState.layers.set(id,l);
+    l.on('click',()=>cfPick(id));
+    l.on('mouseover',()=>{if(!cfState.answers.has(id))l.setStyle({fillColor:'#d2e2ee',color:'#5a88a9',weight:1.4})});
+    l.on('mouseout',()=>l.setStyle(cfStyle(id)));
+   }
+  }).addTo(m);
+  cfState.layer=shapes;
+  L.control.scale({imperial:false,position:'bottomleft'}).addTo(m);
+  cfWorldView();
+ }
+ cfState.pool=cfGetCandidates();
+ cfRender();
+ requestAnimationFrame(()=>cfState.map?.invalidateSize());
+}
+function cfShuffle(input){
+ const a=[...input];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a;
+}
+function cfStart(){
+ const available=cfAvailable();
+ if(available.length<10){cfState.notice='출제 가능한 나라가 10개 미만입니다. 제외 목록을 초기화해 주세요.';cfRender();return;}
+ cfState.round=cfShuffle(available).slice(0,10);
+ cfState.index=0;cfState.attempts=0;cfState.score=0;cfState.lastPickId=null;cfState.lastPickAt=0;cfState.answers.clear();cfState.phase='playing';cfState.notice='';
+ cfRestyle();cfWorldView();cfRender();
+}
+function cfCurrent(){return cfState.round[cfState.index]}
+function cfSetPreference(id,include){
+ if(!cfState.round.includes(id))return;
+ if(include)cfState.excluded.delete(id);else cfState.excluded.add(id);
+ cfWriteExcluded();
+}
+function cfPick(id){
+ if(cfState.phase!=='playing')return;
+ id=key(id);
+ const now=Date.now();
+ if(cfState.lastPickId===id&&now-cfState.lastPickAt<450)return;
+ cfState.lastPickId=id;cfState.lastPickAt=now;
+ if(cfState.answers.has(id)){
+  cfState.notice='이미 답을 확인한 나라입니다. 다른 나라를 선택해 주세요.';cfRender();return;
+ }
+ const target=cfCurrent();
+ if(id===target){
+  cfState.score++;cfState.answers.set(id,'correct');cfState.phase='review';cfState.notice='정답입니다! 지도에 초록색으로 표시했어요.';
+ }else{
+  cfState.attempts++;
+  if(cfState.attempts>=3){cfState.answers.set(target,'wrong');cfState.phase='review';cfState.notice='3번의 기회를 모두 사용했어요. 정답 국가는 빨간색으로 표시됩니다.'}
+  else cfState.notice=`아쉽지만 다른 나라예요. 남은 기회: ${3-cfState.attempts}번`;
+ }
+ cfRestyle();
+ if(cfState.phase==='review')cfState.layers.get(target)?.bringToFront();
+ cfRender();
+}
+function cfNext(){
+ if(cfState.phase!=='review')return;
+ const choice=document.getElementById('cfNextChoice');
+ if(choice)cfSetPreference(cfCurrent(),choice.value==='include');
+ if(cfState.index===9){cfState.phase='finished'}else{cfState.index++;cfState.attempts=0;cfState.lastPickId=null;cfState.lastPickAt=0;cfState.phase='playing';cfState.notice='';cfWorldView()}
+ cfRender();
+}
+function cfHints(){
+ const c=countries[cfCurrent()];if(!c)return '';
+ let out='';
+ if(cfState.attempts>=1)out+=`<div class="cf-hint"><b>힌트 ① 대륙</b><div>${safe(cfContinent(c))}</div></div>`;
+ if(cfState.attempts>=2)out+=`<div class="cf-hint"><b>힌트 ② 수도와 국기</b><div>수도: ${safe(capitalName(c))}</div>${cfFlag(c)}</div>`;
+ return out;
+}
+function cfRender(){
+ const scoreEl=document.getElementById('cfScore');scoreEl.textContent=`${cfState.score} / 10`;
+ if(!cfState.pool.length){
+  cfPanel.innerHTML='<h2>백지도 퀴즈</h2><p class="cf-load">국가별 지도 정보가 아직 준비되지 않았습니다. 데이터 연결을 확인해 주세요.</p>';
+  return;
+ }
+ if(cfState.phase==='intro'){
+  const available=cfAvailable().length;
+  cfPanel.innerHTML=`<h2>백지도에서 나라 찾기</h2><p>화면에 나타나는 나라 이름을 보고, 백지도에서 해당 국가의 위치를 눌러 보세요. 한 문제당 기회는 3번입니다.</p>
+    <p><b>정답은 녹색, 3번 모두 틀리면 빨간색</b>으로 칠해집니다. 틀릴 때마다 대륙 → 수도·국기 순서로 힌트가 나타납니다.</p>
+    <div class="cf-meta"><span>출제 가능: ${available}개국</span><span>제외 목록: ${cfState.excluded.size}개</span></div>
+    ${cfState.notice?`<div class="cf-feedback failure">${safe(cfState.notice)}</div>`:''}
+    <div class="cf-actions"><button type="button" class="button primary" data-cf-action="start" ${available<10?'disabled':''}>10개국 도전 시작</button>
+    ${cfState.excluded.size?'<button type="button" class="button" data-cf-action="reset">제외 목록 초기화</button>':''}</div>`;
+  return;
+ }
+ if(cfState.phase==='finished'){
+  const list=cfState.round.map((id,i)=>{
+   const c=countries[id],good=cfState.answers.get(id)==='correct';
+   return `<label class="cf-round-row"><input type="checkbox" data-cf-toggle="${safe(id)}" ${cfState.excluded.has(id)?'':'checked'} aria-label="${safe(nameKR(c))} 다음 회차 출제 포함">
+     <span class="cf-dot ${good?'correct':'wrong'}" aria-hidden="true"></span><span class="cf-country-label">${i+1}. ${safe(nameKR(c))}</span>
+     <span class="cf-selection-label">다음 회차 포함</span></label>`;
+  }).join('');
+  cfPanel.innerHTML=`<h2>10문제 완료!</h2><p class="cf-round-result">${cfState.score} / 10</p><p>초록색은 정답, 빨간색은 3번 모두 틀린 국가예요.</p>
+    <p><b>다음 회차 출제 선택</b> · 체크한 나라는 다음 10문제에도 등장할 수 있어요. 체크를 해제하면 다음 회차부터 제외됩니다.</p>
+    <div class="cf-round-list">${list}</div>
+    <div class="cf-meta"><span id="cfEligibleCount">다음 회차 출제 가능: ${cfAvailable().length}개국</span></div>
+    ${cfState.notice?`<div class="cf-feedback failure">${safe(cfState.notice)}</div>`:''}
+    <div class="cf-actions"><button type="button" class="button primary" data-cf-action="start" ${cfAvailable().length<10?'disabled':''}>새로운 10문제 시작</button>
+    <button type="button" class="button" data-cf-action="reset">제외 목록 초기화</button></div>`;
+  return;
+ }
+ const c=countries[cfCurrent()],done=cfState.phase==='review';
+ const text=done?(cfState.answers.get(cfCurrent())==='correct'?'정답!':'3번 모두 오답'):'지도에서 나라를 선택하세요.';
+ cfPanel.innerHTML=`<div class="cf-meta"><span class="cf-pill">문제 ${cfState.index+1} / 10</span><span>남은 기회: ${done?0:3-cfState.attempts}번</span></div>
+   <p class="cf-target">${safe(nameKR(c))}</p><p>${safe(text)}</p>
+   ${!done?`<div class="cf-attempts" aria-label="남은 기회 ${3-cfState.attempts}번"><span>기회</span>${[0,1,2].map(i=>`<i class="cf-attempt ${i<cfState.attempts?'used':''}"></i>`).join('')}</div>`:''}
+   ${cfHints()}
+   ${cfState.notice?`<div class="cf-feedback ${done?(cfState.answers.get(cfCurrent())==='correct'?'success':'failure'):'info'}" role="status">${safe(cfState.notice)}</div>`:''}
+   ${done?`<div class="cf-choice"><label for="cfNextChoice">다음 회차에 이 나라를</label>
+    <select id="cfNextChoice" class="select"><option value="include" ${cfState.excluded.has(cfCurrent())?'':'selected'}>포함</option><option value="exclude" ${cfState.excluded.has(cfCurrent())?'selected':''}>제외</option></select></div>
+    <div class="cf-actions"><button type="button" class="button primary" data-cf-action="next">${cfState.index===9?'결과 보기':'다음 문제'}</button><button type="button" class="button" data-cf-action="focus">정답 국가 확대</button></div>`:''}`;
+}
+cfPanel.addEventListener('click',e=>{
+ const button=e.target.closest('button[data-cf-action]');if(!button)return;
+ const action=button.dataset.cfAction;
+ if(action==='start')cfStart();
+ if(action==='next')cfNext();
+ if(action==='reset'){cfState.excluded.clear();cfWriteExcluded();cfState.notice='';cfRender()}
+ if(action==='focus'&&cfState.phase==='review'){
+  const l=cfState.layers.get(cfCurrent());if(l?.getBounds)cfState.map.fitBounds(l.getBounds(),{padding:[36,36],maxZoom:6});
+ }
+});
+cfPanel.addEventListener('change',e=>{
+ const el=e.target;
+ if(el?.id==='cfNextChoice'){cfSetPreference(cfCurrent(),el.value==='include');return;}
+ if(el?.matches('input[data-cf-toggle]')){cfSetPreference(el.dataset.cfToggle,el.checked);const counter=document.getElementById('cfEligibleCount');if(counter)counter.textContent=`다음 회차 출제 가능: ${cfAvailable().length}개국`;const startButton=cfPanel.querySelector('button[data-cf-action=\"start\"]');if(startButton)startButton.disabled=cfAvailable().length<10;}
+});
 
 // 이벤트 위임으로 패널 내용이 갱신되어도 기능이 유지됩니다.
 panel.addEventListener('change',e=>{if(e.target?.id==='pyramidUnit'){state.pyramidUnit=e.target.value;const c=countries[state.selectedId];if(c){const data=pyramidCache.get(c.cca3);if(data)renderPopulationPyramid(data);else void showPopulationPyramid(state.selectedId);}return;}if(e.target?.id==='climateSelect'){
