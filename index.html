@@ -135,6 +135,128 @@ header{position:relative;z-index:2000;height:70px;display:flex;align-items:cente
 .qz-review.correct{border-left:3px solid #49a675;padding-left:13px}.qz-review.wrong{border-left:3px solid #d97972;padding-left:13px}
 .qz-footer{margin-top:20px}.qz-card .button{min-height:35px}.qz-card .button:disabled{opacity:.5;cursor:not-allowed}
 @media(max-width:650px){#quizScreen{padding:22px 10px 50px;min-height:calc(100dvh - 65px)}.qz-card{padding:16px}.qz-grid-3,.qz-grid-2{grid-template-columns:1fr}.qz-switch{flex:1;min-width:0;padding:10px 8px}.qz-row{align-items:stretch}.qz-question{font-size:17px}}
+
+/* ==============================================================
+   반응형 사용성 개선: 기존 PC 화면과 데이터 기능은 변경하지 않습니다.
+   모바일 헤더 / 지도 정보 패널 / 국가 비교 표 / 스와이프 카드
+   ============================================================== */
+.visually-hidden{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.panel-toggle,.compare-quick,.mobile-section-bar{display:none}
+.legend-disclosure summary{list-style:none;cursor:pointer;font-weight:800;line-height:1.35}
+.legend-disclosure summary::-webkit-details-marker{display:none}
+.legend-disclosure summary:focus-visible{outline:3px solid #377fc2;outline-offset:3px}
+.legend-body strong{font-size:13px}
+@media(min-width:651px){.legend-disclosure summary{display:none}}
+/* 7~10인치 태블릿은 국가별 그래프를 3개씩 작게 압축하지 않습니다. */
+@media(min-width:651px) and (max-width:900px){
+ #panel{width:min(370px,46vw)}
+ #compareScreen{padding:28px 20px 50px}
+ .compare-cards,.compare-pyramids{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(290px,43vw);grid-template-columns:none;gap:13px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding:10px;padding:2px 2px 16px}
+ .compare-cards>* ,.compare-pyramids>*{scroll-snap-align:start}
+ .compare-selectors{gap:10px}.compare-slot{padding:12px}
+}
+@media(max-width:650px){
+ :root{--mobile-header-height:102px}
+ html{-webkit-text-size-adjust:100%;scroll-padding-top:12px}
+ body{min-width:320px}
+ header{height:var(--mobile-header-height);display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:48px 48px;align-items:center;gap:0;padding:4px 12px 0;position:relative}
+ .brand{font-size:16px;letter-spacing:-.5px;line-height:1.25;min-height:42px;padding:3px 0;justify-self:start}
+ .brand small{font-size:10px;margin-top:1px}
+ .tabs{height:48px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));width:100%;gap:0;overflow:visible;border-top:1px solid #edf1f5}
+ .tab{min-width:0;padding:0 5px;gap:5px;width:100%;height:48px}
+ .tab-ko{font-size:13px;font-weight:850}.tab-en{font-size:10px;font-weight:600}
+ .tab[aria-selected=true]{background:#f6faff;border-bottom-width:3px}
+ button,.select,.qz-input{touch-action:manipulation}
+ #mapScreen{height:calc(100dvh - var(--mobile-header-height));min-height:440px;--mobile-panel-height:min(43dvh,52%)}
+ #mapScreen.panel-expanded{--mobile-panel-height:min(76dvh,86%)}
+ #panel{top:auto;left:0;right:0;bottom:0;width:100%;height:var(--mobile-panel-height);max-height:none;padding:31px 18px calc(20px + env(safe-area-inset-bottom));border-radius:20px 20px 0 0;scrollbar-width:thin;overscroll-behavior:contain;box-shadow:0 -8px 32px #173a5930;border-bottom:0}
+ #panel h2{font-size:21px;margin:10px 0 13px}#panel h3{font-size:16px}
+ #panel .fact{font-size:13px;line-height:1.55;gap:10px}#panel .fact b{flex-basis:92px}
+ #panel .fact .value{text-align:right}
+ #panel .muted{font-size:12px}
+ #panelToggle{display:inline-flex;position:absolute;bottom:calc(var(--mobile-panel-height) - 17px);right:14px;z-index:1150;align-items:center;gap:6px;border:1px solid #cddbe8;background:#fff;color:#204b74;box-shadow:0 2px 12px #183b5940;border-radius:99px;padding:8px 12px;font-size:12px;font-weight:850;min-height:36px}
+ #panelToggle:focus-visible{outline:3px solid #367fc9;outline-offset:3px}
+ #panelToggle span[aria-hidden]{font-size:17px;line-height:10px}
+ #toolbar{top:10px;left:10px;right:10px;width:auto;padding:8px 10px;gap:8px;flex-wrap:nowrap;border-radius:12px;max-width:420px}
+ #toolbar label{white-space:nowrap;font-size:12px}
+ #theme{min-width:0;flex:1;width:10px;padding:9px 7px;font-size:13px}
+ #refresh{white-space:nowrap;min-height:36px;padding:7px 9px;font-size:12px}
+ #map .leaflet-control-zoom a{width:34px;height:34px;line-height:34px}
+ #map .leaflet-top.leaflet-left{left:2px}
+ #map .leaflet-bottom.leaflet-left{bottom:var(--mobile-panel-height)}
+ .legend{padding:7px 10px;min-width:0;width:auto;max-width:225px;max-height:230px;line-height:1.5;font-size:11px;margin-left:10px;margin-bottom:9px;overflow:auto}
+ .legend-disclosure>summary{display:block;position:relative;padding-right:18px;font-size:12px}
+ .legend-disclosure>summary:after{content:'⌄';position:absolute;right:0;top:-1px;font-size:17px}
+ .legend-disclosure[open]>summary:after{content:'⌃'}
+ .legend-body{padding-top:7px}
+ #mapScreen.panel-expanded .leaflet-bottom.leaflet-left{display:none}
+ #compareScreen{min-height:calc(100dvh - var(--mobile-header-height));padding:22px 0 46px}
+ #compareContainer{min-width:0;max-width:100%;padding:0 12px}
+ .page-title{font-size:24px;letter-spacing:-.7px;line-height:1.3;margin:0 0 6px}
+ .page-sub{font-size:13px;line-height:1.55;margin:0 0 16px}
+ .compare-selectors{display:grid;grid-template-columns:minmax(0,1fr);gap:1px;padding:8px;background:#fff;border:1px solid #e0e9f1;border-radius:15px;box-shadow:0 3px 12px #173a590c}
+ .compare-slot{display:grid;grid-template-columns:49px minmax(0,1fr) 68px;align-items:center;gap:8px;padding:6px 3px;border:0;border-bottom:1px solid #eaf0f6;border-radius:0;box-shadow:none;min-width:0}
+ .compare-slot:last-child{border-bottom:0}
+ .compare-slot label{font-size:12px;margin:0;white-space:nowrap;font-weight:850}
+ .compare-slot .select{margin:0;min-width:0;width:100%;height:42px;font-size:14px;padding:8px}
+ .compare-slot .button{margin:0;min-width:0;min-height:38px;font-size:12px;padding:7px 4px}
+ .compare-quick{display:block;margin-top:18px;background:#fff;border:1px solid #dee8f0;border-radius:15px;padding:14px 12px 10px}
+ .compare-quick h2{font-size:17px;margin:0 0 4px;color:#182f47}
+ .mobile-secondary{font-size:12px;line-height:1.5;color:#697c90;margin:0}
+ .compare-table-scroll{overflow-x:auto;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch;max-width:100%;margin:11px 0 0;border:1px solid #e3ebf2;border-radius:10px;scrollbar-width:thin}
+ .compare-quick-table{border-collapse:separate;border-spacing:0;min-width:max-content;width:100%;font-size:12px;font-variant-numeric:tabular-nums}
+ .compare-quick-table th,.compare-quick-table td{border-bottom:1px solid #e7edf3;padding:10px 11px;text-align:center;white-space:nowrap;background:#fff;min-width:126px}
+ .compare-quick-table thead th{background:#f0f6fc;color:#1b466b;font-weight:850}
+ .compare-quick-table th:first-child{position:sticky;left:0;z-index:2;min-width:79px;text-align:left;border-right:1px solid #dce7f1;background:#f4f8fc;box-shadow:2px 0 5px #00000008}
+ .compare-quick-table thead th:first-child{z-index:3}
+ .compare-quick-table tbody tr:last-child> *{border-bottom:0}
+ .compare-table-note{margin:10px 2px 0}
+ .mobile-section-bar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:22px 2px 10px}
+ .mobile-section-bar h2{font-size:18px;color:#162f49;margin:0 0 2px}
+ .mobile-arrow-group{display:flex;flex-shrink:0;gap:6px}
+ .mobile-arrow{height:36px;width:36px;background:#fff;border:1px solid #c9d7e5;color:#284e72;border-radius:10px;font-size:24px;line-height:1;font-weight:800;display:grid;place-items:center}
+ .mobile-arrow:focus-visible{outline:3px solid #377fc2;outline-offset:2px}
+ .compare-cards,.compare-pyramids{display:grid;grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:min(85vw, 366px);gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding:0 6px;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch;padding:3px 4px 14px;margin:0 -4px;scrollbar-width:thin}
+ .compare-cards >*,.compare-pyramids >*{scroll-snap-align:start;scroll-snap-stop:normal}
+ .compare-card{min-height:0;padding:17px 16px;border-radius:13px}
+ .compare-card h3{font-size:20px}
+ .compare-card .fact{font-size:12px;gap:6px;margin:8px 0}.compare-card .fact b{flex-basis:100px}
+ .compare-card .section{margin-top:14px;padding-top:13px}
+ .empty-card{padding:70px 14px 40px}
+ .compare-pyramid-section{margin-top:20px;padding-top:19px}
+ .compare-pyramid-header{align-items:flex-start;gap:10px;margin-bottom:10px}
+ .compare-pyramid-header h2{font-size:19px}
+ .compare-pyramid-header .page-sub{font-size:12px;line-height:1.6;margin:0}
+ .compare-pyramid-unit{display:flex;align-items:center;gap:9px;width:100%;justify-content:flex-start;font-size:12px}
+ .compare-pyramid-unit .select{min-width:0;max-width:220px;width:100%;padding:8px;font-size:13px}
+ .mobile-pyramid-nav{margin:6px 0 10px}
+ .mobile-pyramid-nav .mobile-secondary{flex:1}
+ .compare-pyramid-item{padding:14px 10px;border-radius:13px;min-width:0}
+ .compare-pyramid-item .pyramid-card{padding:6px 0}
+ .compare-pyramid-item .pyramid-key{margin:4px 0 6px}
+ .pyramid-card svg{max-width:100%;height:auto;display:block}
+ #quizScreen{min-height:calc(100dvh - var(--mobile-header-height));padding:22px 12px 54px}
+ .qz-card{padding:17px 15px;margin-bottom:13px;border-radius:13px}
+ .qz-card h2,.qz-admin-top h2{font-size:20px}
+ .qz-switches{gap:8px}
+ .qz-switch{min-width:0;flex:1;font-size:13px;padding:12px 7px}
+ .qz-grid{gap:11px}.qz-grid-2,.qz-grid-3{grid-template-columns:minmax(0,1fr)}
+ .qz-row{flex-wrap:wrap;gap:9px}.qz-row .button{min-height:42px}
+ .qz-question{font-size:17px}
+ .qz-answer{min-height:48px;padding:12px 11px}
+}
+@media(max-width:360px){
+ header{padding-left:9px;padding-right:9px}
+ .tab-ko{font-size:12px}.tab-en{font-size:9px}
+ #compareContainer{padding:0 10px}
+ .compare-slot{grid-template-columns:45px minmax(0,1fr) 59px;gap:5px}
+ .compare-slot .button{font-size:11px}
+ .compare-cards,.compare-pyramids{grid-auto-columns:calc(100vw - 34px)}
+ .compare-pyramid-item{padding:11px 8px}
+ #panel{padding-left:14px;padding-right:14px}
+ #panelToggle{right:9px}
+}
+
 </style>
 </head>
 <body>
@@ -149,6 +271,7 @@ header{position:relative;z-index:2000;height:70px;display:flex;align-items:cente
 <section id="mapScreen" role="tabpanel" aria-labelledby="tab-map">
   <div id="map" aria-label="국가 선택 지도"></div>
   <div id="toolbar"><label for="theme">지도 주제</label><select id="theme"><option value="population">총인구</option><option value="gdp">명목 GDP</option></select><button id="refresh" class="button" type="button" title="World Bank 자료 다시 불러오기">↻ 통계</button></div>
+  <button id="panelToggle" class="panel-toggle" type="button" aria-controls="panel" aria-expanded="false"><span aria-hidden="true">⌃</span> <span id="panelToggleLabel">정보 넓게 보기</span></button>
   <aside id="panel"><h2>눈으로 확인하는 지리 정보</h2><p class="loading">지도와 국가 정보를 불러오고 있습니다...</p></aside>
 </section>
 <section id="compareScreen" role="tabpanel" aria-labelledby="tab-compare">
@@ -156,7 +279,16 @@ header{position:relative;z-index:2000;height:70px;display:flex;align-items:cente
     <h1 class="page-title">국가 비교하기</h1>
     <p class="page-sub">국가를 최대 3개까지 선택하여 인구·경제·인구 구조·종교·기후와 인구 피라미드를 나란히 비교해 보세요.</p>
     <div id="compareSelectors" class="compare-selectors"></div>
-    <div id="compareCards" class="compare-cards" aria-live="polite"></div>
+    <section id="compareQuickSummary" class="compare-quick" aria-label="국가별 핵심 지표 비교">
+      <h2>핵심 지표 비교</h2>
+      <p class="mobile-secondary">표를 좌우로 움직여 국가별 수치를 확인해 보세요.</p>
+      <div id="compareQuickTable" class="compare-table-scroll" tabindex="0" aria-label="국가별 지표 비교표, 좌우로 스크롤 가능"></div>
+    </section>
+    <div class="mobile-section-bar">
+      <div><h2>국가별 상세 정보</h2><p class="mobile-secondary">카드를 좌우로 넘겨 보세요.</p></div>
+      <div class="mobile-arrow-group" aria-label="국가 상세 카드 이동"><button type="button" class="mobile-arrow" data-scroll-target="compareCards" data-scroll-dir="-1" aria-label="이전 국가 상세 카드">‹</button><button type="button" class="mobile-arrow" data-scroll-target="compareCards" data-scroll-dir="1" aria-label="다음 국가 상세 카드">›</button></div>
+    </div>
+    <div id="compareCards" class="compare-cards" aria-live="polite" tabindex="0" aria-label="국가별 상세 정보, 좌우로 스크롤 가능"></div>
     <section id="comparePyramidsSection" class="compare-pyramid-section" aria-labelledby="comparePyramidsTitle">
       <div class="compare-pyramid-header">
         <div><h2 id="comparePyramidsTitle">인구 피라미드 비교</h2>
@@ -168,7 +300,11 @@ header{position:relative;z-index:2000;height:70px;display:flex;align-items:cente
           </select>
         </label>
       </div>
-      <div id="comparePyramids" class="compare-pyramids" aria-live="polite"></div>
+      <div class="mobile-section-bar mobile-pyramid-nav">
+        <p class="mobile-secondary">그래프는 동일한 눈금을 사용해요. 좌우로 넘겨 국가를 비교하세요.</p>
+        <div class="mobile-arrow-group" aria-label="인구 피라미드 이동"><button type="button" class="mobile-arrow" data-scroll-target="comparePyramids" data-scroll-dir="-1" aria-label="이전 국가 인구 피라미드">‹</button><button type="button" class="mobile-arrow" data-scroll-target="comparePyramids" data-scroll-dir="1" aria-label="다음 국가 인구 피라미드">›</button></div>
+      </div>
+      <div id="comparePyramids" class="compare-pyramids" aria-live="polite" tabindex="0" aria-label="국가별 인구 피라미드, 좌우로 스크롤 가능"></div>
       <p id="comparePyramidYearNote" class="foot" style="margin-top:12px"></p>
     </section>
     <p class="foot" style="margin-top:18px">통계 출처: World Bank Open Data(국가별 최신 비결측 연도), 일부 총인구는 국가 기본정보 참고값. 종교·쾨펜 기후는 주요 국가의 대표적 특성을 제시하며 국가 전체를 단일 구분으로 단정하지 않습니다.</p>
@@ -490,7 +626,14 @@ function breakColor(n,theme){if(!Number.isFinite(n))return '#d5dbe2';const i=bre
 function legendLabels(theme){return theme==='population'?['1천만 명 미만','1천만~5천만 명','5천만~1억 명','1억~5억 명','5억 명 이상']:['100억 달러 미만','100억~1천억 달러','1천억~1조 달러','1조~10조 달러','10조 달러 이상']}
 const legend=L.control({position:'bottomleft'});
 legend.onAdd=()=>{const d=L.DomUtil.create('div','legend');d.id='legend';L.DomEvent.disableClickPropagation(d);return d};legend.addTo(map);
-function updateLegend(){const theme=themeSelect.value;document.getElementById('legend').innerHTML=`<strong>${theme==='population'?'총인구 (명)':'명목 GDP (미 달러)'}</strong>`+legendLabels(theme).map((t,i)=>`<div class="legend-item"><span class="swatch" style="background:${colors[i]}"></span>${t}</div>`).join('')+'<div class="legend-item"><span class="swatch" style="background:#d5dbe2"></span>자료 없음</div><div class="muted">노란색: 현재 선택 국가</div><p class="muted" style="margin:7px 0 0">국경: Natural Earth '+mapBoundaryScale+' · 메르카토르 도법(고위도 면적 확대). 간략화된 경계이며 일부 국경에 분쟁이 있습니다.</p>'}
+function updateLegend(){
+ const theme=themeSelect.value, mobile=window.matchMedia('(max-width:650px)').matches;
+ const title=theme==='population'?'총인구 (명)':'명목 GDP (미 달러)';
+ const items=legendLabels(theme).map((t,i)=>`<div class="legend-item"><span class="swatch" style="background:${colors[i]}"></span>${t}</div>`).join('')+
+ '<div class="legend-item"><span class="swatch" style="background:#d5dbe2"></span>자료 없음</div><div class="muted">노란색: 현재 선택 국가</div><p class="muted" style="margin:7px 0 0">국경: Natural Earth '+mapBoundaryScale+' · 메르카토르 도법(고위도 면적 확대). 간략화된 경계이며 일부 국경에 분쟁이 있습니다.</p>';
+ document.getElementById('legend').innerHTML=`<details class="legend-disclosure" ${mobile?'':'open'}><summary>${mobile?'색상 범례':title}</summary><div class="legend-body"><strong>${title}</strong>${items}</div></details>`;
+}
+if(window.matchMedia){const mobileQuery=window.matchMedia('(max-width:650px)');if(mobileQuery.addEventListener)mobileQuery.addEventListener('change',()=>{if(document.getElementById('legend'))updateLegend()});}
 
 // 날짜변경선(±180°)을 통과하는 국경 도형을 양쪽으로 나누는 기존 수정 코드를 유지합니다.
 function clipRing(ring,minX,maxX){
@@ -666,6 +809,7 @@ async function load(){try{
 function welcome(){if(state.selectedId)return;panel.innerHTML=`<h2>세계를 탐색해 보세요 🌏</h2><p class="lead">지도에서 국가를 선택하면 수도, 인구 피라미드, 종교, 쾨펜 기후와 실제 지역의 기후 그래프를 확인할 수 있습니다.</p><div class="section"><h3>수업 활용 방법</h3><p class="mini-fact">① 지도의 색상은 인구 또는 GDP에 따라 다릅니다.<br>② 국가를 클릭하면 노란색으로 강조되고 수도가 표시됩니다.<br>③ 기후 유형과 지역을 선택하면 월별 기온·강수량 그래프가 나타납니다.<br>④ <b>인구 피라미드</b>에서 연령·성별 인구 분포를 분석할 수 있습니다.<br>⑤ <b>비교하기</b> 탭에서 세 나라를 나란히 비교할 수 있습니다.</p></div><p class="muted">통계 출처: World Bank WDI·HNP (UN 인구추계 기반). 기후 그래프: NASA POWER / Open-Meteo 재분석 자료(1991~2020).</p>`}
 function selectCountry(id){const normalized=key(id);if(state.selectedId!==normalized)state.siteIndex=null;
  state.selectedId=normalized;clearMarkers();draw();setCapitalMarker(normalized);showInfo();
+ if(window.matchMedia('(max-width:650px)').matches)panel.scrollTop=0;
 }
 function availableSites(c){if(!c)return [];
  const own=climateSites[c.cca2];if(own?.length)return own.map(([code,city,lat,lon])=>({code,city,lat,lon,kind:'대표 기후 지점'}));
@@ -1077,7 +1221,19 @@ function populateCompare(){const sorter=new Intl.Collator('ko');const list=allCo
  compareSelectors.innerHTML=state.compare.map((v,i)=>`<div class="compare-slot"><label for="cmp-${i}">국가 ${i+1}</label><select id="cmp-${i}" class="select" data-compare="${i}"><option value="">국가 선택</option>${list.map(c=>`<option value="${safe(key(c.ccn3))}" ${v===key(c.ccn3)?'selected':''}>${safe(nameKR(c))}</option>`).join('')}</select><button class="button" data-clear="${i}" type="button">선택 해제</button></div>`).join('');
  renderCompare();
 }
+function renderQuickCompare(){
+ const target=document.getElementById('compareQuickTable');if(!target)return;
+ const ids=state.compare.filter(id=>countries[id]);
+ if(!ids.length){target.innerHTML='<p class="mobile-secondary" style="padding:14px">국가를 선택하면 핵심 수치를 나란히 비교할 수 있어요.</p>';return;}
+ const num=id=>Number.isFinite(val('population',id))?new Intl.NumberFormat('ko-KR',{notation:'compact',maximumFractionDigits:1}).format(val('population',id))+'명':'—';
+ const money=id=>Number.isFinite(val('gdp',id))?pctFmt.format(val('gdp',id)/1e8)+'억 달러':'—';
+ const age=(id,k)=>consistentAgeStructure(id)?percent(val(k,id)):'—';
+ const sex=id=>sexRatio(id)===null?'—':pctFmt.format(sexRatio(id))+'명';
+ const rows=[['총인구',num],['명목 GDP',money],['유소년층',id=>age(id,'age0')],['고령층',id=>age(id,'age65')],['성비¹',sex]];
+ target.innerHTML=`<table class="compare-quick-table"><caption class="visually-hidden">선택 국가의 총인구·경제·인구 구조 비교</caption><thead><tr><th scope="col">항목</th>${ids.map(id=>`<th scope="col">${safe(nameKR(countries[id]))}</th>`).join('')}</tr></thead><tbody>${rows.map(([label,fn])=>`<tr><th scope="row">${label}</th>${ids.map(id=>`<td>${safe(fn(id))}</td>`).join('')}</tr>`).join('')}</tbody></table><p class="mobile-secondary compare-table-note">¹ 성비는 여성 100명당 남성 수 · 각 통계의 연도는 아래 상세 카드에서 확인할 수 있어요.</p>`;
+}
 function renderCompare(){if(!compareSelectors.children.length&&allCountries.length)populateCompare();
+ renderQuickCompare();
  compareCards.innerHTML=state.compare.map((id,i)=>{
  const c=countries[id];if(!c)return `<article class="compare-card empty-card"><span class="emoji">🗺️</span><b>국가 ${i+1}을 선택해 주세요.</b></article>`;
  const pop=val('population',id),gdp=val('gdp',id),r=sexRatio(id),climates=climateSites[c.cca2]||[],religion=religionText(c);
@@ -1183,6 +1339,23 @@ comparePyramids.addEventListener('click',e=>{
 });
 for(const tab of document.querySelectorAll('.tab'))tab.addEventListener('click',()=>switchTab(tab.dataset.tab));
 document.getElementById('homeButton').addEventListener('click',()=>switchTab('map'));
+// 모바일 지도: 지도를 보면서 필요할 때만 정보 패널을 넓혀 읽습니다.
+const panelToggle=document.getElementById('panelToggle');
+panelToggle.addEventListener('click',()=>{
+ const expanded=document.getElementById('mapScreen').classList.toggle('panel-expanded');
+ panelToggle.setAttribute('aria-expanded',String(expanded));
+ document.getElementById('panelToggleLabel').textContent=expanded?'지도 넓게 보기':'정보 넓게 보기';
+ panelToggle.querySelector('span[aria-hidden]').textContent=expanded?'⌄':'⌃';
+ requestAnimationFrame(()=>map.invalidateSize());
+});
+// 비교 카드와 인구 피라미드는 좁은 화면에서 터치 스와이프 및 화살표 이동을 지원합니다.
+document.addEventListener('click',event=>{
+ const b=event.target.closest('button[data-scroll-target]');if(!b)return;
+ const strip=document.getElementById(b.dataset.scrollTarget);if(!strip)return;
+ const card=strip.querySelector('.compare-card, .compare-pyramid-item');
+ const step=card?card.getBoundingClientRect().width+12:strip.clientWidth;
+ strip.scrollBy({left:(Number(b.dataset.scrollDir)||1)*step,behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
+});
 themeSelect.addEventListener('change',draw);
 document.getElementById('refresh').addEventListener('click',()=>{wbSummaryAttempted.clear();void loadStatistics()});
 load();
