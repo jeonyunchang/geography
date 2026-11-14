@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>세계지리 학습 지도</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<style>
+  body { margin:0; font-family: sans-serif; display:flex; }
+  #map { height:100vh; flex:1; background:#cfe3f5; }
+  #panel { width:320px; padding:16px; overflow:auto; }
+  #theme { position:absolute; top:10px; right:340px; z-index:1000; }
+</style>
+</head>
+<body>
+<div id="map"></div>
+<select id="theme">
+  <option value="population">인구</option>
+  <option value="gdp">GDP</option>
+</select>
+<div id="panel"><h3>국가를 클릭하세요</h3></div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://unpkg.com/topojson-client@3"></script>
+<script>
+const map = L.map('map', { worldCopyJump:true }).setView([20, 0], 2);
+let countries = {};   // ccn3 → 국가정보
+let gdp = {};         // ccn3 → GDP
+
+async function load() {
+  // 1) 국경 데이터
+  const topo = await (await fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json')).json();
+  const geo = topojson.feature(topo, topo.objects.countries);
+
+  // 2) 국가 기본정보 (REST Countries)
+  const rc = await (await fetch('https://restcountries.com/v3.1/all?fields=name,ccn3,cca3,population,languages,capital,region,flags,translations')).json();
+  rc.forEach(c => countries[c.ccn3] = c);
+
+  // 3) GDP (World Bank, 최신 1개년, 전 국가)
+  const wb = await (await fetch('https://api.worldbank.org/v2/country/all/indicator/NY.GDP.MKTP.CD?format=json&mrv=1&per_page=400')).json();
+  const iso3toNum = Object.fromEntries(rc.map(c => [c.cca3, c.ccn3]));
+  wb[1].forEach(r => { const n = iso3toNum[r.countryiso3code]; if (n && r.value) gdp[n] = r.value; });
+
+  draw(geo);
+}
+
+function color(value, max) {
+  if (!value) return '#ddd';
+  const t = Math.log(value) / Math.log(max);
+  return `hsl(${200 - t * 160}, 70%, ${80 - t * 40}%)`;
+}
+
+let layer;
+function draw(geo) {
+  const theme = document.getElementById('theme').value;
+  const getVal = id => theme === 'gdp' ? gdp[id] : countries[id]?.population;
+  const max = Math.max(...geo.features.map(f => getVal(f.id) || 0));
+
+  if (layer) layer.remove();
+  layer = L.geoJSON(geo, {
+    style: f => ({ fillColor: color(getVal(f.id), max), weight:1, color:'#fff', fillOpacity:0.9 }),
+    onEachFeature: (f, l) => l.on('click', () => showInfo(f.id))
+  }).addTo(map);
+  document.getElementById('theme').onchange = () => draw(geo);
+}
+
+function showInfo(id) {
+  const c = countries[id];
+  if (!c) return;
+  document.getElementById('panel').innerHTML = `
+    <img src="${c.flags.svg}" width="120"><br>
+    <h2>${c.translations.kor?.common || c.name.common}</h2>
+    <p><b>수도:</b> ${c.capital?.[0] || '-'}</p>
+    <p><b>대륙:</b> ${c.region}</p>
+    <p><b>인구:</b> ${c.population.toLocaleString()}명</p>
+    <p><b>언어:</b> ${Object.values(c.languages || {}).join(', ')}</p>
+    <p><b>GDP:</b> ${gdp[id] ? '$' + (gdp[id]/1e9).toFixed(1) + 'B' : '-'}</p>
+  `;
+}
+load();
+</script>
+</body>
+</html>
