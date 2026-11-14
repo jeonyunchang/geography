@@ -1,103 +1,713 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta charset="UTF-8">
-<title>세계지리 학습 지도</title>
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-<style>
-  body { margin:0; font-family: sans-serif; display:flex; }
-  #map { height:100vh; flex:1; background:#cfe3f5; }
-  #panel { width:320px; padding:16px; overflow:auto; }
-  #theme { position:absolute; top:10px; right:340px; z-index:1000; }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>세계지리 학습 지도</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    <style>
+    * {
+        box-sizing:border-box
+    }
+
+    body {
+        margin: 0;
+        font-family: system-ui, 'Noto Sans KR', sans-serif;
+        color: #172b42
+    }
+
+    #map {
+        height: 100vh;
+        width: 100%;
+        background: #dcebf5
+    }
+
+    #panel {
+        position: absolute;
+        right: 14px;
+        top: 66px;
+        bottom: 15px;
+        width: 340px;
+        overflow: auto;
+        background: #fff;
+        z-index: 1100;
+        border-radius: 14px;
+        box-shadow: 0 4px 20px #1d354a33;
+        padding: 18px
+    }
+
+    #toolbar {
+        position: absolute;
+        z-index: 1100;
+        top: 15px;
+        right: 14px;
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        background: #fff;
+        padding: 10px 13px;
+        border-radius: 10px;
+        box-shadow: 0 2px 12px #1d354a29
+    }
+
+    #theme {
+        padding: 7px;
+        border: 1px solid #bccddd;
+        border-radius: 6px;
+        background: white
+    }
+
+    .legend {
+        background: white;
+        padding: 12px 14px;
+        border-radius: 10px;
+        box-shadow: 0 2px 12px #1d354a29;
+        line-height: 1.7;
+        min-width: 174px;
+        font-size: 12px
+    }
+
+    .legend strong {
+        display: block;
+        font-size: 13px;
+        margin-bottom: 6px
+    }
+
+    .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 7px
+    }
+
+    .swatch {
+        height: 12px;
+        width: 17px;
+        display: inline-block;
+        border: 1px solid #9daebe;
+        border-radius: 2px;
+        flex-shrink: 0
+    }
+
+    .muted {
+        color: #67788a;
+        font-size:12px
+    }
+
+    .section {
+        border-top: 1px solid #e5ebf0;
+        padding-top: 12px;
+        margin-top: 14px
+    }
+
+    .section h3 {
+        margin: 0 0 8px;
+        font-size:15px
+    }
+
+    h2 {
+        font-size: 22px;
+        margin: 10px 0
+    }
+
+    .fact {
+        margin: 7px 0;
+        font-size:14px
+    }
+
+    .fact b {
+        color: #3b556c
+    }
+
+    .bar {
+        height: 12px;
+        display: flex;
+        overflow: hidden;
+        border-radius: 9px;
+        margin: 9px 0 5px;
+        background: #e9edf0
+    }
+
+    .bar > span {
+        height:100%
+    }
+
+    .age-row {
+        font-size: 12px;
+        display: flex;
+        justify-content: space-between;
+        margin: 4px 0
+    }
+
+    .loading {
+        font-size: 12px;
+        color:#5a7083
+    }
+
+    .flag {
+        width: 96px;
+        box-shadow: 0 1px 7px #0002;
+        border: 1px solid #ddd
+    }
+
+    .error {
+        color:#ad342d
+    }
+
+    a {
+        color: #155d96
+    }
+
+    @media (max-width: 650px) {
+        #panel {
+            top: auto;
+            bottom: 0;
+            right: 0;
+            left: 0;
+            width: 100%;
+            height: 39vh;
+            border-radius:16px 16px 0 0
+        }
+
+        #toolbar {
+            top: 10px;
+            right:10px
+        }
+
+        .legend {
+            padding: 8px 10px;
+            font-size: 11px
+        }
+    }
+    </style>
 </head>
 <body>
-<div id="map"></div>
-<select id="theme">
-  <option value="population">인구</option>
-  <option value="gdp">GDP</option>
-</select>
-<div id="panel"><h3>데이터 불러오는 중...</h3></div>
-
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script src="https://unpkg.com/topojson-client@3"></script>
-<script>
-const map = L.map('map', { worldCopyJump:true }).setView([20, 0], 2);
-let countries = {};   // ccn3 → 국가정보
-let population = {};  // ccn3 → 인구
-let gdp = {};         // ccn3 → GDP
-let geo;
-
-// World Bank 지표를 ccn3 기준으로 가져오는 공통 함수
-async function fetchWB(indicator, iso3toNum) {
-  const out = {};
-  try {
-    const res = await fetch(`https://api.worldbank.org/v2/country/all/indicator/${indicator}?format=json&mrv=5&per_page=2000`);
-    const data = await res.json();
-    data[1].forEach(r => {
-      const n = iso3toNum[r.countryiso3code];
-      if (n && r.value !== null && out[n] === undefined) out[n] = r.value; // 최신 연도 값 우선
+    <div id="map"></div>
+    <div id="toolbar">
+        <label for="theme">지도 주제</label>
+        <select id="theme">
+            <option value="population">총인구</option>
+            <option value="gdp">명목 GDP</option>
+        </select>
+    </div>
+    <div id="panel">
+        <h2>세계지리 학습 지도</h2>
+        <p class="loading">국가 데이터를 불러오는 중입니다...</p>
+    </div>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/topojson-client@3"></script>
+    <script>
+    'use strict';
+    const map = L.map('map', {
+        worldCopyJump: false,
+        minZoom: 1,
+        maxZoom: 7
+    }).setView([20, 0], 2);
+    L.control.scale({
+        imperial: false
+    }).addTo(map);
+    const panel = document.getElementById('panel');
+    const themeSelect = document.getElementById('theme');
+    const numberFmt = new Intl.NumberFormat('ko-KR');
+    const pctFmt = new Intl.NumberFormat('ko-KR', {
+        maximumFractionDigits: 1
     });
-  } catch (e) { console.error(indicator + ' 로딩 실패', e); }
-  return out;
-}
-
-async function load() {
-  // 1) 국경 데이터
-  const topo = await (await fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json')).json();
-  geo = topojson.feature(topo, topo.objects.countries);
-  draw(); // 데이터 없어도 지도는 먼저 그림
-
-  // 2) 국가 기본정보 (mledoze/countries - REST Countries의 원본)
-  try {
-    const rc = await (await fetch('https://cdn.jsdelivr.net/gh/mledoze/countries@master/countries.json')).json();
-    rc.forEach(c => { if (c.ccn3) countries[c.ccn3] = c; });
-  } catch (e) { console.error('국가정보 로딩 실패', e); }
-
-  const iso3toNum = Object.fromEntries(Object.values(countries).map(c => [c.cca3, c.ccn3]));
-
-  // 3) 인구, GDP (World Bank)
-  population = await fetchWB('SP.POP.TOTL', iso3toNum);
-  gdp = await fetchWB('NY.GDP.MKTP.CD', iso3toNum);
-
-  draw();
-  document.getElementById('panel').innerHTML = '<h3>국가를 클릭하세요</h3>';
-}
-
-function color(value, max) {
-  if (!value) return '#ddd';
-  const t = Math.log(value) / Math.log(max);
-  return `hsl(${200 - t * 160}, 70%, ${80 - t * 40}%)`;
-}
-
-let layer;
-function draw() {
-  const theme = document.getElementById('theme').value;
-  const getVal = id => theme === 'gdp' ? gdp[id] : population[id];
-  const max = Math.max(1, ...geo.features.map(f => getVal(f.id) || 0));
-
-  if (layer) layer.remove();
-  layer = L.geoJSON(geo, {
-    style: f => ({ fillColor: color(getVal(f.id), max), weight:1, color:'#fff', fillOpacity:0.9 }),
-    onEachFeature: (f, l) => l.on('click', () => showInfo(f.id))
-  }).addTo(map);
-}
-document.getElementById('theme').onchange = draw;
-
-function showInfo(id) {
-  const c = countries[id];
-  if (!c) { document.getElementById('panel').innerHTML = '<h3>정보 없음</h3>'; return; }
-  document.getElementById('panel').innerHTML = `
-    <img src="https://flagcdn.com/w160/${c.cca2.toLowerCase()}.png" width="120"><br>
-    <h2>${c.translations?.kor?.common || c.name.common}</h2>
-    <p><b>수도:</b> ${c.capital?.[0] || '-'}</p>
-    <p><b>대륙:</b> ${c.region} / ${c.subregion || ''}</p>
-    <p><b>인구:</b> ${population[id] ? population[id].toLocaleString() + '명' : '-'}</p>
-    <p><b>언어:</b> ${Object.values(c.languages || {}).join(', ') || '-'}</p>
-    <p><b>GDP:</b> ${gdp[id] ? '$' + (gdp[id]/1e9).toFixed(1) + 'B' : '-'}</p>
-  `;
-}
-load();
-</script>
+    const regionNames = {
+        Africa: '아프리카',
+        Americas: '아메리카',
+        Asia: '아시아',
+        Europe: '유럽',
+        Oceania: '오세아니아',
+        Antarctic: '남극',
+        'Northern Europe': '북유럽',
+        'Southern Europe': '남유럽',
+        'Western Europe': '서유럽',
+        'Eastern Europe': '동유럽',
+        'Eastern Asia': '동아시아',
+        'South-Eastern Asia': '동남아시아',
+        'Southern Asia': '남아시아',
+        'Central Asia': '중앙아시아',
+        'Western Asia': '서아시아',
+        'Northern Africa': '북아프리카',
+        'Sub-Saharan Africa': '사하라 이남 아프리카',
+        'Eastern Africa': '동아프리카',
+        'Western Africa': '서아프리카',
+        'Middle Africa': '중앙아프리카',
+        'Southern Africa': '남아프리카',
+        'Northern America': '북아메리카',
+        'Central America': '중앙아메리카',
+        'South America': '남아메리카',
+        'Caribbean': '카리브해 지역',
+        'Australia and New Zealand': '오스트레일리아·뉴질랜드',
+        'Melanesia': '멜라네시아',
+        'Micronesia': '미크로네시아',
+        'Polynesia': '폴리네시아'
+    };
+    const capitals = {
+        KR: '서울',
+        KP: '평양',
+        JP: '도쿄',
+        CN: '베이징',
+        TW: '타이베이',
+        MN: '울란바토르',
+        RU: '모스크바',
+        US: '워싱턴 D.C.',
+        CA: '오타와',
+        MX: '멕시코시티',
+        BR: '브라질리아',
+        AR: '부에노스아이레스',
+        CL: '산티아고',
+        PE: '리마',
+        CO: '보고타',
+        GB: '런던',
+        FR: '파리',
+        DE: '베를린',
+        IT: '로마',
+        ES: '마드리드',
+        PT: '리스본',
+        NL: '암스테르담',
+        BE: '브뤼셀',
+        CH: '베른',
+        AT: '빈',
+        SE: '스톡홀름',
+        NO: '오슬로',
+        FI: '헬싱키',
+        DK: '코펜하겐',
+        PL: '바르샤바',
+        UA: '키이우',
+        TR: '앙카라',
+        GR: '아테네',
+        EG: '카이로',
+        ZA: '프리토리아(행정수도)',
+        NG: '아부자',
+        KE: '나이로비',
+        ET: '아디스아바바',
+        MA: '라바트',
+        DZ: '알제',
+        SA: '리야드',
+        IR: '테헤란',
+        IQ: '바그다드',
+        IL: '예루살렘(지위에 국제적 이견 있음)',
+        IN: '뉴델리',
+        PK: '이슬라마바드',
+        BD: '다카',
+        NP: '카트만두',
+        TH: '방콕',
+        VN: '하노이',
+        KH: '프놈펜',
+        LA: '비엔티안',
+        MM: '네피도',
+        MY: '쿠알라룸푸르',
+        SG: '싱가포르',
+        ID: '자카르타(수도 이전 추진 중)',
+        PH: '마닐라',
+        AU: '캔버라',
+        NZ: '웰링턴',
+        FJ: '수바'
+    };
+    const langNames = {
+        kor: '한국어',
+        eng: '영어',
+        fra: '프랑스어',
+        deu: '독일어',
+        spa: '스페인어',
+        por: '포르투갈어',
+        rus: '러시아어',
+        zho: '중국어',
+        jpn: '일본어',
+        hin: '힌디어',
+        ara: '아랍어',
+        ita: '이탈리아어',
+        nld: '네덜란드어',
+        swe: '스웨덴어',
+        nor: '노르웨이어',
+        dan: '덴마크어',
+        fin: '핀란드어',
+        pol: '폴란드어',
+        ukr: '우크라이나어',
+        tur: '튀르키예어',
+        ell: '그리스어',
+        heb: '히브리어',
+        tha: '태국어',
+        vie: '베트남어',
+        ind: '인도네시아어',
+        msa: '말레이어',
+        tgl: '타갈로그어',
+        tam: '타밀어',
+        ben: '벵골어',
+        urd: '우르두어',
+        fas: '페르시아어',
+        swa: '스와힐리어',
+        amh: '암하라어',
+        nep: '네팔어',
+        mon: '몽골어',
+        khm: '크메르어',
+        lao: '라오어',
+        mya: '미얀마어',
+        kaz: '카자흐어',
+        uzb: '우즈베크어',
+        ron: '루마니아어',
+        hun: '헝가리어',
+        ces: '체코어',
+        slk: '슬로바키아어',
+        hrv: '크로아티아어',
+        srp: '세르비아어',
+        bul: '불가리아어',
+        lit: '리투아니아어',
+        lav: '라트비아어',
+        est: '에스토니아어',
+        isl: '아이슬란드어',
+        gle: '아일랜드어',
+        cat: '카탈루냐어',
+        eus: '바스크어',
+        glg: '갈리시아어',
+        afr: '아프리칸스어',
+        zul: '줄루어',
+        xho: '코사어',
+        som: '소말리어',
+        hau: '하우사어',
+        yor: '요루바어',
+        ibo: '이그보어',
+        sin: '싱할라어',
+        urd: '우르두어'
+    };
+    // 대표 국가만 제공하는 교과 학습용 '개관'. 종교의 정확한 비중이나 기후 분포를 의미하지 않습니다.
+    const overview = {
+        KR: ['기독교(개신교·천주교), 불교, 무종교 등', '온대 계절풍 기후, 뚜렷한 사계절'],
+        KP: ['불교·전통 신앙의 역사적 영향, 공식 통계 제한', '냉대·온대 계절풍 기후'],
+        JP: ['신토와 불교 전통', '온대 계절풍 기후, 북부 냉대·남부 아열대'],
+        CN: ['불교·도교·민간 신앙·무종교 등', '동부 계절풍, 서부 건조·고산 기후'],
+        IN: ['힌두교·이슬람교·시크교 등', '열대 몬순, 건조·고산 기후'],
+        PK: ['이슬람교', '건조 기후, 북부 고산 기후'],
+        BD: ['이슬람교·힌두교', '열대 몬순 기후'],
+        ID: ['이슬람교·기독교·힌두교 등', '적도 부근 열대 우림·몬순 기후'],
+        MY: ['이슬람교·불교·힌두교·기독교', '열대 우림 기후'],
+        SG: ['불교·기독교·이슬람교·힌두교 등', '열대 우림 기후'],
+        TH: ['불교', '열대 사바나·몬순 기후'],
+        VN: ['민간 신앙·불교·무종교 등', '열대 몬순, 북부 아열대'],
+        PH: ['기독교(주로 가톨릭)·이슬람교', '열대 몬순·열대 우림 기후'],
+        SA: ['이슬람교', '사막 기후'],
+        IR: ['이슬람교(주로 시아파)', '건조·고산 기후'],
+        IL: ['유대교·이슬람교·기독교', '지중해성·건조 기후'],
+        TR: ['이슬람교', '지중해성·대륙성·고산 기후'],
+        RU: ['러시아 정교회·이슬람교·무종교 등', '냉대 기후가 넓고 북부 툰드라'],
+        MN: ['불교·샤머니즘 등', '냉대 건조·사막 기후'],
+        US: ['기독교·무종교·다양한 종교', '온대·냉대·건조·열대 등 다양한 기후'],
+        CA: ['기독교·무종교·다양한 종교', '냉대·한대 기후, 서부 해양성'],
+        MX: ['기독교(주로 가톨릭)', '건조·열대·고산 기후'],
+        BR: ['기독교(가톨릭·개신교 등)', '아마존 열대 우림, 열대 사바나·남부 온대'],
+        AR: ['기독교(주로 가톨릭)', '온대·건조·남부 한랭 기후'],
+        CL: ['기독교', '북부 사막·중부 지중해성·남부 서안 해양성'],
+        GB: ['기독교·무종교·이슬람교 등', '서안 해양성 기후'],
+        FR: ['기독교 전통·무종교·이슬람교 등', '서안 해양성·지중해성 기후'],
+        DE: ['기독교·무종교·이슬람교 등', '서안 해양성·온대 대륙성 기후'],
+        IT: ['기독교(주로 가톨릭)', '지중해성·북부 산악 기후'],
+        ES: ['기독교(주로 가톨릭)', '지중해성·서안 해양성·건조 기후'],
+        AU: ['기독교·무종교·다양한 종교', '내륙 사막·스텝, 북부 열대·남부 온대'],
+        NZ: ['기독교·무종교·마오리 신앙 등', '서안 해양성 기후'],
+        EG: ['이슬람교·콥트 기독교', '사막 기후'],
+        NG: ['이슬람교·기독교·전통 신앙', '북부 사바나·남부 열대 몬순'],
+        ZA: ['기독교·전통 신앙 등', '스텝·온대·지중해성 기후'],
+        ET: ['에티오피아 정교회·이슬람교·개신교', '고산·사바나·건조 기후'],
+        KE: ['기독교·이슬람교', '열대 사바나·고산 기후'],
+        MA: ['이슬람교', '지중해성·건조·사막 기후']
+    };
+    const breaks = {
+        population: [1e7, 5e7, 1e8, 5e8],
+        gdp: [1e10, 1e11, 1e12, 1e13]
+    };
+    const colors = ['#edf4fc', '#b9d8ee', '#77aed4', '#367eaf', '#114f80'];
+    const stat = {
+        population: {},
+        gdp: {},
+        age0: {},
+        age15: {},
+        age65: {},
+        male: {},
+        female: {}
+    };
+    const year = {
+        population: {},
+        gdp: {},
+        age0: {},
+        age15: {},
+        age65: {},
+        male: {},
+        female: {}
+    };
+    const countries = {};
+    let geo = null;
+    let layer = null;
+    let selectedId = null;
+    const allCountries = [];
+    function val(key, id) {
+        return stat[key][String(id).padStart(3, '0')]
+    }
+    function fmt(n) {
+        return typeof n === 'number' && Number.isFinite(n) ? numberFmt.format(Math.round(n)) : '자료 없음'
+    }
+    function percent(n) {
+        return typeof n === 'number' && Number.isFinite(n) ? pctFmt.format(n) + '%' : '자료 없음'
+    }
+    function safe(s) {
+        return String(s ?? '').replace(/[&<>"']/g, c => ({
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#39;'
+        }[c]))
+    }
+    function nameKR(c) {
+        if (!c)
+            return '국가 정보 없음';
+        try {
+            return new Intl.DisplayNames(['ko'], {
+                    type: 'region'
+                }).of(c.cca2) || c.translations?.kor?.common || '국가 정보 없음'
+        } catch {
+            return c.translations?.kor?.common || '국가 정보 없음'
+        }
+    }
+    function breakColor(v, theme) {
+        if (typeof v !== 'number' || !Number.isFinite(v))
+            return '#d5dbe2';
+        let i = breaks[theme].findIndex(x => v < x);
+        return colors[i < 0 ? 4 : i]
+    }
+    function legendLabels(theme) {
+        return theme === 'population' ? ['1천만 명 미만', '1천만~5천만 명', '5천만~1억 명', '1억~5억 명', '5억 명 이상'] : ['100억 달러 미만', '100억~1천억 달러', '1천억~1조 달러', '1조~10조 달러', '10조 달러 이상']
+    }
+    const legend = L.control({
+        position: 'bottomleft'
+    });
+    legend.onAdd = () => {
+        const div = L.DomUtil.create('div', 'legend');
+        div.id = 'legend';
+        L.DomEvent.disableClickPropagation(div);
+        return div
+    };
+    legend.addTo(map);
+    function updateLegend() {
+        const theme = themeSelect.value;
+        const labels = legendLabels(theme);
+        document.getElementById('legend').innerHTML = `<strong>${theme === 'population' ? '총인구 (명)' : '명목 GDP (현재 미 달러)'}</strong>` + labels.map((label, i) => `<div class="legend-item"><span class="swatch" style="background:${colors[i]}"></span>${label}</div>`).join('') + '<div class="legend-item"><span class="swatch" style="background:#d5dbe2"></span>자료 없음</div><div class="muted">연도는 국가별 최신 확보 자료 기준</div>'
+    }
+    // 좌표를 경도 ±180°에서 잘라 러시아·피지 등 날짜변경선 교차 도형을 올바르게 표시.
+    function clipRing(ring, minX, maxX) {
+        const clip = (pts, bound, isMin) => {
+            if (!pts.length)
+                return [];
+            const inside = p => isMin ? p[0] >= bound : p[0] <= bound;
+            const cross = (a, b) => {
+                const t = (bound - a[0]) / (b[0] - a[0]);
+                return [bound, a[1] + t * (b[1] - a[1])]
+            };
+            const result = [];
+            let prev = pts[pts.length - 1];
+            for (const cur of pts) {
+                const p = inside(prev),
+                    c = inside(cur);
+                if (c) {
+                    if (!p)
+                        result.push(cross(prev, cur));
+                    result.push(cur)
+                } else if (p)
+                    result.push(cross(prev, cur));
+                prev = cur
+            }
+            return result
+        };
+        let pts = ring.slice();
+        if (pts.length > 1 && pts[0][0] === pts[pts.length - 1][0] && pts[0][1] === pts[pts.length - 1][1])
+            pts.pop();
+        pts = clip(clip(pts, minX, true), maxX, false);
+        if (pts.length < 3)
+            return null;
+        pts.push([...pts[0]]);
+        return pts;
+    }
+    function unwrap(ring) {
+        if (!ring.length)
+            return [];
+        let prev = ring[0][0];
+        return ring.map((p, i) => {
+            let x = p[0];
+            if (i) {
+                while (x - prev > 180)
+                    x -= 360;
+                while (x - prev < -180)
+                    x += 360
+            }
+            prev = x;
+            return [x, p[1]]
+        })
+    }
+    function splitPolygon(rings) {
+        if (!rings.length)
+            return [];
+        const shell = unwrap(rings[0]);
+        if (!shell.length)
+            return [];
+        const min = Math.min(...shell.map(p => p[0])),
+            max = Math.max(...shell.map(p => p[0]));
+        const out = [];
+        for (let k = Math.floor((min + 180) / 360) - 1; k <= Math.floor((max + 180) / 360) + 1; k++) {
+            const left = -180 + 360 * k,
+                right = 180 + 360 * k;
+            const clipped = clipRing(shell, left, right);
+            if (!clipped)
+                continue;
+            const part = [clipped.map(p => [p[0] - 360 * k, p[1]])];
+            for (const hole of rings.slice(1)) {
+                let h = unwrap(hole);
+                if (!h.length)
+                    continue;
+                const mid = (Math.min(...shell.map(p => p[0])) + Math.max(...shell.map(p => p[0]))) / 2;
+                const avg = h.reduce((s, p) => s + p[0], 0) / h.length;
+                const shift = 360 * Math.round((mid - avg) / 360);
+                h = h.map(p => [p[0] + shift, p[1]]);
+                const clippedHole = clipRing(h, left, right);
+                if (clippedHole)
+                    part.push(clippedHole.map(p => [p[0] - 360 * k, p[1]]));
+            }
+            out.push(part);
+        }
+        return out;
+    }
+    function fixDateline(feature) {
+        const g = feature.geometry;
+        if (!g || !['Polygon', 'MultiPolygon'].includes(g.type))
+            return feature;
+        const polys = g.type === 'Polygon' ? [g.coordinates] : g.coordinates;
+        const parts = polys.flatMap(splitPolygon);
+        return {
+            ...feature,
+            geometry: {
+                type: 'MultiPolygon',
+                coordinates: parts
+            }
+        };
+    }
+    function draw() {
+        if (!geo)
+            return;
+        const theme = themeSelect.value;
+        if (layer)
+            map.removeLayer(layer);
+        layer = L.geoJSON(geo, {
+            style: f => ({
+                fillColor: breakColor(val(theme, f.id), theme),
+                weight: selectedId === String(f.id) ? 2.5 : 0.65,
+                color: selectedId === String(f.id) ? '#ffc94f' : '#fff',
+                fillOpacity: .87
+            }),
+            onEachFeature: (f, l) => {
+                l.on('click', () => {
+                    selectedId = String(f.id);
+                    showInfo(selectedId);
+                    draw()
+                });
+                l.bindTooltip(nameKR(countries[String(f.id).padStart(3, '0')]), {
+                    sticky: true
+                })
+            }
+        }).addTo(map);
+        updateLegend()
+    }
+    async function fetchJSON(url) {
+        const r = await fetch(url);
+        if (!r.ok)
+            throw Error('HTTP ' + r.status + ' ' + url);
+        return r.json()
+    }
+    async function fetchWB(key, indicator, iso3num) {
+        try {
+            const raw = await fetchJSON(`https://api.worldbank.org/v2/country/all/indicator/${indicator}?format=json&mrv=5&per_page=20000`);
+            if (!Array.isArray(raw) || !Array.isArray(raw[1]))
+                throw Error('응답 형식 오류');
+            for (const r of raw[1]) {
+                const id = iso3num[r.countryiso3code];
+                if (!id || r.value === null || stat[key][id] !== undefined)
+                    continue;
+                stat[key][id] = Number(r.value);
+                year[key][id] = r.date
+            }
+        } catch (err) {
+            console.warn(key + ' 데이터를 불러오지 못했습니다.', err)
+        }
+    }
+    async function load() {
+        try {
+            const topo = await fetchJSON('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json');
+            geo = {
+                type: 'FeatureCollection',
+                features: topojson.feature(topo, topo.objects.countries).features.map(f => fixDateline({
+                    ...f,
+                    id: String(f.id).padStart(3, '0')
+                }))
+            };
+            draw();
+            const rc = await fetchJSON('https://cdn.jsdelivr.net/gh/mledoze/countries@master/countries.json');
+            rc.forEach(c => {
+                if (c.ccn3) {
+                    countries[c.ccn3] = c;
+                    allCountries.push(c)
+                }
+            });
+            const iso3num = Object.fromEntries(allCountries.filter(c => c.cca3 && c.ccn3).map(c => [c.cca3, c.ccn3]));
+            // 최신 비결측 연도 선택. 지표에 따라 연도가 서로 다를 수 있음.
+            await Promise.all([
+            fetchWB('population', 'SP.POP.TOTL', iso3num), fetchWB('gdp', 'NY.GDP.MKTP.CD', iso3num),
+            fetchWB('age0', 'SP.POP.0014.TO.ZS', iso3num), fetchWB('age15', 'SP.POP.1564.TO.ZS', iso3num), fetchWB('age65', 'SP.POP.65UP.TO.ZS', iso3num),
+            fetchWB('male', 'SP.POP.TOTL.MA.IN', iso3num), fetchWB('female', 'SP.POP.TOTL.FE.IN', iso3num)
+            ]);
+            draw();
+            panel.innerHTML = '<h2>세계지리 학습 지도</h2><p>지도에서 국가를 클릭하면 국가별 정보를 확인할 수 있습니다.</p><p class="muted">지도의 색은 왼쪽 아래 범례를 확인하세요. 자료가 없는 국가는 회색으로 표시됩니다.</p>';
+        } catch (err) {
+            console.error(err);
+            panel.innerHTML = `<h2 class="error">데이터 로딩 오류</h2><p>인터넷 연결이나 외부 데이터 제공 상태를 확인해 주세요.</p><p class="muted">${safe(err.message)}</p>`
+        }
+    }
+    function showInfo(id) {
+        const c = countries[String(id).padStart(3, '0')];
+        if (!c) {
+            panel.innerHTML = '<h2>국가 정보 없음</h2><p>해당 지역의 상세 정보가 준비되지 않았습니다.</p>';
+            return
+        }
+        const iso = c.cca2,
+            overviewData = overview[iso];
+        const ages = ['age0', 'age15', 'age65'].map(k => val(k, id));
+        const female = val('female', id),
+            male = val('male', id);
+        const sexRatio = male != null && female > 0 ? male / female * 100 : null;
+        const ageNames = ['유소년층 (0~14세)', '생산가능연령층 (15~64세)', '고령층 (65세 이상)'];
+        const values = ages.map(v => typeof v === 'number' ? Math.min(100, Math.max(0, v)) : 0);
+        const yr = k => year[k][String(id).padStart(3, '0')] || '연도 미상';
+        const languages = Object.keys(c.languages || {}).map(k => langNames[k]).filter(Boolean);
+        const capital = capitals[iso] || '한국어 수도명 미등록';
+        panel.innerHTML = `
+         ${iso && /^[A-Z]{2}$/.test(iso) ? `<img class="flag" alt="${safe(nameKR(c))} 국기" src="https://flagcdn.com/w160/${iso.toLowerCase()}.png">` : ''}
+         <h2>${safe(nameKR(c))}</h2>
+         <p class="fact"><b>수도</b> ${safe(capital)}</p>
+         <p class="fact"><b>지역</b> ${safe(regionNames[c.region] || '정보 없음')}${c.subregion ? ' / ' + safe(regionNames[c.subregion] || '세부 지역명 준비 중') : ''}</p>
+         <p class="fact"><b>주요 언어</b> ${languages.length ? safe(languages.join(', ')) : '한국어 언어명 미등록'}</p>
+         <div class="section"><h3>인구와 경제</h3>
+         <p class="fact"><b>인구</b> ${fmt(val('population', id))}명 <span class="muted">(${safe(yr('population'))}년)</span></p>
+         <p class="fact"><b>명목 GDP</b> ${val('gdp', id) != null ? '약 ' + fmt(val('gdp', id) / 1e8) + '억 달러' : '자료 없음'} <span class="muted">(${safe(yr('gdp'))}년)</span></p></div>
+         <div class="section"><h3>인구 구조</h3>
+         ${ages.every(v => typeof v === 'number') ? `<div class="bar"><span style="width:${values[0]}%;background:#5bafd0"></span><span style="width:${values[1]}%;background:#6bad80"></span><span style="width:${values[2]}%;background:#eeac5e"></span></div>` : ''}
+         ${ages.map((v, i) => `<div class="age-row"><span>${ageNames[i]}</span><strong>${percent(v)} ${v != null ? `(${safe(yr(['age0', 'age15', 'age65'][i]))}년)` : ''}</strong></div>`).join('')}
+         <p class="fact"><b>성비</b> ${sexRatio == null ? '자료 없음' : `여성 100명당 남성 ${pctFmt.format(sexRatio)}명`}</p>
+         <p class="muted">성비 기준: 전체 인구, ${safe(yr('male'))}년 남성 인구·${safe(yr('female'))}년 여성 인구. 연령대 비중의 합계는 반올림으로 100%와 다를 수 있습니다.</p></div>
+         <div class="section"><h3>종교와 기후 (학습용 개관)</h3>
+         <p class="fact"><b>대표적 종교·종교 전통</b> ${safe(overviewData?.[0] || '국가별 검증 자료 준비 중')}</p>
+         <p class="fact"><b>대표적 기후</b> ${safe(overviewData?.[1] || '국가별 검증 자료 준비 중')}</p>
+         <p class="muted">대표 국가의 개략적 특성으로, 종교별 비중·국가 전체의 단일 기후를 뜻하지 않습니다. 여러 종교와 기후가 함께 분포할 수 있습니다.</p>
+         <p class="muted"><a href="https://ourworldindata.org/grapher/most-common-religion" target="_blank" rel="noopener">종교 분포 원자료 (Pew/OWID, 2020)</a></p></div>
+         <div class="section muted">통계 출처: World Bank Open Data. 국가 기본정보: mledoze/countries. 국경: World Atlas. 주제별 데이터 기준연도가 서로 다를 수 있습니다.</div>`;
+    }
+    themeSelect.addEventListener('change', draw);
+    load();
+    </script>
 </body>
 </html>
