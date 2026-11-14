@@ -167,9 +167,9 @@ header{position:relative;z-index:2000;height:70px;display:flex;align-items:cente
  .tab-ko{font-size:13px;font-weight:850}.tab-en{font-size:10px;font-weight:600}
  .tab[aria-selected=true]{background:#f6faff;border-bottom-width:3px}
  button,.select,.qz-input{touch-action:manipulation}
- #mapScreen{height:calc(100dvh - var(--mobile-header-height));min-height:440px;--mobile-panel-height:min(43dvh,52%)}
+ #mapScreen{height:calc(100dvh - var(--mobile-header-height));min-height:440px;--mobile-panel-height:min(28.7dvh,34.7%)}
  #mapScreen.panel-expanded{--mobile-panel-height:min(76dvh,86%)}
- #panel{top:auto;left:0;right:0;bottom:0;width:100%;height:var(--mobile-panel-height);max-height:none;padding:31px 18px calc(20px + env(safe-area-inset-bottom));border-radius:20px 20px 0 0;scrollbar-width:thin;overscroll-behavior:contain;box-shadow:0 -8px 32px #173a5930;border-bottom:0}
+ #panel{top:auto;left:0;right:0;bottom:0;width:100%;height:var(--mobile-panel-height);max-height:none;padding:25px 18px calc(16px + env(safe-area-inset-bottom));border-radius:20px 20px 0 0;scrollbar-width:thin;overscroll-behavior:contain;box-shadow:0 -8px 32px #173a5930;border-bottom:0}
  #panel h2{font-size:21px;margin:10px 0 13px}#panel h3{font-size:16px}
  #panel .fact{font-size:13px;line-height:1.55;gap:10px}#panel .fact b{flex-basis:92px}
  #panel .fact .value{text-align:right}
@@ -184,7 +184,7 @@ header{position:relative;z-index:2000;height:70px;display:flex;align-items:cente
  #map .leaflet-control-zoom a{width:34px;height:34px;line-height:34px}
  #map .leaflet-top.leaflet-left{left:2px}
  #map .leaflet-bottom.leaflet-left{bottom:var(--mobile-panel-height)}
- .legend{padding:7px 10px;min-width:0;width:auto;max-width:225px;max-height:230px;line-height:1.5;font-size:11px;margin-left:10px;margin-bottom:9px;overflow:auto}
+ .legend{padding:7px 10px;min-width:0;width:auto;max-width:225px;max-height:230px;line-height:1.5;font-size:11px;margin-left:10px;margin-bottom:9px;overflow:auto;transform:scale(.7);transform-origin:bottom left}
  .legend-disclosure>summary{display:block;position:relative;padding-right:18px;font-size:12px}
  .legend-disclosure>summary:after{content:'⌄';position:absolute;right:0;top:-1px;font-size:17px}
  .legend-disclosure[open]>summary:after{content:'⌃'}
