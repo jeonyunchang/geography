@@ -317,6 +317,10 @@ header{position:relative;z-index:2000;height:70px;display:flex;align-items:cente
 .cf-policy-option small{display:block;margin-top:2px;font-size:11px;line-height:1.5;color:#62768a}
 .cf-policy-option:focus-within{outline:2px solid #5a9cce;outline-offset:2px}
 .cf-load{color:#64788d;font-size:13px;line-height:1.6}
+/* 나라찾기: 진행 중 같은 10개국을 처음부터 다시 풀기 */
+.cf-restart-button{display:inline-flex;align-items:center;justify-content:center;min-height:36px;gap:5px;border:1px solid #c9d8e5;border-radius:9px;padding:7px 11px;background:#f6faff;color:#2c536e;font-family:inherit;font-size:12px;font-weight:800;line-height:1.25;cursor:pointer;white-space:nowrap;transition:background .15s,border-color .15s}
+.cf-restart-button:hover{background:#e9f3fd;border-color:#88b3d5}
+.cf-restart-button:focus-visible{outline:3px solid #3d8fc2;outline-offset:2px}
 .cf-card .button:disabled{opacity:.52;cursor:not-allowed}
 @media(max-width:960px){.cf-layout{grid-template-columns:minmax(250px,310px) minmax(0,1fr)}#cfMap{height:clamp(425px,60dvh,620px)}}
 @media(max-width:650px){
@@ -1645,6 +1649,26 @@ function cfStart(){
  cfState.index=0;cfState.attempts=0;cfState.score=0;cfState.lastPickId=null;cfState.lastPickAt=0;cfState.answers.clear();cfState.phase='playing';cfState.nextMode='all';cfState.notice='';
  cfRestyle();cfWorldView();cfRender();
 }
+function cfRestart(){
+ // 진행 중이거나 완료한 회차를 동일한 10개국으로 다시 도전합니다.
+ // 다음 회차 포함/제외 설정과 기존 제외 목록은 건드리지 않습니다.
+ if(!['playing','review','finished'].includes(cfState.phase)||cfState.round.length!==10)return;
+ const message='이번 10개국을 첫 문제부터 다시 풀까요?\n\n지금까지의 점수, 남은 기회, 힌트와 지도 색상은 모두 초기화됩니다. 국가 제외 설정은 유지됩니다.';
+ if(!window.confirm(message))return;
+ cfHideResult();
+ cfState.index=0;
+ cfState.attempts=0;
+ cfState.score=0;
+ cfState.answers.clear();
+ cfState.lastPickId=null;
+ cfState.lastPickAt=0;
+ cfState.phase='playing';
+ cfState.nextMode='all';
+ cfState.notice='같은 10개국을 처음부터 다시 시작했어요!';
+ cfRestyle();
+ cfWorldView();
+ cfRender();
+}
 function cfCurrent(){return cfState.round[cfState.index]}
 function cfPick(id){
  if(cfState.phase!=='playing')return;
@@ -1718,12 +1742,13 @@ function cfRender(){
     <div class="cf-feedback failure" id="cfNextWarning" role="alert" ${eligible<10?'':'hidden'}>출제 가능한 나라가 10개 미만입니다. 다른 옵션을 선택하거나 제외 목록을 초기화해 주세요.</div>
     ${cfState.notice?`<div class="cf-feedback failure">${safe(cfState.notice)}</div>`:''}
     <div class="cf-actions"><button type="button" class="button primary" data-cf-action="start" ${eligible<10?'disabled':''}>새로운 10문제 시작</button>
+    <button type="button" class="button" data-cf-action="restart">↻ 이번 10개국 다시 풀기</button>
     <button type="button" class="button" data-cf-action="reset">제외 목록 초기화</button></div>`;
   return;
  }
  const c=countries[cfCurrent()],done=cfState.phase==='review';
  const text=done?(cfState.answers.get(cfCurrent())==='correct'?'정답!':'3번 모두 오답'):'지도에서 나라를 선택하세요.';
- cfPanel.innerHTML=`<div class="cf-meta"><span class="cf-pill">문제 ${cfState.index+1} / 10</span><span>남은 기회: ${done?0:3-cfState.attempts}번</span></div>
+ cfPanel.innerHTML=`<div class="cf-meta"><span class="cf-pill">문제 ${cfState.index+1} / 10</span><span>남은 기회: ${done?0:3-cfState.attempts}번</span><button type="button" class="cf-restart-button" data-cf-action="restart" title="현재 10개국을 처음부터 다시 풀기">↻ 다시 풀기</button></div>
    <p class="cf-target">${safe(nameKR(c))}</p><p>${safe(text)}</p>
    ${!done?`<div class="cf-attempts" aria-label="남은 기회 ${3-cfState.attempts}번"><span>기회</span>${[0,1,2].map(i=>`<i class="cf-attempt ${i<cfState.attempts?'used':''}"></i>`).join('')}</div>`:''}
    ${cfHints()}
@@ -1735,6 +1760,7 @@ cfPanel.addEventListener('click',e=>{
  const button=e.target.closest('button[data-cf-action]');if(!button)return;
  const action=button.dataset.cfAction;
  if(action==='start')cfStart();
+ if(action==='restart')cfRestart();
  if(action==='next')cfNext();
  if(action==='show-result')cfShowResult();
  if(action==='reset'){cfState.excluded.clear();cfWriteExcluded();cfState.notice='';cfRender()}
