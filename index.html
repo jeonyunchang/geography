@@ -345,6 +345,52 @@ header{position:relative;z-index:2000;height:70px;display:flex;align-items:cente
 }
 @media(max-width:360px){.tab{padding:0 1px;gap:0;flex-direction:column}.tab-ko{font-size:12px;line-height:16px}.tab-en{font-size:9px;line-height:13px}.cf-heading h1{font-size:20px}.cf-live-score{min-width:100px}#cfMap{height:340px}}
 
+
+/* 나라찾기: 정답/3회 오답 이후 국가 정보 학습 결과 창 */
+.cf-result-overlay{position:fixed;z-index:3100;inset:0;background:rgba(12,30,51,.62);display:flex;align-items:center;justify-content:center;padding:18px;overscroll-behavior:contain}
+.cf-result-overlay[hidden]{display:none!important}
+.cf-result-dialog{width:min(570px,100%);max-height:min(92dvh,810px);overflow-y:auto;overscroll-behavior:contain;border-radius:20px;background:#fff;box-shadow:0 16px 75px #0b1f3e63;padding:22px;color:#182d44;outline:0}
+.cf-result-dialog:focus-visible{outline:3px solid #5ca0df;outline-offset:-4px}
+.cf-result-head{border-radius:14px;padding:14px 15px 12px;margin-bottom:14px;background:#eaf7ee;border:1px solid #b7dfc6}
+.cf-result-head.is-wrong{background:#fff0ee;border-color:#f1c7c2}
+.cf-result-kicker{font-size:12px;font-weight:800;letter-spacing:.01em;color:#246e43;margin-bottom:4px}
+.cf-result-head.is-wrong .cf-result-kicker{color:#ae433c}
+.cf-result-head h2{color:#154a30;font-size:23px;line-height:1.34;margin:0;font-weight:900;overflow-wrap:anywhere}
+.cf-result-head.is-wrong h2{color:#9d322d}
+.cf-result-head p{margin:7px 0 0;line-height:1.5;color:#395e49;font-size:13px}
+.cf-result-head.is-wrong p{color:#80524c}
+.cf-result-name{display:flex;align-items:center;gap:12px;margin:7px 0 10px;padding:0 2px}
+.cf-result-name .cf-emoji-flag{font-size:32px}
+.cf-result-name .cf-hint-flag img{width:65px;height:43px;object-fit:cover}
+.cf-result-name .cf-hint-flag img[hidden]{display:none}
+.cf-result-name strong{font-size:19px;font-weight:850;color:#172e46;overflow-wrap:anywhere}
+.cf-result-subtitle{font-weight:850;font-size:14px;color:#193958;border-bottom:1px solid #e3eaf1;padding:0 0 8px;margin:11px 0}
+.cf-result-facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:0}
+.cf-result-fact{border:1px solid #e3ebf1;border-radius:11px;background:#f8fbfe;padding:10px 11px;min-width:0;overflow-wrap:anywhere}
+.cf-result-fact.wide{grid-column:1/-1}
+.cf-result-fact dt{font-size:11px;font-weight:800;color:#64778a;margin-bottom:4px}
+.cf-result-fact dd{font-size:14px;line-height:1.52;font-weight:750;color:#1e3851;margin:0}
+.cf-result-fact dd small{font-size:10px;font-weight:650;color:#738496;display:block;margin-top:2px}
+.cf-result-caption{color:#718296;font-size:11px;line-height:1.55;margin:10px 0 0}
+.cf-result-buttons{display:flex;justify-content:flex-end;gap:9px;margin-top:16px}
+.cf-result-buttons .button{min-height:43px;font-size:13px;padding:10px 14px}
+.cf-review-teaser{border:1px solid #d4e6ef;border-radius:10px;padding:10px 12px;background:#f6fbff;font-size:12px;line-height:1.6;color:#2b506f;margin:9px 0}
+.cf-review-teaser strong{color:#193b59}
+body.cf-dialog-open{overflow:hidden}
+@media(max-width:650px){
+ .cf-result-overlay{align-items:flex-end;padding:0}
+ .cf-result-dialog{width:100%;max-width:none;max-height:min(89dvh,780px);border-radius:22px 22px 0 0;padding:18px 15px calc(16px + env(safe-area-inset-bottom))}
+ .cf-result-head{padding:12px 13px 11px;margin-bottom:10px}
+ .cf-result-head h2{font-size:20px}
+ .cf-result-name{margin:7px 0}
+ .cf-result-facts{gap:7px}
+ .cf-result-fact{padding:9px 10px}
+ .cf-result-fact dd{font-size:12px}
+ .cf-result-fact dt{font-size:10px}
+ .cf-result-buttons{position:sticky;bottom:calc(-16px - env(safe-area-inset-bottom));background:#fff;padding:10px 0 calc(9px + env(safe-area-inset-bottom));margin-top:9px;box-shadow:0 -8px 14px #fff}
+ .cf-result-buttons .button{flex:1;min-width:0;font-size:12px;padding:11px 8px}
+}
+@media(max-width:360px){.cf-result-dialog{padding:13px 11px calc(13px + env(safe-area-inset-bottom))}.cf-result-fact{padding:8px}.cf-result-head h2{font-size:19px}}
 </style>
 </head>
 <body>
@@ -414,6 +460,9 @@ header{position:relative;z-index:2000;height:70px;display:flex;align-items:cente
         <p class="cf-note">국경: Natural Earth 50m(연결 실패 시 110m). 실제 국경을 단순화한 학습용 지도로, 섬·소국 및 분쟁 지역의 표현에 한계가 있습니다. 정답을 확인한 국가의 색은 이번 10문제가 끝날 때까지 유지됩니다.</p>
       </div>
     </div>
+  </div>
+  <div id="cfResultOverlay" class="cf-result-overlay" hidden>
+    <div id="cfResultDialog" class="cf-result-dialog" role="dialog" aria-modal="true" aria-labelledby="cfResultTitle" tabindex="-1"></div>
   </div>
 </section>
 <section id="quizScreen" role="tabpanel" aria-labelledby="tab-quiz" hidden>
@@ -1489,6 +1538,81 @@ function cfInit(){
  cfRender();
  requestAnimationFrame(()=>cfState.map?.invalidateSize());
 }
+
+// 10문제 퀴즈의 정답 또는 3번 오답 뒤에 기존 국가정보를 한 번에 보여줍니다.
+// 별도 API를 추가하지 않고 국가 탐색 탭의 이미 조회한 공식 통계와 학습용 개관을 재사용합니다.
+const cfResultOverlay=document.getElementById('cfResultOverlay');
+const cfResultDialog=document.getElementById('cfResultDialog');
+function cfResultFact(label,value,detail='',wide=false){
+ return `<div class="cf-result-fact${wide?' wide':''}"><dt>${safe(label)}</dt><dd>${safe(value)}${detail?`<small>${safe(detail)}</small>`:''}</dd></div>`;
+}
+function cfResultContent(){
+ const id=cfCurrent(),c=countries[id];if(!c)return '<p>현재 국가의 정보가 없습니다.</p>';
+ const isCorrect=cfState.answers.get(id)==='correct';
+ const pop=val('population',id);
+ const popLabel=Number.isFinite(pop)?fmt(pop)+'명':'자료 없음';
+ const popYear=Number.isFinite(pop)?statTime('population',id):'통계 확인 필요';
+ const area=Number(c.area);
+ const areaText=Number.isFinite(area)&&area>0?fmt(area)+'㎢':'자료 없음';
+ const climate=climateSummary(c);
+ const religion=religionText(c);
+ return `<div class="cf-result-head ${isCorrect?'':'is-wrong'}">
+    <div class="cf-result-kicker">${isCorrect?'✓ 정답입니다!':'✕ 오답입니다!'}</div>
+    <h2 id="cfResultTitle">${isCorrect?'정답!':'오답!'} ${safe(nameKR(c))}</h2>
+    <p>${isCorrect?'정확한 위치를 찾았어요! 지도에 초록색으로 표시했어요.':'3번의 기회를 모두 사용했어요. 정답 국가는 지도에 빨간색으로 표시돼요.'}</p>
+  </div>
+  <div class="cf-result-name">${cfFlag(c)}<strong>${safe(nameKR(c))}</strong></div>
+  <h3 class="cf-result-subtitle">이 나라의 정보는?</h3>
+  <dl class="cf-result-facts">
+    ${cfResultFact('대륙',cfContinent(c))}
+    ${cfResultFact('수도',capitalName(c))}
+    ${cfResultFact('인구',popLabel,popYear)}
+    ${cfResultFact('면적',areaText,'국가 기본정보 참고값')}
+    ${cfResultFact('주요 언어',countryLanguages(c),'국가별 주요 언어',true)}
+    ${cfResultFact('대표적 종교·종교 전통',religion,'종교별 인구 비율을 뜻하지 않습니다.',true)}
+    ${cfResultFact('대표적인 쾨펜 기후구분',climate,'대표 지점의 유형이며 한 나라 전체를 단일 기후로 표현하지 않습니다.',true)}
+  </dl>
+  <p class="cf-result-caption">출처: World Bank(인구), 국가 기본정보(수도·면적·언어), 사이트에 등록된 종교·기후 학습 자료. 자료가 없는 항목은 임의로 채우지 않습니다.</p>
+  <div class="cf-result-buttons">
+    <button type="button" class="button" data-cf-result="map">지도에서 위치 확인</button>
+    <button type="button" class="button primary" data-cf-result="next">${cfState.index===9?'10문제 결과 보기':'다음 문제로'}</button>
+  </div>`;
+}
+function cfHideResult(){
+ if(cfResultOverlay.hidden)return;
+ cfResultOverlay.hidden=true;
+ document.body.classList.remove('cf-dialog-open');
+ cfResultDialog.innerHTML='';
+}
+function cfShowResult(){
+ if(cfState.phase!=='review')return;
+ cfResultDialog.innerHTML=cfResultContent();
+ cfResultOverlay.hidden=false;
+ document.body.classList.add('cf-dialog-open');
+ cfResultDialog.scrollTop=0;
+ cfResultDialog.focus({preventScroll:true});
+}
+cfResultOverlay.addEventListener('error',e=>{if(e.target?.tagName==='IMG')e.target.hidden=true},true);
+cfResultOverlay.addEventListener('click',e=>{
+ const b=e.target.closest('button[data-cf-result]');
+ if(b?.dataset.cfResult==='next'){cfNext();return}
+ if(b?.dataset.cfResult==='map'){
+  cfHideResult();
+  document.getElementById('cfMap').scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth',block:'center'});
+  return;
+ }
+ if(e.target===cfResultOverlay)cfHideResult();
+});
+cfResultOverlay.addEventListener('keydown',e=>{
+ if(e.key==='Escape'){e.preventDefault();cfHideResult();return}
+ if(e.key!=='Tab')return;
+ const buttons=[...cfResultDialog.querySelectorAll('button:not([disabled])')];
+ if(!buttons.length){e.preventDefault();cfResultDialog.focus();return}
+ const first=buttons[0],last=buttons[buttons.length-1];
+ if(e.shiftKey&&(document.activeElement===first||document.activeElement===cfResultDialog)){e.preventDefault();last.focus()}
+ else if(!e.shiftKey&&(document.activeElement===last||document.activeElement===cfResultDialog)){e.preventDefault();first.focus()}
+});
+
 function cfShuffle(input){
  const a=[...input];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a;
 }
@@ -1510,6 +1634,7 @@ function cfApplyRoundMode(mode){
  cfWriteExcluded();
 }
 function cfStart(){
+ cfHideResult();
  if(cfState.phase==='finished'){
   if(cfRoundEligible(cfState.nextMode)<10){cfState.notice='선택한 조건으로는 출제 가능한 나라가 10개 미만입니다. 다른 옵션을 선택하거나 제외 목록을 초기화해 주세요.';cfRender();return;}
   cfApplyRoundMode(cfState.nextMode);
@@ -1541,9 +1666,11 @@ function cfPick(id){
  cfRestyle();
  if(cfState.phase==='review')cfState.layers.get(target)?.bringToFront();
  cfRender();
+ if(cfState.phase==='review')cfShowResult();
 }
 function cfNext(){
  if(cfState.phase!=='review')return;
+ cfHideResult();
  if(cfState.index===9){cfState.phase='finished';cfState.nextMode='all';cfState.notice=''}else{cfState.index++;cfState.attempts=0;cfState.lastPickId=null;cfState.lastPickAt=0;cfState.phase='playing';cfState.notice='';cfWorldView()}
  cfRender();
 }
@@ -1601,13 +1728,15 @@ function cfRender(){
    ${!done?`<div class="cf-attempts" aria-label="남은 기회 ${3-cfState.attempts}번"><span>기회</span>${[0,1,2].map(i=>`<i class="cf-attempt ${i<cfState.attempts?'used':''}"></i>`).join('')}</div>`:''}
    ${cfHints()}
    ${cfState.notice?`<div class="cf-feedback ${done?(cfState.answers.get(cfCurrent())==='correct'?'success':'failure'):'info'}" role="status">${safe(cfState.notice)}</div>`:''}
-   ${done?`<div class="cf-actions"><button type="button" class="button primary" data-cf-action="next">${cfState.index===9?'결과 보기':'다음 문제'}</button><button type="button" class="button" data-cf-action="focus">정답 국가 확대</button></div>`:''}`;
+   ${done?`<div class="cf-review-teaser"><strong>이 나라의 정보는?</strong><div>${safe(cfContinent(c))} · 수도 ${safe(capitalName(c))}</div></div>`:''}
+   ${done?`<div class="cf-actions"><button type="button" class="button primary" data-cf-action="next">${cfState.index===9?'결과 보기':'다음 문제'}</button><button type="button" class="button" data-cf-action="show-result">국가 정보 다시 보기</button><button type="button" class="button" data-cf-action="focus">정답 국가 확대</button></div>`:''}`;
 }
 cfPanel.addEventListener('click',e=>{
  const button=e.target.closest('button[data-cf-action]');if(!button)return;
  const action=button.dataset.cfAction;
  if(action==='start')cfStart();
  if(action==='next')cfNext();
+ if(action==='show-result')cfShowResult();
  if(action==='reset'){cfState.excluded.clear();cfWriteExcluded();cfState.notice='';cfRender()}
  if(action==='focus'&&cfState.phase==='review'){
   const l=cfState.layers.get(cfCurrent());if(l?.getBounds)cfState.map.fitBounds(l.getBounds(),{padding:[36,36],maxZoom:6});
