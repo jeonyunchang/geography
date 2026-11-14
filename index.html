@@ -17,30 +17,51 @@
   <option value="population">인구</option>
   <option value="gdp">GDP</option>
 </select>
-<div id="panel"><h3>국가를 클릭하세요</h3></div>
+<div id="panel"><h3>데이터 불러오는 중...</h3></div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://unpkg.com/topojson-client@3"></script>
 <script>
 const map = L.map('map', { worldCopyJump:true }).setView([20, 0], 2);
 let countries = {};   // ccn3 → 국가정보
+let population = {};  // ccn3 → 인구
 let gdp = {};         // ccn3 → GDP
+let geo;
+
+// World Bank 지표를 ccn3 기준으로 가져오는 공통 함수
+async function fetchWB(indicator, iso3toNum) {
+  const out = {};
+  try {
+    const res = await fetch(`https://api.worldbank.org/v2/country/all/indicator/${indicator}?format=json&mrv=5&per_page=2000`);
+    const data = await res.json();
+    data[1].forEach(r => {
+      const n = iso3toNum[r.countryiso3code];
+      if (n && r.value !== null && out[n] === undefined) out[n] = r.value; // 최신 연도 값 우선
+    });
+  } catch (e) { console.error(indicator + ' 로딩 실패', e); }
+  return out;
+}
 
 async function load() {
   // 1) 국경 데이터
   const topo = await (await fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json')).json();
-  const geo = topojson.feature(topo, topo.objects.countries);
+  geo = topojson.feature(topo, topo.objects.countries);
+  draw(); // 데이터 없어도 지도는 먼저 그림
 
-  // 2) 국가 기본정보 (REST Countries)
-  const rc = await (await fetch('https://restcountries.com/v3.1/all?fields=name,ccn3,cca3,population,languages,capital,region,flags,translations')).json();
-  rc.forEach(c => countries[c.ccn3] = c);
+  // 2) 국가 기본정보 (mledoze/countries - REST Countries의 원본)
+  try {
+    const rc = await (await fetch('https://cdn.jsdelivr.net/gh/mledoze/countries@master/countries.json')).json();
+    rc.forEach(c => { if (c.ccn3) countries[c.ccn3] = c; });
+  } catch (e) { console.error('국가정보 로딩 실패', e); }
 
-  // 3) GDP (World Bank, 최신 1개년, 전 국가)
-  const wb = await (await fetch('https://api.worldbank.org/v2/country/all/indicator/NY.GDP.MKTP.CD?format=json&mrv=1&per_page=400')).json();
-  const iso3toNum = Object.fromEntries(rc.map(c => [c.cca3, c.ccn3]));
-  wb[1].forEach(r => { const n = iso3toNum[r.countryiso3code]; if (n && r.value) gdp[n] = r.value; });
+  const iso3toNum = Object.fromEntries(Object.values(countries).map(c => [c.cca3, c.ccn3]));
 
-  draw(geo);
+  // 3) 인구, GDP (World Bank)
+  population = await fetchWB('SP.POP.TOTL', iso3toNum);
+  gdp = await fetchWB('NY.GDP.MKTP.CD', iso3toNum);
+
+  draw();
+  document.getElementById('panel').innerHTML = '<h3>국가를 클릭하세요</h3>';
 }
 
 function color(value, max) {
@@ -50,29 +71,29 @@ function color(value, max) {
 }
 
 let layer;
-function draw(geo) {
+function draw() {
   const theme = document.getElementById('theme').value;
-  const getVal = id => theme === 'gdp' ? gdp[id] : countries[id]?.population;
-  const max = Math.max(...geo.features.map(f => getVal(f.id) || 0));
+  const getVal = id => theme === 'gdp' ? gdp[id] : population[id];
+  const max = Math.max(1, ...geo.features.map(f => getVal(f.id) || 0));
 
   if (layer) layer.remove();
   layer = L.geoJSON(geo, {
     style: f => ({ fillColor: color(getVal(f.id), max), weight:1, color:'#fff', fillOpacity:0.9 }),
     onEachFeature: (f, l) => l.on('click', () => showInfo(f.id))
   }).addTo(map);
-  document.getElementById('theme').onchange = () => draw(geo);
 }
+document.getElementById('theme').onchange = draw;
 
 function showInfo(id) {
   const c = countries[id];
-  if (!c) return;
+  if (!c) { document.getElementById('panel').innerHTML = '<h3>정보 없음</h3>'; return; }
   document.getElementById('panel').innerHTML = `
-    <img src="${c.flags.svg}" width="120"><br>
-    <h2>${c.translations.kor?.common || c.name.common}</h2>
+    <img src="https://flagcdn.com/w160/${c.cca2.toLowerCase()}.png" width="120"><br>
+    <h2>${c.translations?.kor?.common || c.name.common}</h2>
     <p><b>수도:</b> ${c.capital?.[0] || '-'}</p>
-    <p><b>대륙:</b> ${c.region}</p>
-    <p><b>인구:</b> ${c.population.toLocaleString()}명</p>
-    <p><b>언어:</b> ${Object.values(c.languages || {}).join(', ')}</p>
+    <p><b>대륙:</b> ${c.region} / ${c.subregion || ''}</p>
+    <p><b>인구:</b> ${population[id] ? population[id].toLocaleString() + '명' : '-'}</p>
+    <p><b>언어:</b> ${Object.values(c.languages || {}).join(', ') || '-'}</p>
     <p><b>GDP:</b> ${gdp[id] ? '$' + (gdp[id]/1e9).toFixed(1) + 'B' : '-'}</p>
   `;
 }
