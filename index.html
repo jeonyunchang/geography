@@ -307,6 +307,15 @@ header{position:relative;z-index:2000;height:70px;display:flex;align-items:cente
 .cf-round-row:last-child{border-bottom:0}.cf-round-row input{width:18px;height:18px;accent-color:#2477aa;flex-shrink:0}
 .cf-round-row .cf-country-label{flex:1;font-weight:750;overflow-wrap:anywhere}.cf-round-row .cf-selection-label{color:#61788c;font-size:11px;white-space:nowrap}
 .cf-round-row .cf-dot{flex-shrink:0;width:12px;height:12px;margin:0}
+.cf-policy-group{border:0;padding:0;margin:13px 0 10px;min-width:0}
+.cf-policy-group legend{padding:0 0 8px;font-size:14px;font-weight:850;color:#152e48}
+.cf-policy-list{display:grid;gap:7px}
+.cf-policy-option{display:flex;align-items:flex-start;gap:10px;min-width:0;padding:10px 11px;border-radius:10px;border:1px solid #d8e2ea;background:#fff;cursor:pointer;transition:background .15s,border-color .15s}
+.cf-policy-option:has(input:checked){border-color:#2b76b7;background:#ecf5ff}
+.cf-policy-option input{width:19px;height:19px;flex:0 0 19px;accent-color:#2879b6;margin:2px 0 0}
+.cf-policy-option strong{display:block;font-size:13px;color:#18334e;font-weight:850}
+.cf-policy-option small{display:block;margin-top:2px;font-size:11px;line-height:1.5;color:#62768a}
+.cf-policy-option:focus-within{outline:2px solid #5a9cce;outline-offset:2px}
 .cf-load{color:#64788d;font-size:13px;line-height:1.6}
 .cf-card .button:disabled{opacity:.52;cursor:not-allowed}
 @media(max-width:960px){.cf-layout{grid-template-columns:minmax(250px,310px) minmax(0,1fr)}#cfMap{height:clamp(425px,60dvh,620px)}}
@@ -1418,7 +1427,7 @@ function cfReadExcluded(){
  try{const raw=JSON.parse(localStorage.getItem(CF_EXCLUSION_KEY)||'[]');return new Set(Array.isArray(raw)?raw.filter(v=>/^\d{3}$/.test(v)):[])}
  catch{return new Set()}
 }
-const cfState={map:null,layer:null,layers:new Map(),pool:[],excluded:cfReadExcluded(),round:[],index:0,attempts:0,score:0,answers:new Map(),phase:'intro',notice:'',lastPickId:null,lastPickAt:0};
+const cfState={map:null,layer:null,layers:new Map(),pool:[],excluded:cfReadExcluded(),round:[],index:0,attempts:0,score:0,answers:new Map(),phase:'intro',nextMode:'all',notice:'',lastPickId:null,lastPickAt:0};
 const cfPanel=document.getElementById('cfGamePanel');
 function cfWriteExcluded(){try{localStorage.setItem(CF_EXCLUSION_KEY,JSON.stringify([...cfState.excluded]))}catch(e){console.warn('나라찾기 제외 목록 저장 불가',e)}}
 function cfContinent(c){
@@ -1483,19 +1492,35 @@ function cfInit(){
 function cfShuffle(input){
  const a=[...input];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a;
 }
+function cfRoundEligible(mode){
+ // 이번에 풀었던 10개국에만 옵션을 적용합니다. 이전 회차의 제외 설정은 그대로 유지합니다.
+ const inRound=new Set(cfState.round);
+ return cfState.pool.filter(id=>{
+  if(!inRound.has(id))return !cfState.excluded.has(id);
+  return mode==='all'||(mode==='wrong'&&cfState.answers.get(id)==='wrong');
+ }).length;
+}
+function cfApplyRoundMode(mode){
+ // 실제 제외 목록은 결과 화면에서 [새로운 10문제 시작]을 누를 때만 변경됩니다.
+ if(!['all','wrong','none'].includes(mode))return;
+ for(const id of cfState.round){
+  const include=mode==='all'||(mode==='wrong'&&cfState.answers.get(id)==='wrong');
+  if(include)cfState.excluded.delete(id);else cfState.excluded.add(id);
+ }
+ cfWriteExcluded();
+}
 function cfStart(){
+ if(cfState.phase==='finished'){
+  if(cfRoundEligible(cfState.nextMode)<10){cfState.notice='선택한 조건으로는 출제 가능한 나라가 10개 미만입니다. 다른 옵션을 선택하거나 제외 목록을 초기화해 주세요.';cfRender();return;}
+  cfApplyRoundMode(cfState.nextMode);
+ }
  const available=cfAvailable();
  if(available.length<10){cfState.notice='출제 가능한 나라가 10개 미만입니다. 제외 목록을 초기화해 주세요.';cfRender();return;}
  cfState.round=cfShuffle(available).slice(0,10);
- cfState.index=0;cfState.attempts=0;cfState.score=0;cfState.lastPickId=null;cfState.lastPickAt=0;cfState.answers.clear();cfState.phase='playing';cfState.notice='';
+ cfState.index=0;cfState.attempts=0;cfState.score=0;cfState.lastPickId=null;cfState.lastPickAt=0;cfState.answers.clear();cfState.phase='playing';cfState.nextMode='all';cfState.notice='';
  cfRestyle();cfWorldView();cfRender();
 }
 function cfCurrent(){return cfState.round[cfState.index]}
-function cfSetPreference(id,include){
- if(!cfState.round.includes(id))return;
- if(include)cfState.excluded.delete(id);else cfState.excluded.add(id);
- cfWriteExcluded();
-}
 function cfPick(id){
  if(cfState.phase!=='playing')return;
  id=key(id);
@@ -1519,9 +1544,7 @@ function cfPick(id){
 }
 function cfNext(){
  if(cfState.phase!=='review')return;
- const choice=document.getElementById('cfNextChoice');
- if(choice)cfSetPreference(cfCurrent(),choice.value==='include');
- if(cfState.index===9){cfState.phase='finished'}else{cfState.index++;cfState.attempts=0;cfState.lastPickId=null;cfState.lastPickAt=0;cfState.phase='playing';cfState.notice='';cfWorldView()}
+ if(cfState.index===9){cfState.phase='finished';cfState.nextMode='all';cfState.notice=''}else{cfState.index++;cfState.attempts=0;cfState.lastPickId=null;cfState.lastPickAt=0;cfState.phase='playing';cfState.notice='';cfWorldView()}
  cfRender();
 }
 function cfHints(){
@@ -1548,18 +1571,26 @@ function cfRender(){
   return;
  }
  if(cfState.phase==='finished'){
+  const wrongCount=cfState.round.filter(id=>cfState.answers.get(id)==='wrong').length;
+  const eligible=cfRoundEligible(cfState.nextMode);
   const list=cfState.round.map((id,i)=>{
    const c=countries[id],good=cfState.answers.get(id)==='correct';
-   return `<label class="cf-round-row"><input type="checkbox" data-cf-toggle="${safe(id)}" ${cfState.excluded.has(id)?'':'checked'} aria-label="${safe(nameKR(c))} 다음 회차 출제 포함">
-     <span class="cf-dot ${good?'correct':'wrong'}" aria-hidden="true"></span><span class="cf-country-label">${i+1}. ${safe(nameKR(c))}</span>
-     <span class="cf-selection-label">다음 회차 포함</span></label>`;
+   return `<div class="cf-round-row"><span class="cf-dot ${good?'correct':'wrong'}" aria-hidden="true"></span><span class="cf-country-label">${i+1}. ${safe(nameKR(c))}</span><span class="cf-selection-label">${good?'정답':'3회 오답'}</span></div>`;
   }).join('');
+  const modes=[
+   {value:'all',label:'① 전체 포함',info:'이번에 푼 10개국을 모두 다음 출제 후보에 포함'},
+   {value:'wrong',label:'② 틀린 나라만 포함',info:`3번 모두 틀린 ${wrongCount}개국만 포함 · 맞힌 나라는 제외`},
+   {value:'none',label:'③ 전체 제외',info:'이번에 푼 10개국을 모두 다음 출제 후보에서 제외'}
+  ];
+  const options=modes.map(m=>`<label class="cf-policy-option"><input type="radio" name="cfNextMode" value="${m.value}" ${cfState.nextMode===m.value?'checked':''}><span><strong>${m.label}</strong><small>${m.info}</small></span></label>`).join('');
   cfPanel.innerHTML=`<h2>10문제 완료!</h2><p class="cf-round-result">${cfState.score} / 10</p><p>초록색은 정답, 빨간색은 3번 모두 틀린 국가예요.</p>
-    <p><b>다음 회차 출제 선택</b> · 체크한 나라는 다음 10문제에도 등장할 수 있어요. 체크를 해제하면 다음 회차부터 제외됩니다.</p>
-    <div class="cf-round-list">${list}</div>
-    <div class="cf-meta"><span id="cfEligibleCount">다음 회차 출제 가능: ${cfAvailable().length}개국</span></div>
+    <div class="cf-round-list" aria-label="이번 회차 국가별 결과">${list}</div>
+    <fieldset class="cf-policy-group"><legend>다음 회차 출제 설정</legend><div class="cf-policy-list">${options}</div></fieldset>
+    <p class="cf-note">선택한 조건은 이번 회차 10개국에 적용됩니다. 다른 국가 중에서 무작위로 10문제가 출제되며, 포함을 선택해도 반드시 바로 출제되는 것은 아닙니다.</p>
+    <div class="cf-meta"><span id="cfEligibleCount" aria-live="polite">다음 회차 출제 가능: ${eligible}개국</span><span>3회 오답: ${wrongCount}개국</span></div>
+    <div class="cf-feedback failure" id="cfNextWarning" role="alert" ${eligible<10?'':'hidden'}>출제 가능한 나라가 10개 미만입니다. 다른 옵션을 선택하거나 제외 목록을 초기화해 주세요.</div>
     ${cfState.notice?`<div class="cf-feedback failure">${safe(cfState.notice)}</div>`:''}
-    <div class="cf-actions"><button type="button" class="button primary" data-cf-action="start" ${cfAvailable().length<10?'disabled':''}>새로운 10문제 시작</button>
+    <div class="cf-actions"><button type="button" class="button primary" data-cf-action="start" ${eligible<10?'disabled':''}>새로운 10문제 시작</button>
     <button type="button" class="button" data-cf-action="reset">제외 목록 초기화</button></div>`;
   return;
  }
@@ -1570,9 +1601,7 @@ function cfRender(){
    ${!done?`<div class="cf-attempts" aria-label="남은 기회 ${3-cfState.attempts}번"><span>기회</span>${[0,1,2].map(i=>`<i class="cf-attempt ${i<cfState.attempts?'used':''}"></i>`).join('')}</div>`:''}
    ${cfHints()}
    ${cfState.notice?`<div class="cf-feedback ${done?(cfState.answers.get(cfCurrent())==='correct'?'success':'failure'):'info'}" role="status">${safe(cfState.notice)}</div>`:''}
-   ${done?`<div class="cf-choice"><label for="cfNextChoice">다음 회차에 이 나라를</label>
-    <select id="cfNextChoice" class="select"><option value="include" ${cfState.excluded.has(cfCurrent())?'':'selected'}>포함</option><option value="exclude" ${cfState.excluded.has(cfCurrent())?'selected':''}>제외</option></select></div>
-    <div class="cf-actions"><button type="button" class="button primary" data-cf-action="next">${cfState.index===9?'결과 보기':'다음 문제'}</button><button type="button" class="button" data-cf-action="focus">정답 국가 확대</button></div>`:''}`;
+   ${done?`<div class="cf-actions"><button type="button" class="button primary" data-cf-action="next">${cfState.index===9?'결과 보기':'다음 문제'}</button><button type="button" class="button" data-cf-action="focus">정답 국가 확대</button></div>`:''}`;
 }
 cfPanel.addEventListener('click',e=>{
  const button=e.target.closest('button[data-cf-action]');if(!button)return;
@@ -1586,8 +1615,14 @@ cfPanel.addEventListener('click',e=>{
 });
 cfPanel.addEventListener('change',e=>{
  const el=e.target;
- if(el?.id==='cfNextChoice'){cfSetPreference(cfCurrent(),el.value==='include');return;}
- if(el?.matches('input[data-cf-toggle]')){cfSetPreference(el.dataset.cfToggle,el.checked);const counter=document.getElementById('cfEligibleCount');if(counter)counter.textContent=`다음 회차 출제 가능: ${cfAvailable().length}개국`;const startButton=cfPanel.querySelector('button[data-cf-action=\"start\"]');if(startButton)startButton.disabled=cfAvailable().length<10;}
+ if(!el?.matches('input[name="cfNextMode"]')||cfState.phase!=='finished')return;
+ cfState.nextMode=el.value;
+ cfState.notice='';
+ const eligible=cfRoundEligible(cfState.nextMode);
+ const counter=document.getElementById('cfEligibleCount');if(counter)counter.textContent=`다음 회차 출제 가능: ${eligible}개국`;
+ const warning=document.getElementById('cfNextWarning');if(warning)warning.hidden=eligible>=10;
+ const oldNotice=cfPanel.querySelector('.cf-feedback.failure:not(#cfNextWarning)');if(oldNotice)oldNotice.remove();
+ const startButton=cfPanel.querySelector('button[data-cf-action="start"]');if(startButton)startButton.disabled=eligible<10;
 });
 
 // 이벤트 위임으로 패널 내용이 갱신되어도 기능이 유지됩니다.
