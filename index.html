@@ -41,6 +41,34 @@ header{position:relative;z-index:2000;height:70px;display:flex;align-items:cente
 #climateChart{margin-top:12px}.chart-card{padding:10px 8px 7px;border:1px solid #e3e9ef;border-radius:12px;background:white}.chart-card svg{width:100%;height:auto;display:block}
 .chart-legend{display:flex;align-items:center;gap:15px;justify-content:center;font-size:11px;color:#45556a;margin-top:5px}.legend-line{display:inline-block;background:#d65c51;height:3px;width:14px;vertical-align:middle;margin-right:5px}.legend-box{display:inline-block;background:#65a9d9;height:10px;width:12px;vertical-align:middle;margin-right:5px}
 
+
+/* 국가 종교 구성: Pew Research Center 2020년 7대 분류, 국교와 신자 비율은 다른 개념 */
+.religion-block{font-size:12px;color:#32485d;min-width:0}
+.religion-status{padding:10px 11px;background:#f2f7fb;border:1px solid #e3edf6;border-radius:10px;margin:11px 0 13px;line-height:1.7}
+.religion-status b{color:#193c5a}.religion-status.official{background:#fff6e5;border-color:#f0dba7}
+.religion-status .religion-status-tag{font-size:10px;display:inline-block;color:#6b4916;background:#fce8be;padding:1px 7px;border-radius:20px;font-weight:800;margin-right:5px}
+.religion-status.favored .religion-status-tag{color:#3b5470;background:#e4edf7}
+.religion-status.none .religion-status-tag,.religion-status.unknown .religion-status-tag{color:#506377;background:#e5ebf1}
+.religion-status small{display:block;color:#687b89;font-size:10.5px;margin-top:4px;line-height:1.55}
+.religion-source{font-size:10.5px;color:#66778a;line-height:1.7;margin:8px 0 0}
+.religion-stack{display:flex;width:100%;height:15px;overflow:hidden;border-radius:6px;background:#e8eef4;margin:8px 0 14px;border:1px solid #e0e8ef}
+.religion-stack>span{height:100%;display:block;flex:0 0 auto}
+.religion-rows{display:grid;gap:8px;margin-top:6px}
+.religion-row{display:grid;grid-template-columns:minmax(78px,120px) minmax(0,1fr) 50px;align-items:center;column-gap:8px}
+.religion-row .religion-name{font-size:11.5px;color:#30475a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.religion-rail{height:8px;background:#eaf0f5;border-radius:99px;overflow:hidden}
+.religion-rail i{display:block;height:100%;border-radius:99px}
+.religion-share{text-align:right;font-size:11px;font-weight:800;color:#233c54;font-variant-numeric:tabular-nums}
+.religion-dot{display:inline-block;width:9px;height:9px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+.religion-expand{margin:10px 0 0}.religion-expand summary{cursor:pointer;color:#245b89;font-size:11px;font-weight:800;padding:2px 0}
+.religion-empty{border:1px dashed #cbd9e5;border-radius:9px;padding:12px;color:#77879a;font-size:12px;line-height:1.65}
+.religion-block .religion-intro{margin:0 0 9px;font-size:12px;color:#657789;line-height:1.55}
+.religion-breakdown h4{font-size:13px;color:#1c3b57;margin:12px 0 8px}
+.religion-breakdown.compact .religion-status{padding:8px 9px}
+.religion-breakdown.compact .religion-row{grid-template-columns:minmax(77px,102px) minmax(0,1fr) 45px;column-gap:6px}
+.religion-breakdown.compact .religion-row .religion-name{font-size:10.8px}
+@media(max-width:650px){.religion-row{grid-template-columns:minmax(84px,110px) minmax(0,1fr) 48px}.religion-rows{gap:10px}.religion-rail{height:9px}}
+
 /* 국가별 인구 피라미드 */
 .pyramid-head{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:10px}
 .pyramid-head h3{margin:0!important}
@@ -501,6 +529,132 @@ body.home-active .tabs{display:none}
  .home-tile-image{width:67px;height:73px}.home-tile-title{font-size:21px}.home-tile-description{font-size:10px}
 }
 
+
+/* ================================================
+   학생 탐구 Padlet 자료실 — 기존 지도/통계/퀴즈 코드와 분리
+   ================================================ */
+.home-tile.padlets{grid-column:1/-1;background:linear-gradient(115deg,#e5fbfa,#f0f8ff);min-height:126px}
+.home-tile.padlets .home-tile-arrow{background:#5bb8bd}
+#padletsScreen[hidden]{display:none!important}
+#padletsScreen{min-height:calc(100dvh - 70px);background:#f5f9fc;padding:31px 24px 74px}
+.padlet-wrap{max-width:1290px;margin:0 auto}
+.padlet-heading{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:20px}
+.padlet-heading h1{margin:0;color:#17364e;font-size:clamp(24px,3vw,35px);letter-spacing:-1px;font-weight:900}
+.padlet-heading h1 span{font-size:14px;color:#81909b;font-weight:650;letter-spacing:0}
+.padlet-heading p{margin:8px 0 0;font-size:14px;line-height:1.65;color:#607487}
+.padlet-heading-highlight{color:#0f8392;font-weight:800}
+.padlet-view-controls{display:flex;align-items:center;gap:7px;padding:5px;background:#e5eef5;border-radius:14px}
+.padlet-view-controls button{border:0;background:transparent;padding:10px 15px;color:#3c627a;border-radius:10px;font-size:13px;font-weight:800;white-space:nowrap}
+.padlet-view-controls button[aria-pressed="true"]{background:white;color:#143d57;box-shadow:0 2px 7px #25526f17}
+.padlet-view-controls button:focus-visible,.padlet-board-button:focus-visible,.padlet-screen-link:focus-visible{outline:3px solid #47a0c6;outline-offset:2px}
+.padlet-intro{display:flex;align-items:center;gap:12px;background:#e9f8f7;border:1px solid #c9e9e5;border-radius:14px;padding:13px 17px;margin-bottom:18px}
+.padlet-intro-icon{font-size:24px;flex:none}
+.padlet-intro p{color:#365f69;font-size:12px;margin:0;line-height:1.65}
+.padlet-layout{display:grid;grid-template-columns:270px minmax(0,1fr);gap:18px;align-items:start}
+.padlet-board-list{display:grid;gap:10px}
+.padlet-board-button{border:1px solid #e0e8ef;border-radius:15px;background:white;text-align:left;padding:17px 14px;display:flex;align-items:center;gap:12px;min-height:91px;box-shadow:0 3px 12px #2349600b;transition:border-color .16s,background .16s,box-shadow .16s}
+.padlet-board-button:hover{background:#f8fcfe;border-color:#acd9e0}
+.padlet-board-button[aria-pressed="true"]{background:#eafffb;border-color:#60c8c0;box-shadow:0 0 0 2px #4ac1b226}
+.padlet-board-icon{width:43px;height:43px;border-radius:13px;background:#e6f4fc;display:grid;place-items:center;font-size:21px;flex:none}
+.padlet-board-button:nth-child(2) .padlet-board-icon{background:#e5f8eb}
+.padlet-board-button:nth-child(3) .padlet-board-icon{background:#fff2d9}
+.padlet-board-button:nth-child(4) .padlet-board-icon{background:#f0ebff}
+.padlet-board-meta{display:flex;flex-direction:column;gap:3px;min-width:0}
+.padlet-board-meta strong{font-size:14px;color:#203e51;font-weight:850}
+.padlet-board-meta small{font-size:11px;color:#83929e;font-weight:650}
+.padlet-viewer,.padlet-all-card{background:white;border:1px solid #dfe9ef;border-radius:18px;overflow:hidden;box-shadow:0 4px 18px #173a5910;min-width:0}
+.padlet-viewer-header,.padlet-all-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 18px;border-bottom:1px solid #e5edf2;flex-wrap:wrap}
+.padlet-viewer-header strong,.padlet-all-head strong{color:#19384c;font-size:17px;font-weight:850}
+.padlet-viewer-header small,.padlet-all-head small{display:block;color:#8496a4;font-size:11px;margin-top:3px;font-weight:650}
+.padlet-screen-link{display:inline-flex;align-items:center;justify-content:center;gap:5px;text-decoration:none;color:#155d7c;border:1px solid #b7dce8;background:#f7fcff;padding:10px 12px;border-radius:10px;font-size:12px;font-weight:800;white-space:nowrap}
+.padlet-screen-link:hover{background:#eaf8ff}
+.padlet-iframe{display:block;border:0;width:100%;height:clamp(490px,67dvh,820px);background:#f0f5f8}
+.padlet-iframe-note{margin:0;padding:9px 15px;background:#fafcfe;border-top:1px solid #edf1f4;color:#708394;font-size:11px;line-height:1.6}
+.padlet-all-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.padlet-all-card .padlet-iframe{height:490px}
+.padlet-help{margin-top:22px;border:1px solid #dce8ef;background:white;border-radius:14px;padding:17px 20px;color:#5e7586;font-size:13px;line-height:1.7}
+.padlet-help summary{cursor:pointer;font-weight:850;color:#2b556e}
+.padlet-help p{margin:9px 0 0}
+.padlet-help a{font-weight:750}
+@media (min-width:651px) and (max-width:1080px){
+ .tabs .tab{min-width:86px;padding:0 10px}
+ .tabs .tab-ko{font-size:13px}
+ .tabs .tab-en{font-size:10px}
+ .padlet-layout{grid-template-columns:225px minmax(0,1fr)}
+ .padlet-board-button{padding:13px 10px}
+}
+@media (max-width:760px){
+ .padlet-all-grid{grid-template-columns:1fr}
+ .padlet-all-card .padlet-iframe{height:540px}
+}
+@media (max-width:650px){
+ #padletsScreen{padding:20px 10px 45px;min-height:calc(100dvh - var(--mobile-header-height))}
+ .padlet-heading{align-items:stretch;gap:13px}
+ .padlet-heading h1{font-size:25px}
+ .padlet-heading h1 span{font-size:12px}
+ .padlet-heading p{font-size:12px}
+ .padlet-view-controls{width:100%;display:grid;grid-template-columns:1fr 1fr}
+ .padlet-view-controls button{padding:12px 8px}
+ .padlet-intro{padding:11px 12px;gap:7px}
+ .padlet-intro p{font-size:11px}
+ .padlet-layout{display:block}
+ .padlet-board-list{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-bottom:13px}
+ .padlet-board-button{padding:10px;min-height:67px;gap:7px;border-radius:12px}
+ .padlet-board-icon{width:35px;height:35px;font-size:17px;border-radius:10px}
+ .padlet-board-meta strong{font-size:12px}
+ .padlet-board-meta small{font-size:10px}
+ .padlet-viewer-header,.padlet-all-head{padding:13px;gap:8px}
+ .padlet-viewer-header strong,.padlet-all-head strong{font-size:14px}
+ .padlet-screen-link{padding:9px 10px;font-size:11px}
+ .padlet-iframe{height:min(68dvh,710px);min-height:460px}
+ .padlet-all-card .padlet-iframe{height:520px}
+ .padlet-all-grid{gap:13px}
+ .padlet-help{padding:13px 15px;font-size:12px}
+ .home-tile.padlets{grid-column:auto;min-height:97px}
+ body.home-active.home-menu-open .tabs{grid-template-columns:repeat(3,minmax(0,1fr));height:auto;grid-auto-rows:48px}
+ header:not(:has(.home-menu-toggle[aria-expanded="true"])) .tabs{overflow-x:auto}
+}
+@media (max-width:370px){
+ .padlet-board-list{grid-template-columns:1fr}
+ .padlet-board-button{min-height:53px}
+ .padlet-viewer-header,.padlet-all-head{align-items:flex-start}
+}
+
+#padletSingleLayout[hidden],#padletAllGrid[hidden]{display:none!important}
+/* 5개 탭에서 모바일 헤더가 두 줄로 밀리지 않도록 유지 */
+@media(max-width:650px){
+ body:not(.home-active) .tabs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));height:48px;overflow:hidden}
+ body:not(.home-active) .tab{display:flex;flex-direction:column;gap:1px;padding:0 1px;min-width:0;height:48px;overflow:hidden}
+ body:not(.home-active) .tab-ko{font-size:11px;line-height:15px}
+ body:not(.home-active) .tab-en{font-size:9px;line-height:12px}
+ body:not(.home-active) #tab-padlets .tab-ko{font-size:0}
+ body:not(.home-active) #tab-padlets .tab-ko::after{content:'탐구자료';font-size:11px;line-height:15px}
+ body.home-active.home-menu-open .tabs{overflow:visible}
+}
+
+
+/* 학기별 Padlet 목록: 연도·학기 필터와 그룹 머리글 */
+.padlet-term-filter{display:grid;grid-template-columns:minmax(190px,1fr) auto auto;align-items:center;gap:16px;margin:0 0 17px;padding:16px 18px;border:1px solid #cce8ee;background:linear-gradient(115deg,#eaf9fb,#f5fbff);border-radius:17px}
+.padlet-term-head{display:flex;align-items:center;gap:11px;min-width:0}
+.padlet-term-emoji{font-size:27px;line-height:1}
+.padlet-term-head strong{display:block;color:#1c4257;font-size:15px;font-weight:900}
+.padlet-term-head small{display:block;color:#668394;font-size:12px;margin-top:4px;line-height:1.45}
+.padlet-term-fields{display:flex;align-items:center;gap:9px}
+.padlet-term-fields label{display:flex;align-items:center;gap:8px;color:#345768;font-size:12px;font-weight:850;white-space:nowrap}
+.padlet-term-fields select{min-width:107px;min-height:42px;appearance:none;-webkit-appearance:none;padding:9px 34px 9px 11px;border:1px solid #bcdde8;border-radius:10px;color:#173d52;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='10' viewBox='0 0 14 10'%3E%3Cpath d='m2 3 5 5 5-5' fill='none' stroke='%234b778c' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E") right 11px center / 13px auto no-repeat;font-size:13px;font-weight:800;font-family:inherit;cursor:pointer}
+.padlet-term-fields select:focus-visible{outline:3px solid #6cd0c7;outline-offset:2px}
+.padlet-term-current{display:flex;flex-direction:column;align-items:center;gap:5px;min-width:110px}
+.padlet-term-current span{border-radius:999px;background:#166b7c;color:white;padding:7px 13px;font-size:15px;font-weight:900;white-space:nowrap}
+.padlet-term-current small{font-size:12px;color:#668394;font-weight:750;white-space:nowrap}
+.padlet-list-group{grid-column:1/-1;display:flex;justify-content:space-between;align-items:center;gap:8px;border-bottom:1px solid #d9e9ef;padding:9px 4px 8px;color:#1c5665}
+.padlet-list-group strong,.padlet-all-group strong{font-size:13px;font-weight:900}
+.padlet-list-group span,.padlet-all-group span{font-size:11px;color:#678696;font-weight:800;white-space:nowrap}
+.padlet-all-group{grid-column:1/-1;display:flex;justify-content:space-between;align-items:center;gap:9px;background:#eaf5f8;border:1px solid #d7e7ed;border-radius:12px;padding:11px 15px;color:#1c5665}
+.padlet-empty{padding:26px 18px;color:#647e8c;font-size:14px;text-align:center;line-height:1.6}
+@media (max-width:940px){.padlet-term-filter{grid-template-columns:1fr auto}.padlet-term-fields{grid-row:2;grid-column:1/-1}.padlet-term-current{grid-row:1;grid-column:2}}
+@media (max-width:650px){.padlet-term-filter{padding:13px 12px;gap:11px}.padlet-term-head strong{font-size:13px}.padlet-term-head small{font-size:11px}.padlet-term-emoji{font-size:23px}.padlet-term-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.padlet-term-fields label{display:flex;flex-direction:column;align-items:flex-start;gap:5px}.padlet-term-fields select{width:100%;min-width:0;font-size:13px}.padlet-term-current{min-width:83px}.padlet-term-current span{font-size:13px;padding:6px 11px}.padlet-term-current small{font-size:10px}.padlet-all-group{padding:10px 11px}}
+@media (max-width:350px){.padlet-term-filter{grid-template-columns:1fr}.padlet-term-head{grid-column:1}.padlet-term-current{grid-row:2;grid-column:1;flex-direction:row;align-items:center;justify-content:flex-start}.padlet-term-fields{grid-row:3;grid-column:1}}
+
 </style>
 </head>
 <body class="home-active">
@@ -511,13 +665,14 @@ body.home-active .tabs{display:none}
     <button id="tab-compare" class="tab" type="button" role="tab" aria-selected="false" aria-controls="compareScreen" data-tab="compare"><span class="tab-ko">비교하기</span><span class="tab-en" lang="en">Compare</span></button>
     <button id="tab-find" class="tab" type="button" role="tab" aria-selected="false" aria-controls="findScreen" data-tab="find"><span class="tab-ko">나라찾기</span><span class="tab-en" lang="en">Find</span></button>
     <button id="tab-quiz" class="tab" type="button" role="tab" aria-selected="false" aria-controls="quizScreen" data-tab="quiz"><span class="tab-ko">퀴즈</span><span class="tab-en" lang="en">Quiz</span></button>
+    <button id="tab-padlets" class="tab" type="button" role="tab" aria-selected="false" aria-controls="padletsScreen" data-tab="padlets"><span class="tab-ko">우리의 지리 탐구</span><span class="tab-en" lang="en">Padlet</span></button>
   </nav>
   <button class="home-menu-toggle" id="homeMenuButton" type="button" aria-expanded="false" aria-label="학습 기능 메뉴 열기" aria-controls="mainTabs">☰</button>
 </header>
 <section id="homeScreen" aria-labelledby="homeTitle">
   <div class="home-shell">
     <div class="home-hero"><div class="home-hero-inner">
-      <div class="home-hero-text"><span class="home-kicker">🔍 즐거운 지리 탐구</span>
+      <div class="home-hero-text"><span class="home-kicker">🌎 즐거운 세계지리 탐구</span>
         <h1 id="homeTitle">세상을 지도 위에서<br><span>탐험해 보세요</span></h1>
         <p class="home-hero-desc">지도를 누르고, 나라를 비교하고, 퀴즈로 배워보세요.</p></div>
       <svg class="home-hero-illustration" viewBox="0 0 500 298" role="img" aria-label="지구본과 세계지도, 책과 돋보기가 있는 지리 탐험 일러스트" xmlns="http://www.w3.org/2000/svg">
@@ -561,8 +716,43 @@ body.home-active .tabs{display:none}
 <button class="home-tile quiz" type="button" data-open-tab="quiz" aria-label="퀴즈 Quiz 열기">
 <span class="home-tile-image"><svg viewBox="0 0 120 90" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect x="13" y="13" width="80" height="72" rx="6" fill="#f4fbff" stroke="#548fbc" stroke-width="5"/><rect x="35" y="6" width="34" height="15" rx="6" fill="#8bc6e7" stroke="#477ca8" stroke-width="3"/><g stroke="#51bba6" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M23 37L28 43L38 31M23 56L28 62L38 50M23 74L28 80L38 68"/></g><g stroke="#9ab5ca" stroke-width="3"><path d="M46 38H80M46 56H75M46 74H73"/></g><path d="M75 76L102 34L112 42L85 83L72 88Z" fill="#ffca55" stroke="#d29431" stroke-width="2"/><path d="M72 88L77 76L85 83Z" fill="#517b9d"/></svg></span>
 <span class="home-tile-content"><strong class="home-tile-title">퀴즈 Quiz</strong><span class="home-tile-en" lang="en">QUIZ</span><span class="home-tile-description">기후·종교·인구를 복습해요</span></span>
+<span class="home-tile-arrow" aria-hidden="true">›</span></button>
+<button class="home-tile padlets" type="button" data-open-tab="padlets" aria-label="우리의 지리 탐구 Padlet 자료실 열기">
+<span class="home-tile-image" aria-hidden="true"><svg viewBox="0 0 120 90" xmlns="http://www.w3.org/2000/svg"><rect x="10" y="19" width="59" height="50" rx="8" fill="#a5e9e0" stroke="#3caba9" stroke-width="3"/><rect x="44" y="8" width="62" height="61" rx="8" fill="#e7f7ff" stroke="#5d9fc3" stroke-width="3"/><rect x="57" y="18" width="16" height="17" rx="3" fill="#ffd971"/><rect x="79" y="18" width="16" height="17" rx="3" fill="#b6e0f3"/><path d="M56 44H95 M56 54H87" fill="none" stroke="#7ca6b6" stroke-width="4" stroke-linecap="round"/><path d="M19 41H38M19 51H33" stroke="#399a99" stroke-width="4" stroke-linecap="round"/></svg></span>
+<span class="home-tile-content"><strong class="home-tile-title">우리의 지리 탐구</strong><span class="home-tile-en" lang="en">STUDENT PADLET ARCHIVE</span><span class="home-tile-description">학기별로 모아 둔 학생들의 Padlet 탐구 자료를 살펴보세요.</span></span>
 <span class="home-tile-arrow" aria-hidden="true">›</span></button></div>
     <svg class="home-landscape" viewBox="0 0 1300 105" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" aria-hidden="true"><path d="M0 65L65 29L111 61L166 14L224 63L310 44L360 73L440 39L523 72L620 54L718 76L786 48L850 67L912 35L966 62L1054 15L1113 68L1166 36L1240 64L1300 43V105H0Z" fill="#bce8ed"/><path d="M0 83L44 53L112 91L166 35L211 87L280 59L368 94L460 68L540 102L620 75L711 99L793 68L875 100L946 62L1035 93L1119 38L1202 101L1300 67V105H0Z" fill="#79cfce" opacity=".9"/><path d="M148 52L166 35L185 55L174 54L167 44L159 55Z M1105 53L1119 38L1139 58L1126 54L1119 46L1111 54Z" fill="white" opacity=".8"/></svg>
+  </div>
+</section>
+<section id="padletsScreen" role="tabpanel" aria-labelledby="tab-padlets" hidden>
+  <div class="padlet-wrap">
+    <div class="padlet-heading">
+      <div><h1>우리의 지리 탐구 <span lang="en">Student Padlet Archive</span></h1>
+        <p>수업에서 학생들이 정리한 자료를 <span class="padlet-heading-highlight">연도·학기별로 모아</span> 확인해 보세요.</p></div>
+      <div class="padlet-view-controls" role="group" aria-label="자료 보기 방식">
+        <button id="padletSingleMode" type="button" aria-pressed="true">▣ 하나씩 보기</button>
+        <button id="padletAllMode" type="button" aria-pressed="false">▦ 모두 보기</button>
+      </div>
+    </div>
+    <div class="padlet-term-filter" role="group" aria-label="Padlet 연도 및 학기 선택">
+      <div class="padlet-term-head"><span class="padlet-term-emoji" aria-hidden="true">🗂️</span><div><strong>학기별 탐구 자료</strong><small>연도와 학기를 선택해 수업 자료를 찾아보세요.</small></div></div>
+      <div class="padlet-term-fields">
+        <label for="padletYearSelect">연도 <select id="padletYearSelect" aria-label="탐구 자료 연도"></select></label>
+        <label for="padletSemesterSelect">학기 <select id="padletSemesterSelect" aria-label="탐구 자료 학기"></select></label>
+      </div>
+      <div class="padlet-term-current" aria-live="polite"><span id="padletTermBadge">2026-2</span><small id="padletTermCount">게시판 4개</small></div>
+    </div>
+    <div class="padlet-intro"><span class="padlet-intro-icon" aria-hidden="true">📚</span>
+      <p>선택한 학기의 탐구 게시판을 <b>하나씩</b> 또는 <b>한꺼번에</b> 볼 수 있어요. 새로운 학기의 자료도 같은 목록에 차곡차곡 쌓입니다.</p></div>
+    <div id="padletSingleLayout" class="padlet-layout">
+      <div class="padlet-board-list" id="padletBoardList" role="group" aria-label="Padlet 게시판 선택"></div>
+      <div class="padlet-viewer" id="padletViewer" aria-live="polite"></div>
+    </div>
+    <div id="padletAllGrid" class="padlet-all-grid" hidden></div>
+    <details class="padlet-help"><summary>Padlet 게시판이 보이지 않을 때 · 자료 공개 시 주의사항</summary>
+      <p>게시판이 표시되지 않으면 각 자료의 <b>Padlet에서 열기</b>를 눌러 확인해 주세요. 소유자의 Padlet 공유 설정에서 비밀번호나 로그인 요구가 켜져 있으면 사이트 안에 삽입되지 않을 수 있어요.</p>
+      <p>이 웹사이트는 공개적으로 접속할 수 있으므로, 학생 실명·얼굴 사진·연락처 등 개인정보가 포함된 게시물은 공개 전에 비식별화하고 학교의 자료 공개 기준을 확인해 주세요. 자료가 보이는 범위는 원본 Padlet의 공유 권한을 따릅니다.</p>
+    </details>
   </div>
 </section>
 <section id="mapScreen" role="tabpanel" aria-labelledby="tab-map" style="display:none">
@@ -605,7 +795,7 @@ body.home-active .tabs{display:none}
       <div id="comparePyramids" class="compare-pyramids" aria-live="polite" tabindex="0" aria-label="국가별 인구 피라미드, 좌우로 스크롤 가능"></div>
       <p id="comparePyramidYearNote" class="foot" style="margin-top:12px"></p>
     </section>
-    <p class="foot" style="margin-top:18px">통계 출처: World Bank Open Data(국가별 최신 비결측 연도), 일부 총인구는 국가 기본정보 참고값. 종교·쾨펜 기후는 주요 국가의 대표적 특성을 제시하며 국가 전체를 단일 구분으로 단정하지 않습니다.</p>
+    <p class="foot" style="margin-top:18px">통계 출처: World Bank Open Data(국가별 최신 비결측 연도). 종교 구성: Pew Research Center의 2020년 추정치(2025 발표). 국교 정보: 2015년 국가·종교 관계 분류에 이후 확인된 변경 사항 반영. 쾨펜 기후는 주요 지역의 대표 유형입니다.</p>
   </div>
 </section>
 <section id="findScreen" role="tabpanel" aria-labelledby="tab-find" hidden>
@@ -892,6 +1082,170 @@ const moreReligions={
  VE:'기독교(주로 가톨릭)',YE:'이슬람교',ZM:'기독교·전통 신앙',ZW:'기독교·전통 신앙'
 };
 function religionText(c){return overview[c?.cca2]?.[0]||moreReligions[c?.cca2]||'해당 국가의 종교 개관 미등록 (Pew 자료에서 추가 확인 필요)'}
+
+// ================================================================
+// 종교 구성: Pew Research Center, 2025 발표 2020년 추정값.
+// 종교 신자 비율과 법적 국교의 지정은 서로 다른 차원입니다.
+// 무료 공개 데이터 소스를 우선 조회하고, 수업에서 자주 쓰는 국가는
+// 같은 Pew 보고서 Appendix B의 값을 내부 예비자료로 제공해요.
+// ================================================================
+const RELIGION_PEW_URL='https://www.pewresearch.org/religion/feature/religious-composition-by-country-2010-2020/';
+const RELIGION_STATE_URL='https://www.pewresearch.org/religion/2017/10/03/many-countries-favor-specific-religions-officially-or-unofficially/';
+const RELIGION_TYPES=[
+ {id:'christian',label:'기독교',color:'#4F82C4'},
+ {id:'muslim',label:'이슬람교',color:'#41A686'},
+ {id:'unaffiliated',label:'무종교·비종교인',color:'#8B92A1'},
+ {id:'buddhist',label:'불교',color:'#E3A34B'},
+ {id:'hindu',label:'힌두교',color:'#BC79BE'},
+ {id:'jewish',label:'유대교',color:'#B48A61'},
+ {id:'other',label:'기타 종교',color:'#83B2AB'}
+];
+// 순서: 기독교 / 이슬람교 / 무종교 / 불교 / 힌두교 / 유대교 / 기타 종교
+const RELIGION_PEW_2020_BACKUP={"KR":["32.0","0.3","48.3","19.0","<0.1","<0.1","0.3"],"KP":["0.4","<0.1","72.9","1.5","<0.1","<0.1","25.2"],"JP":["2.2","0.2","57.5","37.2","<0.1","<0.1","2.9"],"CN":["1.8","1.8","89.6","3.7","<0.1","<0.1","3.0"],"TW":["5.5","0.5","23.1","19.2","<0.1","<0.1","51.7"],"IN":["2.2","15.2","<0.1","0.7","79.4","<0.1","2.5"],"PK":["1.3","96.5","<0.1","<0.1","2.1","<0.1","<0.1"],"BD":["0.3","91.1","<0.1","0.6","7.9","<0.1","0.1"],"ID":["10.3","87.0","<0.1","0.7","1.6","<0.1","0.4"],"MY":["9.2","64.1","0.8","18.9","6.1","<0.1","0.9"],"SG":["18.8","16.1","19.9","30.8","5.3","<0.1","9.1"],"TH":["1.0","4.5","<0.1","94.4","<0.1","<0.1","<0.1"],"VN":["8.3","<0.1","67.7","23.0","<0.1","<0.1","0.9"],"PH":["91.5","6.5","<0.1","<0.1","<0.1","<0.1","2.0"],"SA":["4.4","92.7","0.1","<0.1","2.6","<0.1","0.1"],"IR":["0.1","99.8","<0.1","<0.1","<0.1","<0.1","<0.1"],"IL":["1.9","14.7","4.4","<0.1","0.2","77.0","1.8"],"TR":["0.1","97.1","2.5","<0.1","<0.1","<0.1","0.1"],"RU":["69.9","8.2","20.2","0.4","<0.1","<0.1","1.2"],"MN":["1.3","3.5","40.8","51.1","<0.1","<0.1","3.2"],"US":["64.0","1.2","29.7","1.3","0.9","1.7","1.2"],"CA":["53.3","4.9","34.6","1.7","1.5","0.9","3.0"],"MX":["89.2","<0.1","10.6","<0.1","<0.1","<0.1","0.1"],"BR":["80.7","<0.1","13.5","0.1","<0.1","<0.1","5.7"],"AR":["88.5","0.9","9.2","<0.1","<0.1","0.4","1.0"],"CL":["68.3","<0.1","30.3","<0.1","<0.1","<0.1","1.2"],"GB":["49.4","6.4","40.2","0.5","1.7","0.4","1.4"],"FR":["46.5","9.1","42.6","0.7","0.1","0.7","0.3"],"DE":["56.2","6.5","36.1","0.3","0.2","0.1","0.4"],"IT":["80.5","4.4","13.3","0.6","0.4","<0.1","0.7"],"ES":["69.5","3.6","26.4","<0.1","0.1","<0.1","0.4"],"NL":["35.1","5.5","54.1","0.3","0.6","0.2","4.2"],"SE":["60.8","8.1","28.9","0.8","0.5","0.2","0.8"],"NO":["71.4","4.1","22.5","0.7","0.2","<0.1","1.0"],"AU":["46.8","3.5","42.3","2.6","3.0","0.4","1.4"],"NZ":["40.3","1.4","51.4","1.2","2.8","0.1","2.9"],"EG":["4.8","95.2","<0.1","<0.1","<0.1","<0.1","<0.1"],"NG":["43.4","56.1","0.4","<0.1","<0.1","<0.1","0.2"],"ZA":["85.3","1.6","3.1","<0.1","1.1","<0.1","8.9"],"ET":["61.6","36.2","<0.1","<0.1","<0.1","<0.1","2.1"],"KE":["85.7","10.9","1.6","<0.1","0.1","<0.1","1.7"],"MA":["<0.1","99.7","0.1","<0.1","<0.1","<0.1","0.1"],"NP":["1.8","5.1","<0.1","8.2","81.2","<0.1","3.8"],"BT":["0.6","0.2","<0.1","74.7","22.5","<0.1","1.9"],"KH":["0.3","2.0","<0.1","97.1","<0.1","<0.1","0.5"],"MM":["6.1","3.3","<0.1","89.1","0.4","<0.1","1.0"],"LK":["5.6","10.2","<0.1","69.6","14.5","<0.1","<0.1"],"AE":["14.3","72.9","0.3","0.2","11.8","<0.1","0.5"],"QA":["12.5","75.9","0.3","0.2","10.6","<0.1","0.4"],"AM":["97.3","0.3","1.2","<0.1","<0.1","<0.1","1.2"],"GR":["89.5","5.1","4.7","<0.1","<0.1","<0.1","0.5"],"FI":["72.3","1.6","25.0","0.3","0.1","<0.1","0.5"],"GH":["71.3","19.9","1.1","<0.1","<0.1","<0.1","7.8"],"PL":["91.2","<0.1","8.6","<0.1","<0.1","<0.1","0.1"],"PT":["85.1","0.4","13.8","0.2","0.2","<0.1","0.3"],"KZ":["19.3","77.9","2.5","<0.1","<0.1","<0.1","0.1"],"GE":["88.2","10.5","1.0","<0.1","<0.1","<0.1","0.3"]};
+const religion2020Cache=new Map();
+let religionSourceStatus='loading';
+let religionSourceAttempted=false;
+const RELIGION_OFFICIAL_2015={
+ AF:'이슬람교',DZ:'이슬람교',AM:'기독교(아르메니아 사도교회)',BH:'이슬람교',BD:'이슬람교',BT:'불교',BN:'이슬람교',KH:'불교',KM:'이슬람교',CR:'기독교(가톨릭)',DK:'기독교(루터교)',DJ:'이슬람교',DO:'기독교(가톨릭)',EG:'이슬람교',GR:'기독교(정교회)',IS:'기독교(루터교)',IR:'이슬람교(시아파)',IQ:'이슬람교',IL:'유대교(※ 국가 정체성과 법적 해석에 주의)',JO:'이슬람교',KW:'이슬람교',LY:'이슬람교',LI:'기독교(가톨릭)',MY:'이슬람교',MV:'이슬람교',MT:'기독교(가톨릭)',MR:'이슬람교',MC:'기독교(가톨릭)',MA:'이슬람교',NO:'기독교(루터교)',OM:'이슬람교',PK:'이슬람교',PS:'이슬람교',QA:'이슬람교',SA:'이슬람교',SO:'이슬람교',TN:'이슬람교',TV:'기독교',AE:'이슬람교',GB:'기독교(잉글랜드 국교회 등, 지역별 차이)',EH:'이슬람교(영유권 분쟁 지역)',YE:'이슬람교',ZM:'기독교(헌법상 기독교 국가 선언)'
+};
+const RELIGION_FAVORED_2015={
+ AD:'기독교',AO:'기독교',AR:'기독교',BY:'정교회',BG:'정교회',MM:'불교',CV:'기독교',GQ:'기독교',ER:'여러 종교',FI:'루터교',GE:'정교회',GT:'기독교',HT:'기독교',HN:'기독교',ID:'여러 종교',IT:'가톨릭',LA:'불교',LR:'기독교',LT:'여러 종교',MD:'정교회',MN:'불교',NI:'기독교',PA:'기독교',PG:'기독교',PY:'기독교',PE:'기독교',PL:'가톨릭',MK:'정교회',RO:'정교회',RU:'러시아 정교회',RS:'여러 종교',LK:'불교',SD:'이슬람교',SY:'이슬람교',TG:'여러 종교',TR:'이슬람교'
+};
+const RELIGION_STATE_EXCEPTIONS={
+ NO:{kind:'none',label:'국교 없음',detail:'2012년 국교 제도가 폐지됐고, 노르웨이 교회(루터교)는 헌법에 따라 특별한 지위를 유지합니다. (노르웨이 정부 2025) ',url:'https://www.regjeringen.no/en/documents/norwegian-guidelines-for-freedom-of-religion-or-belief/id2983169/?ch=7'},
+ TN:{kind:'none',label:'국교 없음',detail:'2022년 헌법에서 이슬람교의 국교 명시가 삭제됐습니다. 2015년 Pew의 국교 분류와 다릅니다. (Pew 2025)',url:'https://www.pewresearch.org/global/2025/01/28/what-role-should-religion-play-in-muslim-and-jewish-majority-countries/'}
+};
+function religionStateDetails(c){
+ const iso=c?.cca2;if(!iso)return {kind:'unknown',label:'별도 확인 필요',detail:'해당 국가·지역의 법적 지위를 확인하지 못했습니다.'};
+ if(RELIGION_STATE_EXCEPTIONS[iso])return RELIGION_STATE_EXCEPTIONS[iso];
+ if(RELIGION_OFFICIAL_2015[iso])return {kind:'official',label:'국교(2015년 분류)',religion:RELIGION_OFFICIAL_2015[iso],detail:'Pew Research Center의 2015년 국가-종교 관계 조사 기준입니다. 이후 헌법·법률 변경 가능성이 있어 현재 지위와 구별하세요.',url:RELIGION_STATE_URL};
+ if(RELIGION_FAVORED_2015[iso])return {kind:'favored',label:'국교 없음·국가 우대',religion:RELIGION_FAVORED_2015[iso],detail:'Pew의 2015년 분류에서 국교가 아닌 우대 종교로 구분됐습니다. 현행 법령은 별도로 확인해야 합니다.',url:RELIGION_STATE_URL};
+ return {kind:'none',label:'국교 지정 확인되지 않음',detail:'Pew의 2015년 국가-종교 관계 분류를 참고했습니다. 소국·지역 일부는 조사 대상이 아니며, 현재 제도의 별도 확인이 필요합니다.',url:RELIGION_STATE_URL};
+}
+function religionRateEntry(raw){
+ const trimmed=String(raw).trim();const tiny=trimmed.startsWith('<');
+ const n=tiny?0.05:Number(trimmed.replace(/%/g,''));
+ if(!Number.isFinite(n)||n<0||n>100)return null;
+ return {number:n,text:(tiny||(n>0&&n<0.1))?'<0.1%':`${Number(n.toFixed(1)).toLocaleString('ko-KR',{maximumFractionDigits:1})}%`};
+}
+function religionFromArray(values){
+ if(!Array.isArray(values)||values.length!==7)return null;
+ const converted=values.map(religionRateEntry);if(converted.some(x=>!x))return null;
+ const sum=converted.reduce((s,x)=>s+x.number,0);
+ if(sum<95||sum>105)return null;
+ return converted;
+}
+function religionCountryData(c){
+ if(!c)return null;
+ return religion2020Cache.get(String(c.cca3||'').toUpperCase())||religionFromArray(RELIGION_PEW_2020_BACKUP[c.cca2]);
+}
+function religionStateHtml(c){
+ const st=religionStateDetails(c);
+ return `<div class="religion-status ${safe(st.kind)}"><span class="religion-status-tag">${safe(st.label)}</span>${st.religion?`<b>${safe(st.religion)}</b>`:''}<small>${safe(st.detail||'')}${st.url?` <a target="_blank" rel="noopener noreferrer" href="${safe(st.url)}">출처 확인</a>`:''}</small></div>`;
+}
+function religionBreakdownHtml(c,{compact=false}={}){
+ const data=religionCountryData(c);
+ const stateBlock=religionStateHtml(c);
+ const intro='<p class="religion-intro">아래 비율은 신자의 종교적 <b>소속(정체성)</b>에 관한 추정치로, 국교 여부와는 별개입니다.</p>';
+ if(!data){const info=religionSourceStatus==='loading'?'종교별 비율 자료를 불러오고 있습니다…':'국가별 비율 자료를 확보하지 못했습니다. (임의 추정 없음)';
+  return `<div class="religion-block religion-breakdown${compact?' compact':''}">${stateBlock}${intro}<div class="religion-empty">${info}</div><p class="religion-source">대표 종교·전통: ${safe(religionText(c))}</p><p class="religion-source"><a target="_blank" rel="noopener noreferrer" href="${RELIGION_PEW_URL}">Pew 국가별 구성 자료 확인</a></p></div>`;
+ }
+ const rows=RELIGION_TYPES.map((g,i)=>({...g,...data[i]})).sort((a,b)=>b.number-a.number);
+ const rowHtml=g=>`<div class="religion-row"><span class="religion-name" title="${safe(g.label)}"><i class="religion-dot" style="background:${g.color}"></i>${safe(g.label)}</span><div class="religion-rail" role="img" aria-label="${safe(g.label)} ${safe(g.text)}"><i style="width:${g.number}%;background:${g.color}"></i></div><span class="religion-share">${safe(g.text)}</span></div>`;
+ const stacked=rows.map(g=>`<span title="${safe(g.label)} ${safe(g.text)}" style="width:${g.number}%;background:${g.color}"></span>`).join('');
+ const visible=compact?rows.slice(0,4):rows,hidden=compact?rows.slice(4):[];
+ return `<div class="religion-block religion-breakdown${compact?' compact':''}">${stateBlock}${intro}<h4>종교별 인구 비율 <span class="fact-small">2020년</span></h4>
+ <div class="religion-stack" role="img" aria-label="2020년 종교 구성: ${safe(rows.map(x=>x.label+' '+x.text).join(', '))}">${stacked}</div>
+ <div class="religion-rows">${visible.map(rowHtml).join('')}</div>
+ ${hidden.length?`<details class="religion-expand"><summary>나머지 종교 항목도 보기 (${hidden.length}개)</summary><div class="religion-rows" style="margin-top:9px">${hidden.map(rowHtml).join('')}</div></details>`:''}
+ <p class="religion-source">Pew Research Center(2025 발표)의 <b>2020년 추정치</b>. 7개 종교 범주와 무종교를 포함하며, 반올림으로 합계가 100%와 다를 수 있습니다. '기타 종교'에는 전통·민간 신앙 등이 포함될 수 있습니다. <a href="${RELIGION_PEW_URL}" target="_blank" rel="noopener noreferrer">통계 출처</a></p></div>`;
+}
+function religionBoundHtml(c,compact=false){
+ if(!c||!c.cca3)return '';
+ return `<div data-religion-iso3="${safe(c.cca3)}" data-religion-compact="${compact?'1':'0'}">${religionBreakdownHtml(c,{compact})}</div>`;
+}
+function refreshReligionBoundViews(){
+ for(const root of document.querySelectorAll('[data-religion-iso3]')){
+  const iso=root.getAttribute('data-religion-iso3');const country=allCountries.find(c=>c.cca3===iso);
+  if(country)root.innerHTML=religionBreakdownHtml(country,{compact:root.getAttribute('data-religion-compact')==='1'});
+ }
+}
+function religionParseCSV(csv){
+ const rows=[];let row=[],value='',quoted=false;
+ const content=String(csv||'').replace(/^\uFEFF/,'');
+ for(let i=0;i<content.length;i++){
+  const c=content[i];
+  if(c==='"'){if(quoted&&content[i+1]==='"'){value+='"';i++;}else quoted=!quoted;}
+  else if(c===','&&!quoted){row.push(value);value='';}
+  else if((c==='\n'||c==='\r')&&!quoted){if(c==='\r'&&content[i+1]==='\n')i++;row.push(value);value='';if(row.length>2)rows.push(row);row=[];}
+  else value+=c;
+ }
+ row.push(value);if(row.length>2)rows.push(row);
+ return rows;
+}
+function religionHeaderGroup(h){
+ const normalized=String(h).toLowerCase().replace(/[_-]/g,' ');
+ if(/unaffiliat|non.?religio|no religion|religiously unaffiliated/.test(normalized))return 2;
+ if(/christian/.test(normalized))return 0;
+ if(/muslim|islam/.test(normalized))return 1;
+ if(/buddhis/.test(normalized))return 3;
+ if(/hindu/.test(normalized))return 4;
+ if(/jewish|jews|judais/.test(normalized))return 5;
+ if(/other religio|other faith/.test(normalized))return 6;
+ return -1;
+}
+function religionParseSource(csv){
+ const rows=religionParseCSV(csv);if(rows.length<4)return new Map();
+ const heads=rows[0].map(x=>String(x).trim());
+ const idx=(matcher)=>heads.findIndex(h=>matcher.test(h));
+ const codeIndex=idx(/^code$|^iso.?3$/i),yearIndex=idx(/^year$/i);
+ if(codeIndex<0||yearIndex<0)return new Map();
+ const longGroup=idx(/^group$|^religion$/i);
+ const longValue=idx(/^share.of.population.percent$|^share of population|^percentage$/i);
+ const groups=heads.map(religionHeaderGroup),wideCount=groups.filter(i=>i>=0).length;
+ const pending=new Map();
+ for(const row of rows.slice(1)){
+  if(String(row[yearIndex]||'').trim()!=='2020')continue;
+  const iso=String(row[codeIndex]||'').toUpperCase().trim();if(!/^[A-Z]{3}$/.test(iso))continue;
+  if(!pending.has(iso))pending.set(iso,Array(7).fill(null));
+  const arr=pending.get(iso);
+  if(wideCount>=5){
+   for(let i=0;i<groups.length;i++)if(groups[i]>=0){const v=row[i];if(v!==undefined&&v!=='')arr[groups[i]]=v;}
+  }else if(longGroup>=0&&longValue>=0){
+   const g=religionHeaderGroup(row[longGroup]);if(g>=0)arr[g]=row[longValue];
+  }
+ }
+ const valid=new Map();for(const [iso,vals] of pending){const data=religionFromArray(vals);if(data)valid.set(iso,data);}
+ return valid;
+}
+async function fetchReligionSource(url){
+ const controller=new AbortController();const timer=setTimeout(()=>controller.abort(),14000);
+ try{
+  const response=await fetch(url,{signal:controller.signal,mode:'cors',cache:'force-cache'});
+  if(!response.ok)throw new Error('HTTP '+response.status);
+  const csv=await response.text();const parsed=religionParseSource(csv);
+  if(parsed.size<100)throw new Error('대상 국가 데이터 부족: '+parsed.size);
+  return parsed;
+ }finally{clearTimeout(timer)}
+}
+async function loadReligionData(){
+ if(religionSourceAttempted)return;
+ religionSourceAttempted=true;
+ // 첫 번째 출처가 CORS나 네트워크 문제로 실패하면 두 번째 공개 CSV로 재시도합니다.
+ const sources=[
+  'https://harezmi.dev/data/religion-by-country.csv',
+  'https://ourworldindata.org/grapher/share-of-population-by-religious-affiliation.csv?csvType=full'
+ ];
+ for(const url of sources){
+  try{
+   const result=await fetchReligionSource(url);
+   for(const [iso,groups] of result)religion2020Cache.set(iso,groups);
+   religionSourceStatus='ready';refreshReligionBoundViews();return;
+  }catch(err){console.warn('종교 데이터 연결 실패:',url,err);}
+ }
+ religionSourceStatus='error';refreshReligionBoundViews();
+}
+
 
 const map=L.map('map',{worldCopyJump:false,minZoom:1,maxZoom:7}).setView([20,0],2);
 L.control.scale({imperial:false}).addTo(map);
@@ -1256,6 +1610,7 @@ async function loadStatistics(){if(state.statsLoading||!allCountries.length)retu
 
 async function load(){try{
  await loadBorders();await loadCountries();welcome();
+ void loadReligionData();
  // 수도 좌표 및 통계를 독립적으로 로드하므로 한쪽 제공자가 응답하지 않아도 지도는 유지됩니다.
  await Promise.allSettled([loadCapitalMetadata(),loadStatistics()]);
  }catch(e){console.error(e);panel.innerHTML=`<h2 class="error">자료 로딩 오류</h2><p>외부 데이터 연결 상태를 확인하고 페이지를 새로고침해 주세요.</p><p class="muted">${safe(e.message)}</p>`;
@@ -1380,9 +1735,8 @@ function showInfo(){const id=state.selectedId,c=countries[id];if(!c){panel.inner
       <option value="count"${state.pyramidUnit==='count'?' selected':''}>추정 인구수 (명)</option></select></div></div>
     <div id="populationPyramid" aria-live="polite"><p class="loading">5세 단위 남녀 인구 자료를 조회하고 있습니다...</p></div>
   </div>
-  <div class="section"><h3>대표적 종교·종교 전통</h3>
-    <p class="lead">${safe(religionText(c))}</p>
-    <p class="muted">국가별 종교 다양성과 무종교 인구를 고려한 학습용 개관입니다. 종교별 비율을 뜻하지 않습니다.</p>
+  <div class="section"><h3>종교 구성 · 국교</h3>
+    ${religionBoundHtml(c,false)}
   </div>
   <div class="section"><h3>쾨펜 기후구분 <span class="fact-small" lang="en">Köppen</span></h3>
     <p class="mini-fact">${safe(climateSummary(c))}</p>
@@ -1391,7 +1745,7 @@ function showInfo(){const id=state.selectedId,c=countries[id];if(!c){panel.inner
       <p class="climate-note">선택한 지역의 <b>실제 과거 기후 재분석 자료</b>로 그래프를 작성합니다. 한 나라의 여러 기후를 하나의 그래프로 대표하지 않습니다.</p><div id="climateChart" aria-live="polite"></div>`:
       `<p class="muted">수도 좌표와 대표 기후 지점이 제공되지 않아 그래프를 표시할 수 없습니다. 자료 제공기관의 추가 확인이 필요합니다.</p>`}
   </div>
-  <div class="section foot">수치 출처: <a href="https://data.worldbank.org/" target="_blank" rel="noopener">World Bank</a>, 국가 기본정보 <a href="https://github.com/mledoze/countries" target="_blank" rel="noopener">mledoze/countries</a>. 종교 개관 참고: <a href="https://www.pewresearch.org/religion/" target="_blank" rel="noopener">Pew Research Center</a>. 기후 지점 분류는 대표적 유형이며 실제 분포·경계 및 다른 연도의 분류와 다를 수 있습니다.</div>
+  <div class="section foot">수치 출처: <a href="https://data.worldbank.org/" target="_blank" rel="noopener">World Bank</a>, 국가 기본정보 <a href="https://github.com/mledoze/countries" target="_blank" rel="noopener">mledoze/countries</a>. 종교 구성(2020년): <a href="https://www.pewresearch.org/religion/feature/religious-composition-by-country-2010-2020/" target="_blank" rel="noopener">Pew Research Center</a>. 국교·국가 우대 여부(2015년 분류, 일부 후속 변경 반영): <a href="https://www.pewresearch.org/religion/2017/10/03/many-countries-favor-specific-religions-officially-or-unofficially/" target="_blank" rel="noopener">Pew 국가별 연구</a>. 기후 지점 분류는 대표적 유형이며 실제 분포·경계 및 다른 연도의 분류와 다를 수 있습니다.</div>
  `;
  if(state.siteIndex!==null&&sites[state.siteIndex])showClimate(state.siteIndex);
  void showPopulationPyramid(id);
@@ -1665,8 +2019,142 @@ if('ResizeObserver' in window)new ResizeObserver(repositionZoomBelowToolbar).obs
 window.addEventListener('resize',repositionZoomBelowToolbar);
 requestAnimationFrame(repositionZoomBelowToolbar);
 
+
+// 학기별 Padlet 자료실: 이후 학기에는 아래 목록에 1줄을 추가하면 필터에 자동 반영됩니다.
+// year(연도), semester(학기: 1 또는 2), id, title, url 속성을 지정하세요.
+// 실물 Padlet 제목을 확인하지 못한 게시판은 임시 제목으로 유지했습니다.
+const PADLET_BOARDS=[
+ {year:2026,semester:2,id:'txv7q6c7xv5ei9i6',title:'탐구 게시판 1',url:'https://padlet.com/seolak/padlet-txv7q6c7xv5ei9i6'},
+ {year:2026,semester:2,id:'earle15ggmocpkfo',title:'탐구 게시판 2',url:'https://padlet.com/seolak/padlet-earle15ggmocpkfo'},
+ {year:2026,semester:2,id:'s0254odgu4985ejliirf',title:'탐구 게시판 3',url:'https://padlet.com/seolak/padlet-s0254odgu4985ejliirf'},
+ {year:2026,semester:2,id:'s02562zd8omth59x2243',title:'탐구 게시판 4',url:'https://padlet.com/seolak/80-1-s02562zd8omth59x2243'}
+];
+const padletTerms=[...new Set(PADLET_BOARDS.map(board=>`${board.year}-${board.semester}`))].sort((a,b)=>{
+ const [ay,as]=a.split('-').map(Number),[by,bs]=b.split('-').map(Number);
+ return by-ay||bs-as;
+});
+const padletLatestTerm=padletTerms[0]?.split('-')||['',''];
+const padletUI={started:false,mode:'single',selectedId:PADLET_BOARDS[0]?.id||'',year:padletLatestTerm[0],semester:padletLatestTerm[1]};
+function padletTerm(board){return `${board.year}-${board.semester}`;}
+function padletVisibleBoards(){
+ return PADLET_BOARDS.filter(board=>(!padletUI.year||String(board.year)===padletUI.year)&&(!padletUI.semester||String(board.semester)===padletUI.semester))
+  .sort((a,b)=>Number(b.year)-Number(a.year)||Number(b.semester)-Number(a.semester));
+}
+function padletMakeOption(value,title){const opt=document.createElement('option');opt.value=value;opt.textContent=title;return opt;}
+function padletSyncSelects(){
+ const years=[...new Set(PADLET_BOARDS.map(board=>Number(board.year)))].sort((a,b)=>b-a);
+ const y=document.getElementById('padletYearSelect'),s=document.getElementById('padletSemesterSelect');
+ y.replaceChildren(padletMakeOption('','전체 연도'),...years.map(year=>padletMakeOption(String(year),`${year}년`)));
+ y.value=padletUI.year;
+ const semesters=[...new Set(PADLET_BOARDS.filter(board=>!padletUI.year||String(board.year)===padletUI.year).map(board=>Number(board.semester)))].sort((a,b)=>a-b);
+ if(padletUI.semester&&!semesters.some(sem=>String(sem)===padletUI.semester))padletUI.semester='';
+ s.replaceChildren(padletMakeOption('','전체 학기'),...semesters.map(sem=>padletMakeOption(String(sem),`${sem}학기`)));
+ s.value=padletUI.semester;
+}
+function padletFrame(board){
+ const frame=document.createElement('iframe');
+ frame.className='padlet-iframe';frame.loading='lazy';
+ frame.title=`${padletTerm(board)} ${board.title} Padlet 게시판`;
+ frame.referrerPolicy='strict-origin-when-cross-origin';
+ frame.src=board.embedUrl||('https://padlet.com/embed/'+encodeURIComponent(board.id));
+ return frame;
+}
+function padletViewerHeader(board,i,compact=false){
+ const head=document.createElement('div');head.className=compact?'padlet-all-head':'padlet-viewer-header';
+ const label=document.createElement('div');
+ const title=document.createElement('strong');title.textContent=board.title;
+ const subtitle=document.createElement('small');subtitle.textContent=`${padletTerm(board)} · PADLET ${String(i+1).padStart(2,'0')} · 학생 탐구 자료`;
+ label.append(title,subtitle);
+ const link=document.createElement('a');link.className='padlet-screen-link';
+ link.href=board.url;link.target='_blank';link.rel='noopener noreferrer';link.textContent='Padlet에서 열기 ↗';
+ head.append(label,link);return head;
+}
+function padletBlock(board,i,compact=false){
+ const wrap=document.createElement('article');wrap.className=compact?'padlet-all-card':'padlet-viewer';
+ wrap.append(padletViewerHeader(board,i,compact));
+ wrap.append(padletFrame(board));
+ const note=document.createElement('p');note.className='padlet-iframe-note';
+ note.textContent='게시판이 빈 화면으로 보이면 위의 “Padlet에서 열기”를 이용해 주세요.';
+ wrap.append(note);return wrap;
+}
+function padletGroupHeader(term,count,forGrid=false){
+ const header=document.createElement('div');header.className=forGrid?'padlet-all-group':'padlet-list-group';
+ const name=document.createElement('strong');name.textContent=`${term} · ${term.split('-')[0]}년 ${term.split('-')[1]}학기`;
+ const num=document.createElement('span');num.textContent=`게시판 ${count}개`;
+ header.append(name,num);return header;
+}
+function padletRender(){
+ padletSyncSelects();
+ const boards=padletVisibleBoards();
+ if(!boards.some(board=>board.id===padletUI.selectedId))padletUI.selectedId=boards[0]?.id||'';
+ const badge=padletUI.year?(padletUI.semester?`${padletUI.year}-${padletUI.semester}`:`${padletUI.year}년 전체`):(padletUI.semester?`전체 연도 · ${padletUI.semester}학기`:'전체 학기');
+ document.getElementById('padletTermBadge').textContent=badge;
+ document.getElementById('padletTermCount').textContent=`게시판 ${boards.length}개`;
+ document.getElementById('padletAllMode').textContent=`▦ ${boards.length}개 모두 보기`;
+ const single=document.getElementById('padletSingleLayout');
+ const all=document.getElementById('padletAllGrid');
+ document.getElementById('padletSingleMode').setAttribute('aria-pressed',String(padletUI.mode==='single'));
+ document.getElementById('padletAllMode').setAttribute('aria-pressed',String(padletUI.mode==='all'));
+ single.hidden=padletUI.mode!=='single';all.hidden=padletUI.mode!=='all';
+ if(padletUI.mode==='single'){
+  const menu=document.getElementById('padletBoardList');menu.replaceChildren();
+  let lastTerm='';
+  boards.forEach((board,i)=>{
+   const term=padletTerm(board);
+   if(term!==lastTerm){menu.append(padletGroupHeader(term,boards.filter(b=>padletTerm(b)===term).length));lastTerm=term;}
+   const b=document.createElement('button');b.type='button';b.className='padlet-board-button';
+   b.dataset.padletId=board.id;b.setAttribute('aria-pressed',String(board.id===padletUI.selectedId));
+   const ico=document.createElement('span');ico.className='padlet-board-icon';ico.setAttribute('aria-hidden','true');ico.textContent=['🗺️','📍','🌦️','📚'][i%4];
+   const meta=document.createElement('span');meta.className='padlet-board-meta';
+   const strong=document.createElement('strong');strong.textContent=board.title;
+   const small=document.createElement('small');small.textContent=`${term} · PADLET ${String(i+1).padStart(2,'0')}`;
+   meta.append(strong,small);b.append(ico,meta);menu.append(b);
+  });
+  const viewer=document.getElementById('padletViewer');viewer.replaceChildren();
+  const board=boards.find(b=>b.id===padletUI.selectedId);
+  if(board){
+   viewer.append(padletViewerHeader(board,boards.indexOf(board)),padletFrame(board));
+   const note=document.createElement('p');note.className='padlet-iframe-note';note.textContent='게시물이 보이지 않으면 “Padlet에서 열기”로 확인해 주세요.';viewer.append(note);
+  }else{
+   const empty=document.createElement('p');empty.className='padlet-empty';empty.textContent='선택한 학기에 등록된 Padlet 게시판이 없습니다.';viewer.append(empty);
+  }
+ }else{
+  all.replaceChildren();let lastTerm='';
+  boards.forEach((board,i)=>{
+   const term=padletTerm(board);
+   if(term!==lastTerm){all.append(padletGroupHeader(term,boards.filter(b=>padletTerm(b)===term).length,true));lastTerm=term;}
+   all.append(padletBlock(board,i,true));
+  });
+  if(!boards.length){const empty=document.createElement('p');empty.className='padlet-empty';empty.textContent='선택한 학기에 등록된 Padlet 게시판이 없습니다.';all.append(empty);}
+ }
+}
+function initPadlets(){
+ if(padletUI.started)return;
+ padletUI.started=true;
+ document.getElementById('padletYearSelect').addEventListener('change',e=>{
+  padletUI.year=e.target.value;
+  const terms=PADLET_BOARDS.filter(board=>!padletUI.year||String(board.year)===padletUI.year).map(board=>Number(board.semester));
+  padletUI.semester=padletUI.year?(terms.length?String(Math.max(...terms)):''):'';
+  padletRender();
+ });
+ document.getElementById('padletSemesterSelect').addEventListener('change',e=>{padletUI.semester=e.target.value;padletRender();});
+ document.getElementById('padletSingleMode').addEventListener('click',()=>{
+  if(padletUI.mode==='single')return;padletUI.mode='single';padletRender();
+ });
+ document.getElementById('padletAllMode').addEventListener('click',()=>{
+  if(padletUI.mode==='all')return;padletUI.mode='all';padletRender();
+ });
+ document.getElementById('padletBoardList').addEventListener('click',e=>{
+  const b=e.target.closest('button[data-padlet-id]');if(!b)return;
+  const id=b.dataset.padletId;
+  if(!padletVisibleBoards().some(board=>board.id===id)||id===padletUI.selectedId)return;
+  padletUI.selectedId=id;padletRender();
+ });
+ padletRender();
+}
+
 function switchTab(next){
- if(!['home','map','compare','find','quiz'].includes(next))next='home';
+ if(!['home','map','compare','find','quiz','padlets'].includes(next))next='home';
  state.tab=next;
  const isHome=next==='home';
  document.body.classList.toggle('home-active',isHome);
@@ -1679,10 +2167,12 @@ function switchTab(next){
  document.getElementById('findScreen').hidden=next!=='find';
  document.getElementById('findScreen').style.display=next==='find'?'block':'none';
  document.getElementById('quizScreen').hidden=next!=='quiz';
+ document.getElementById('padletsScreen').hidden=next!=='padlets';
  for(const b of document.querySelectorAll('.tab'))b.setAttribute('aria-selected',String(b.dataset.tab===next));
  if(next==='compare')renderCompare();
  else if(next==='map')setTimeout(()=>{map.invalidateSize({pan:false});if(!window.__geoInitialMapVisible&&!state.selectedId)map.setView([20,0],2,{animate:false});window.__geoInitialMapVisible=true;repositionZoomBelowToolbar();},90);
  else if(next==='find')setTimeout(cfInit,75);
+ else if(next==='padlets')initPadlets();
  if(next!=='map')window.scrollTo({top:0,behavior:'auto'});
 }
 function populateCompare(){const sorter=new Intl.Collator('ko');const list=allCountries.slice().sort((a,b)=>sorter.compare(nameKR(a),nameKR(b)));
@@ -1716,7 +2206,7 @@ function renderCompare(){if(!compareSelectors.children.length&&allCountries.leng
   ${statsFact('고령층',consistentAgeStructure(id)?percent(val('age65',id)):'동일 연도 자료 확인 중',consistentAgeStructure(id)?statTime('age65',id):'')}
   ${statsFact('성비',r===null?'자료 없음':`여성 100명당 ${pctFmt.format(r)}명`)}
   <div class="section"><h3>대표적 기후</h3><p class="mini-fact">${safe(climates.length?[...new Set(climates.map(a=>climateText(a[0])))].join(' · '):'주요 기후 개관 미등록 · 수도 지점 조회 가능')}</p></div>
-  <div class="section"><h3>종교·종교 전통</h3><p class="mini-fact">${safe(religion)}</p></div>
+  <div class="section"><h3>종교 구성 · 국교</h3>${religionBoundHtml(c,true)}</div>
   <button class="button full" data-map-country="${safe(id)}" type="button">지도에서 보기</button>
  </article>`;
  }).join('');
@@ -1879,10 +2369,10 @@ function cfResultContent(){
     ${cfResultFact('인구',popLabel,popYear)}
     ${cfResultFact('면적',areaText,'국가 기본정보 참고값')}
     ${cfResultFact('주요 언어',countryLanguages(c),'국가별 주요 언어',true)}
-    ${cfResultFact('대표적 종교·종교 전통',religion,'종교별 인구 비율을 뜻하지 않습니다.',true)}
     ${cfResultFact('대표적인 쾨펜 기후구분',climate,'대표 지점의 유형이며 한 나라 전체를 단일 기후로 표현하지 않습니다.',true)}
   </dl>
-  <p class="cf-result-caption">출처: World Bank(인구), 국가 기본정보(수도·면적·언어), 사이트에 등록된 종교·기후 학습 자료. 자료가 없는 항목은 임의로 채우지 않습니다.</p>
+  <section class="cf-result-religion" style="margin-top:14px"><h3 class="cf-result-subtitle">종교 구성 · 국교</h3>${religionBoundHtml(c,true)}</section>
+  <p class="cf-result-caption">출처: World Bank(인구), 국가 기본정보(수도·면적·언어), Pew Research Center(2020년 종교 구성 추정, 2015년 국교 분류), 사이트 기후 학습 자료. 종교 법제는 이후 변경될 수 있습니다.</p>
   <div class="cf-result-buttons">
     <button type="button" class="button" data-cf-result="map">지도에서 위치 확인</button>
     <button type="button" class="button primary" data-cf-result="next">${cfState.index===9?'10문제 결과 보기':'다음 문제로'}</button>
