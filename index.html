@@ -6,10 +6,11 @@
 <meta name="theme-color" content="#f7fafc">
 <title>지리가 보인다! | 눈으로 확인하는 지리 정보·국가 비교·퀴즈</title>
 <link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <style>
 :root{--ink:#18212e;--muted:#667486;--line:#e3eaf0;--navy:#17365d;--shadow:0 5px 24px #173a5921;--yellow:#ffd344}
-*{box-sizing:border-box}html,body{margin:0;height:100%;font-family:system-ui,-apple-system,'Noto Sans KR','Apple SD Gothic Neo',sans-serif;color:var(--ink)}button,input,select{font:inherit}button{cursor:pointer}
+*{box-sizing:border-box}html,body{margin:0;height:100%;font-family:'Pretendard Variable',Pretendard,-apple-system,BlinkMacSystemFont,system-ui,'Apple SD Gothic Neo','Noto Sans KR','Malgun Gothic',sans-serif;color:var(--ink)}button,input,select,textarea{font:inherit}button{cursor:pointer}
 header{position:relative;z-index:2000;height:70px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;background:#fff;box-shadow:0 1px 10px #152c4320;gap:12px}
 .brand{font-size:17px;font-weight:850;white-space:nowrap;letter-spacing:-.6px}.brand small{display:block;font-size:11px;font-weight:600;color:#61768a;letter-spacing:0}
 .brand{border:0;background:transparent;color:inherit;text-align:left;cursor:pointer;padding:5px 2px;border-radius:5px;line-height:1.3}.brand:hover{color:#1b588a}.brand:focus-visible{outline:3px solid #3b82f6;outline-offset:3px}
@@ -20,6 +21,7 @@ header{position:relative;z-index:2000;height:70px;display:flex;align-items:cente
 .tab-ko{color:#111;font-size:15px;font-weight:800}.tab-en{color:#798390;font-size:12px;font-weight:600}
 #mapScreen{display:block;position:relative;height:calc(100dvh - 70px);min-height:420px}
 #map{height:100%;width:100%;background:linear-gradient(180deg,#deedf8 0%,#cfe5f5 100%)}
+.leaflet-container,.leaflet-container .leaflet-control,.leaflet-container .leaflet-popup,.leaflet-container .leaflet-tooltip{font-family:'Pretendard Variable',Pretendard,-apple-system,BlinkMacSystemFont,system-ui,'Noto Sans KR',sans-serif}
 #map .leaflet-top.leaflet-left{top:var(--map-zoom-offset,92px)}
 #toolbar{position:absolute;top:16px;left:18px;z-index:1100;background:white;display:flex;align-items:center;gap:10px;box-shadow:var(--shadow);border-radius:12px;padding:10px 13px}
 #toolbar label{font-weight:750;font-size:13px}#theme{min-width:148px;border:1px solid #c5d2de;padding:8px 12px;border-radius:8px;color:#1f3449;background:#fff}
