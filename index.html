@@ -2392,10 +2392,33 @@ function initPadlets(){
  padletRender();
 }
 
-function switchTab(next){
- if(!['home','map','compare','find','games','quiz','padlets'].includes(next))next='home';
+// 브라우저의 뒤로/앞으로 가기와 새로고침을 지원하는 탭별 URL 라우팅.
+// 모든 화면은 이 index.html 하나에서 전환하므로 별도 페이지나 서버 설정은 필요 없습니다.
+const GEO_TABS=new Set(['home','map','compare','find','games','quiz','padlets']);
+const GEO_TAB_TITLES={home:'',map:'지도',compare:'비교하기',find:'나라찾기',games:'게임',quiz:'퀴즈',padlets:'우리의 지리 탐구 Students Archive'};
+const GEO_HOME_TITLE=document.title;
+function geoTabFromURL(){
+ const requested=new URLSearchParams(window.location.search).get('tab');
+ return GEO_TABS.has(requested)?requested:'home';
+}
+function geoPushTabURL(tab){
+ // 기존 쿼리 문자열은 보존하고 tab 값만 변경합니다.
+ const url=new URL(window.location.href);
+ if(tab==='home')url.searchParams.delete('tab');
+ else url.searchParams.set('tab',tab);
+ const nextURL=url.pathname+url.search+url.hash;
+ const currentURL=window.location.pathname+window.location.search+window.location.hash;
+ if(nextURL!==currentURL)window.history.pushState({geoTab:tab},'',url.href);
+}
+function switchTab(next,{fromHistory=false}={}){
+ if(!GEO_TABS.has(next))next='home';
+ // 클릭으로 화면을 바꾸면 방문 기록을 추가하되,
+ // 브라우저 뒤로/앞으로 가기에서는 방문 기록을 다시 쌓지 않습니다.
+ if(!fromHistory)geoPushTabURL(next);
+ const previous=state.tab;
  state.tab=next;
  const isHome=next==='home';
+ document.title=isHome?GEO_HOME_TITLE:`${GEO_TAB_TITLES[next]} | 지리가 보인다!`;
  document.body.classList.toggle('home-active',isHome);
  document.body.classList.remove('home-menu-open');
  document.getElementById('homeMenuButton').setAttribute('aria-expanded','false');
@@ -2409,13 +2432,26 @@ function switchTab(next){
  document.getElementById('quizScreen').hidden=next!=='quiz';
  document.getElementById('padletsScreen').hidden=next!=='padlets';
  for(const b of document.querySelectorAll('.tab'))b.setAttribute('aria-selected',String(b.dataset.tab===next));
+ // 이전 탭의 모달이 새 화면을 가리지 않도록 정리합니다.
+ if(next!=='find')cfHideResult();
+ if(next!=='games')document.getElementById('gpPreparing').hidden=true;
  if(next==='compare')renderCompare();
- else if(next==='map')setTimeout(()=>{map.invalidateSize({pan:false});if(!window.__geoInitialMapVisible&&!state.selectedId)map.setView([20,0],2,{animate:false});window.__geoInitialMapVisible=true;updateWorldCopies();repositionZoomBelowToolbar();},90);
- else if(next==='find')setTimeout(cfInit,75);
- else if(next==='games')setTimeout(gpInit,75);
+ else if(next==='map')setTimeout(()=>{
+  if(state.tab!=='map')return;
+  map.invalidateSize({pan:false});
+  if(!window.__geoInitialMapVisible&&!state.selectedId)map.setView([20,0],2,{animate:false});
+  window.__geoInitialMapVisible=true;updateWorldCopies();repositionZoomBelowToolbar();
+ },90);
+ else if(next==='find')setTimeout(()=>{if(state.tab==='find')cfInit()},75);
+ else if(next==='games')setTimeout(()=>{if(state.tab==='games')gpInit()},75);
  else if(next==='padlets')initPadlets();
- if(next!=='map')window.scrollTo({top:0,behavior:'auto'});
+ // 다른 탭으로 전환할 때는 콘텐츠의 첫 부분에서 읽기 시작합니다.
+ if(next!==previous)window.scrollTo({top:0,behavior:'auto'});
 }
+function geoRestoreTabFromURL(){
+ switchTab(geoTabFromURL(),{fromHistory:true});
+}
+
 function populateCompare(){const sorter=new Intl.Collator('ko');const list=allCountries.slice().sort((a,b)=>sorter.compare(nameKR(a),nameKR(b)));
  compareSelectors.innerHTML=state.compare.map((v,i)=>`<div class="compare-slot"><label for="cmp-${i}">국가 ${i+1}</label><select id="cmp-${i}" class="select" data-compare="${i}"><option value="">국가 선택</option>${list.map(c=>`<option value="${safe(key(c.ccn3))}" ${v===key(c.ccn3)?'selected':''}>${safe(nameKR(c))}</option>`).join('')}</select><button class="button" data-clear="${i}" type="button">선택 해제</button></div>`).join('');
  renderCompare();
@@ -3110,6 +3146,11 @@ document.addEventListener('click',event=>{
 });
 themeSelect.addEventListener('change',draw);
 document.getElementById('refresh').addEventListener('click',()=>{wbSummaryAttempted.clear();void loadStatistics()});
+// URL이 지정된 상태로 접속하거나 새로고침하면 해당 탭을 바로 열고,
+// 브라우저 방문 기록을 이동하면 주소에 맞는 탭으로 돌아갑니다.
+window.addEventListener('popstate',geoRestoreTabFromURL);
+window.addEventListener('pageshow',event=>{if(event.persisted)geoRestoreTabFromURL()});
+geoRestoreTabFromURL();
 load();
 </script>
 <script type="module" src="./quiz.js"></script>
