@@ -747,6 +747,60 @@ body.home-active .tabs{display:none}
  body.home-active.home-menu-open .tab-en{font-size:9px}
 }
 @media(max-width:360px){.gp-piece-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.gp-titlebar h1{font-size:21px}.cf-region-btn{font-size:11px}}
+
+/* 2026-11-18: 수도와 나라 매칭 게임 (지리 게임 내부의 두 번째 선택지) */
+#gpPuzzleLayout[hidden],#cmScreen[hidden]{display:none!important}
+#cmScreen{width:100%;max-width:1110px;margin:0 auto}
+.cm-shell{background:#fff;border:1px solid #dbe9ed;border-radius:18px;padding:clamp(18px,3vw,30px);box-shadow:0 8px 26px #18415a0b}
+.cm-intro-head{display:flex;align-items:center;gap:14px;margin:0 0 15px}
+.cm-intro-icon{width:56px;height:56px;display:grid;place-items:center;border-radius:17px;background:#e5f8ef;font-size:28px;flex-shrink:0}
+.cm-shell h2{color:#194a57;font-size:clamp(21px,3vw,26px);margin:0 0 7px;letter-spacing:-.65px;font-weight:900}
+.cm-shell p{font-size:13px;color:#577484;line-height:1.7;margin:5px 0 14px}
+.cm-intro-settings{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px;margin:17px 0}
+.cm-intro-note{border:1px solid #e1eded;background:#f2f9fa;border-radius:13px;padding:15px 17px;display:flex;flex-direction:column;justify-content:center;gap:6px;color:#356674;font-size:12px;line-height:1.6}
+.cm-intro-note strong{font-size:15px;color:#166f66}
+.cm-lesson{background:#f1fbf7;color:#2e6f5f;border:1px solid #d2ece0;padding:12px 15px;border-radius:12px;font-size:12px;line-height:1.7;margin:16px 0}
+.cm-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin:12px 0 13px}
+.cm-stat{border-radius:12px;background:#f1f8fa;border:1px solid #e0ecf0;text-align:center;padding:12px 6px;min-width:0}
+.cm-stat strong{display:block;font-size:23px;line-height:1.1;color:#127e75;font-variant-numeric:tabular-nums}
+.cm-stat span{display:block;margin-top:5px;color:#587583;font-size:11px;font-weight:750}
+.cm-progress{height:9px;border-radius:10px;background:#e5eff1;overflow:hidden;margin:14px 0 18px}
+.cm-progress>span{display:block;background:linear-gradient(90deg,#29a88a,#7dcdb4);height:100%;transition:width .18s ease}
+.cm-stage-caption{font-size:13px;font-weight:850;color:#305c70;text-align:center;margin:13px 0 12px}
+.cm-columns{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.cm-column{background:#f8fbfc;border:1px solid #e0edf0;border-radius:13px;padding:13px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.cm-column h3{font-size:13px;font-weight:850;color:#295365;margin:0 0 4px;text-align:center}
+.cm-column h3 small{font-weight:600;color:#7893a0;font-size:11px}
+.cm-pair-button{display:flex;align-items:center;justify-content:center;gap:6px;text-align:center;min-height:62px;width:100%;padding:9px 12px;border-radius:11px;border:1.5px solid #cadde3;background:#fff;color:#1c4558;font-size:15px;font-weight:800;line-height:1.35;overflow-wrap:anywhere;transition:background .15s,border-color .15s,transform .15s}
+.cm-pair-button:hover:not(:disabled){background:#eef8f7;border-color:#5daea4;transform:translateY(-1px)}
+.cm-pair-button.selected{background:#ddf7ee;color:#0b6459;border-color:#14a185;box-shadow:0 0 0 2px #a3e1d2}
+.cm-pair-button.matched{background:#e9f8ec;border-color:#c4e5d0;color:#27754d;opacity:.7;cursor:default}
+.cm-pair-button.wrong{background:#fff1f0;border-color:#e78c80;color:#a53e34}
+.cm-pair-button:focus-visible{outline:3px solid #268bba;outline-offset:2px}
+.cm-feedback{margin:17px 0 10px;padding:12px 14px;border-radius:11px;border:1px solid #d1e6ed;background:#f0f8fb;color:#326a7a;font-size:13px;line-height:1.6;font-weight:650}
+.cm-feedback.success{border-color:#bee7ce;background:#e9f9ef;color:#176b4e}
+.cm-feedback.failure{border-color:#f1d0c9;background:#fff3f0;color:#a04439}
+.cm-actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:16px}
+.cm-actions .gp-btn{flex:1 1 170px;min-height:44px}
+.cm-perfect{border-radius:15px;background:linear-gradient(135deg,#e6f8ec,#edf7fc);border:1px solid #d0e9df;padding:22px;text-align:center;margin:16px 0}
+.cm-perfect strong{display:block;font-size:32px;color:#18836a;font-weight:950}
+.cm-perfect span{display:block;font-size:13px;color:#457564;margin-top:6px}
+.cm-answer-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin-top:17px}
+.cm-answer{background:#f5faf9;border:1px solid #e0ebe9;border-radius:10px;padding:10px 11px;font-size:12px;color:#456b6c;line-height:1.5;display:flex;justify-content:space-between;align-items:center;gap:7px;flex-wrap:wrap}
+.cm-answer strong{font-size:12px;color:#1e5753}
+.cm-stage-done{text-align:center;background:#f0faf5;border:1px solid #d0ebdc;border-radius:13px;padding:17px 12px;margin:15px 0;color:#1b7353;font-weight:850}
+@media(max-width:650px){
+ .gp-game-option{min-width:0;flex:1 1 auto;padding:10px 8px}
+ .cm-shell{padding:15px 11px;border-radius:13px}
+ .cm-intro-head{gap:9px}.cm-intro-icon{width:45px;height:45px;font-size:24px;border-radius:12px}
+ .cm-intro-settings{grid-template-columns:1fr;gap:9px}
+ .cm-stats{gap:6px}.cm-stat{padding:10px 2px}.cm-stat strong{font-size:20px}.cm-stat span{font-size:10px}
+ .cm-columns{gap:8px}.cm-column{padding:8px 6px;gap:7px}.cm-column h3{font-size:12px}
+ .cm-pair-button{padding:9px 5px;min-height:58px;font-size:12px;line-height:1.35}
+ .cm-answer-list{grid-template-columns:1fr}.cm-stage-caption{font-size:11px}
+}
+@media(max-width:360px){.cm-pair-button{font-size:11px}.gp-game-option{font-size:10px!important;padding:9px 4px!important}}
+
 /* 여섯 개 메인 카드가 PC에서는 2×3 균형 그리드가 되도록 기존 Padlet 전체 폭 규칙을 덮어씁니다. */
 .home-tile.padlets{grid-column:auto;min-height:168px}
 @media(max-width:650px){.home-tile.padlets{min-height:97px}}
@@ -862,6 +916,73 @@ header .tabs{min-width:0}
   }
 }
 
+
+/* 2026-11-18: 국가 · 수도 초성 퀴즈 */
+#iqScreen[hidden]{display:none!important}
+#iqScreen{width:100%;max-width:920px;margin:0 auto}
+.iq-shell{background:#fff;border:1px solid #dbe9ed;border-radius:18px;padding:clamp(17px,3vw,30px);box-shadow:0 8px 26px #18415a0b;color:#214f5f}
+.iq-shell h2{color:#194a57;font-size:clamp(21px,3vw,27px);margin:0 0 7px;letter-spacing:-.65px;font-weight:900}
+.iq-shell p{font-size:13px;color:#557789;line-height:1.7;margin:6px 0 13px}
+.iq-heading{display:flex;gap:15px;align-items:center;margin-bottom:15px}
+.iq-heading-icon{height:56px;width:56px;flex-shrink:0;display:grid;place-items:center;border-radius:16px;background:#e6f3fb;font-size:29px}
+.iq-type-label{font-size:12px;font-weight:850;color:#35566a;margin:17px 0 9px}
+.iq-types{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.iq-type{min-height:80px;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:5px;text-align:left;padding:14px 16px;border:1.5px solid #cadde5;border-radius:13px;background:#fff;color:#2b5668;font-size:15px;font-weight:900;line-height:1.45;cursor:pointer}
+.iq-type span{font-size:11px;color:#65818b;font-weight:650}
+.iq-type[aria-pressed="true"]{background:#e7f8f1;border-color:#239b82;box-shadow:inset 0 0 0 1px #239b82;color:#0d7667}
+.iq-type:hover{background:#f0faf7}
+.iq-settings{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px;margin:13px 0}
+.iq-note{padding:11px 13px;background:#f1f9fa;border:1px solid #dcebef;border-radius:11px;color:#517584;font-size:12px;line-height:1.55;display:flex;flex-direction:column;justify-content:center;gap:4px}
+.iq-note strong{font-size:15px;color:#187769}
+.iq-info{padding:13px 15px;background:#f2faf7;border:1px solid #d9ede2;border-radius:12px;color:#316b60;font-size:12px;line-height:1.65;margin:15px 0}
+.iq-action-row{display:flex;flex-wrap:wrap;gap:9px;margin-top:16px}
+.iq-action-row .gp-btn{min-height:43px;flex:1 1 165px}
+.iq-status{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:12px;font-size:12px;font-weight:800;color:#527382}
+.iq-status strong{font-size:17px;color:#137d6e}
+.iq-progress{height:9px;background:#e3eff0;border-radius:99px;overflow:hidden;margin:10px 0 17px}
+.iq-progress span{display:block;background:linear-gradient(90deg,#17a48b,#85cfae);height:100%;transition:width .18s}
+.iq-problem{border-radius:17px;background:linear-gradient(155deg,#e9f7f9 0%,#f7fbfc 100%);border:1px solid #d3e9ed;padding:25px 14px 24px;text-align:center;margin:15px 0}
+.iq-kind-chip{display:inline-block;padding:6px 12px;background:white;border:1px solid #c8e0e4;border-radius:999px;font-size:12px;font-weight:850;color:#277d73}
+.iq-initial{font-size:clamp(29px,5vw,48px);font-weight:950;line-height:1.65;letter-spacing:3px;color:#143f56;margin:17px auto 7px;max-width:100%;overflow-wrap:anywhere;word-break:keep-all}
+.iq-details{font-size:12px;color:#587783;font-weight:700}
+.iq-answer-label{display:block;font-size:13px;font-weight:850;color:#2d5d6a;margin:17px 0 8px}
+.iq-form{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:9px}
+.iq-input{width:100%;min-width:0;border:1.5px solid #c4dce3;border-radius:11px;padding:12px 13px;line-height:1.3;font-size:16px!important;font-weight:700;color:#214c5f;background:#fff}
+.iq-input:focus{border-color:#2bafa1;outline:3px solid #ccefeb;outline-offset:0}
+.iq-form .gp-btn{min-height:48px;min-width:90px}
+.iq-feedback{border-radius:11px;padding:12px 13px;margin:13px 0 5px;font-size:13px;font-weight:700;line-height:1.6;background:#f0f8fb;border:1px solid #d0e6ec;color:#336c77}
+.iq-feedback.success{background:#ebf9ef;border-color:#c2e6cf;color:#216b4e}
+.iq-feedback.failure{background:#fff4ef;border-color:#f1d5cb;color:#a54837}
+.iq-hints{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:12px 0 4px}
+.iq-hints .gp-btn{padding:8px 12px;font-size:12px}
+.iq-hint-text{font-size:12px;color:#446f7b;background:#eef7fa;border-radius:10px;padding:10px 12px;margin-top:7px;line-height:1.65}
+.iq-reveal{border:1px solid #c7e7d9;background:#effaf4;border-radius:14px;text-align:center;padding:16px 14px;margin-top:15px}
+.iq-reveal strong{font-size:24px;color:#14775d;display:block;margin:3px 0 8px;word-break:keep-all}
+.iq-reveal small{color:#44766a;font-size:12px}
+.iq-final-score{background:linear-gradient(120deg,#e8f8ef,#edf7fc);border-radius:17px;border:1px solid #d2e9df;text-align:center;padding:24px 12px;margin:18px 0}
+.iq-final-score strong{display:block;font-size:42px;color:#16886d;font-weight:950;line-height:1.1}
+.iq-final-score span{font-size:13px;color:#476b74;display:block;margin-top:8px}
+.iq-review{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin:14px 0}
+.iq-review-item{display:flex;gap:9px;align-items:center;background:#f8fbfc;border:1px solid #e0eced;border-radius:10px;padding:10px 12px;font-size:12px;line-height:1.5}
+.iq-review-item strong{display:block;color:#245668;font-size:13px}
+.iq-review-item span{color:#648492}
+.iq-review-mark{font-weight:950;font-size:16px;color:#15936c}
+.iq-review-mark.missed{color:#b35b4c}
+.iq-type:focus-visible,.iq-input:focus-visible{outline:3px solid #3a9fb8;outline-offset:2px}
+@media(max-width:650px){
+ .gp-game-nav{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+ .gp-game-nav .gp-game-option,.gp-game-nav .gp-game-option[aria-pressed="true"]{width:100%;min-height:44px;padding:10px 7px;font-size:12px;line-height:1.3}
+ .iq-shell{padding:17px 12px;border-radius:13px}
+ .iq-heading{gap:10px}.iq-heading-icon{width:45px;height:45px;font-size:24px;border-radius:11px}
+ .iq-type{font-size:13px;min-height:73px;padding:10px 11px}
+ .iq-type span{font-size:10px}
+ .iq-settings{grid-template-columns:1fr;gap:8px}
+ .iq-initial{font-size:clamp(26px,7.5vw,38px);letter-spacing:2px}
+ .iq-problem{padding:20px 9px}.iq-form .gp-btn{min-width:79px;padding:11px 8px}
+ .iq-review{grid-template-columns:1fr}
+}
+@media(max-width:350px){.iq-shell{padding:14px 9px}.iq-type{padding:10px 9px}.iq-initial{font-size:25px}}
+
 </style>
 </head>
 <body class="home-active">
@@ -925,7 +1046,7 @@ header .tabs{min-width:0}
 <span class="home-tile-image" aria-hidden="true">
 <svg viewBox="0 0 120 90" xmlns="http://www.w3.org/2000/svg"><path d="M12 18H47V37C59 27 71 38 68 49C66 58 55 61 47 54V78H12Z" fill="#ffd876" stroke="#cba254" stroke-width="3" stroke-linejoin="round"/><path d="M54 12H108V77H75V57C63 62 54 52 57 43C60 34 69 34 75 38V12Z" fill="#a6cfed" stroke="#568fbd" stroke-width="3" stroke-linejoin="round"/><path d="M13 12L32 5 46 15 43 26 28 30 20 45 10 31Z" fill="#91d1b2" stroke="#3c9773" stroke-width="2"/></svg>
 </span>
-<span class="home-tile-content"><strong class="home-tile-title">게임</strong><span class="home-tile-en" lang="en">GAMES</span><span class="home-tile-description">지도 퍼즐로 국가의 모양과 위치를 익혀요</span></span>
+<span class="home-tile-content"><strong class="home-tile-title">게임</strong><span class="home-tile-en" lang="en">GAMES</span><span class="home-tile-description">지도 퍼즐·수도 매칭·초성 퀴즈로 지리를 익혀요</span></span>
 <span class="home-tile-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M9 5.5 15.5 12 9 18.5"/></svg></span></button>
 
 <button class="home-tile quiz" type="button" data-open-tab="quiz" aria-label="퀴즈 Quiz 열기">
@@ -1037,19 +1158,27 @@ header .tabs{min-width:0}
   <div class="gp-wrap">
     <div class="gp-titlebar"><div>
       <h1>🎮 지리 게임 <span lang="en">Geography Games</span></h1>
-      <p>국가의 윤곽을 관찰하고 퍼즐 조각을 알맞은 지도 위치에 채워 보세요.</p>
+      <p id="gpGameDescription">국가의 윤곽을 관찰하고 퍼즐 조각을 알맞은 지도 위치에 채워 보세요.</p>
     </div></div>
     <div class="gp-game-nav" role="group" aria-label="게임 종류 선택">
       <button class="gp-game-option" id="gpPuzzleChoice" type="button" aria-pressed="true" data-gp-choice="puzzle">🧩 지도 퍼즐</button>
+      <button class="gp-game-option" id="cmCapitalChoice" type="button" aria-pressed="false" data-gp-choice="capitals">🏙️ 수도 매칭</button>
+      <button class="gp-game-option" id="iqInitialChoice" type="button" aria-pressed="false" data-gp-choice="initials">🔤 초성 퀴즈</button>
       <button class="gp-game-option" id="gpComingChoice" type="button" aria-pressed="false" data-gp-choice="coming">🎲 새로운 게임 <span style="color:#78909b;font-size:11px;font-weight:650">Coming Soon</span></button>
     </div>
-    <div class="gp-layout">
+    <div id="gpPuzzleLayout" class="gp-layout">
       <div id="gpGamePanel" class="gp-card" aria-live="polite"><h2>지도 퍼즐</h2><p>국가 경계를 준비하고 있어요.</p></div>
       <div class="gp-map-card">
         <div class="gp-map-heading"><strong>국가 윤곽을 채우는 백지도</strong><span id="gpMapIndicator" class="gp-selected-indicator" aria-live="polite">조각을 선택해 주세요</span></div>
         <div id="gpMap" role="group" aria-label="국가별 윤곽이 있는 퍼즐 지도. 조각을 선택한 뒤 해당 국가의 위치를 눌러주세요."></div>
         <p class="gp-map-caption">PC: 조각을 지도 위로 끌어 놓거나 조각을 선택 후 지도를 클릭하세요. 모바일: 조각을 터치하고 지도에서 위치를 터치하세요. 작은 나라는 지도를 확대하면 선택하기 쉽습니다. 지도는 Natural Earth의 학습용 간략화 경계 데이터를 사용합니다.</p>
       </div>
+    </div>
+    <div id="cmScreen" hidden aria-label="수도와 나라를 매칭하는 게임">
+      <div class="cm-shell" id="cmGamePanel" aria-live="polite"></div>
+    </div>
+    <div id="iqScreen" hidden aria-label="국가 또는 수도 이름 초성 퀴즈">
+      <div class="iq-shell" id="iqGamePanel"></div>
     </div>
   </div>
   <div id="gpPreparing" class="gp-preparing" hidden>
@@ -1908,7 +2037,7 @@ async function loadCountries(){let rc;for(const url of ['https://cdn.jsdelivr.ne
  allCountries.length=0;for(const c of rc){if(!c.ccn3||!c.cca3||!c.cca2)continue;countries[key(c.ccn3)]=c;allCountries.push(c)}
  // 통계에 없는 국가의 인구는 국가 기본정보의 참고값으로 보충하고, 자료 연도를 명확히 구분합니다.
  for(const c of allCountries){const n=Number(c.population);if(Number.isFinite(n)&&n>0){stat.population[key(c.ccn3)]=n;statYear.population[key(c.ccn3)]='미상';statSource.population[key(c.ccn3)]='국가 기본정보(참고값)'}}
- populateCompare();draw();buildCountrySearchIndex();if(state.tab==='find')setTimeout(cfInit,40);if(state.tab==='games')setTimeout(gpInit,40);
+ populateCompare();draw();buildCountrySearchIndex();if(state.tab==='find')setTimeout(cfInit,40);if(state.tab==='games'&&geoGameMode==='puzzle')setTimeout(gpInit,40);
 }
 async function loadCapitalMetadata(){
  // World Bank 국가 메타데이터는 정식 수도 좌표를 제공합니다. 없는 국가는 REST Countries로 보완합니다.
@@ -2510,6 +2639,7 @@ function geoPushTabURL(tab){
  const url=new URL(window.location.href);
  if(tab==='home')url.searchParams.delete('tab');
  else url.searchParams.set('tab',tab);
+ if(tab!=='games')url.searchParams.delete('game');
  const nextURL=url.pathname+url.search+url.hash;
  const currentURL=window.location.pathname+window.location.search+window.location.hash;
  if(nextURL!==currentURL)window.history.pushState({geoTab:tab},'',url.href);
@@ -2547,7 +2677,7 @@ function switchTab(next,{fromHistory=false}={}){
   window.__geoInitialMapVisible=true;updateWorldCopies();repositionZoomBelowToolbar();
  },90);
  else if(next==='find')setTimeout(()=>{if(state.tab==='find')cfInit()},75);
- else if(next==='games')setTimeout(()=>{if(state.tab==='games')gpInit()},75);
+ else if(next==='games')setTimeout(()=>{if(state.tab==='games')geoSetGameMode(geoGameModeFromURL())},75);
  else if(next==='padlets')initPadlets();
  // 다른 탭으로 전환할 때는 콘텐츠의 첫 부분에서 읽기 시작합니다.
  if(next!==previous)window.scrollTo({top:0,behavior:'auto'});
@@ -3063,7 +3193,7 @@ function gpStyle(feature){
 function gpRestyle(){for(const layer of gpState.layers.values())layer.setStyle(gpStyle(layer.feature))}
 function gpWorldView(){regionFocusMap(gpState.map,gpState.region)}
 function gpInit(){
- if(state.tab!=='games')return;
+ if(state.tab!=='games'||geoGameMode!=='puzzle')return;
  if(!geo||!allCountries.length){gpPanel.innerHTML='<h2>지도 퍼즐</h2><p class="gp-empty">국가 경계 데이터를 불러오는 중이에요. 연결 후 자동으로 준비됩니다.</p>';return}
  if(!gpState.map){
   const m=L.map('gpMap',{minZoom:0,maxZoom:8,zoomSnap:.25,zoomDelta:.5,scrollWheelZoom:false,doubleClickZoom:false,worldCopyJump:false,preferCanvas:false});
@@ -3185,6 +3315,314 @@ gpPanel.addEventListener('dragstart',e=>{
  e.dataTransfer?.setData('text/plain',id);if(e.dataTransfer)e.dataTransfer.effectAllowed='move';
  gpIndicator.textContent=`${gpState.difficulty==='hard'?'실루엣':nameKR(countries[id])} · 지도 위에 놓기`;
 });
+
+/* ==============================
+   수도와 나라 매칭 — 10쌍 / 5쌍씩 2단계 / 6대륙 필터
+   기존 사이트의 한국어 수도 표기(capitals)를 그대로 사용합니다.
+   법적 지위에 이견이 있는 수도·복수 수도·이전 중인 수도는 문제풀에서 제외합니다.
+   독립형 게임이므로 지도/API/Firebase 데이터 로딩 없이도 플레이할 수 있습니다.
+   ============================== */
+const CM_REGION_CODES={
+ asia:['KR','JP','CN','MN','TH','VN','KH','LA','MM','MY','SG','PH','IN','PK','BD','NP','AF','SA','AE','IR','IQ','QA','KW','OM','JO','KZ','UZ','AZ','AM'],
+ europe:['GB','FR','DE','IT','ES','PT','NL','BE','CH','AT','SE','NO','FI','DK','PL','UA','GR','IE','IS','CZ','SK','HU','RO','BG','HR','RS','SI','EE','LV','LT','LU'],
+ africa:['EG','MA','DZ','TN','NG','KE','ET','GH','SN','CM','UG','TZ','ZM','ZW','AO','MZ','BW','NA','MG','RW','GA','BJ','CD','ML','NE','MW','LS'],
+ northamerica:['US','CA','MX','GT','HN','SV','NI','CR','PA','CU','JM','HT','DO','BS','BZ'],
+ southamerica:['BR','AR','CL','PE','CO','EC','UY','PY','VE','GY','SR'],
+ oceania:['AU','NZ','FJ','PG','SB','VU','WS','TO','FM','PW','MH','TV','KI']
+};
+const CM_SIZE=10,CM_STAGE_SIZE=5;
+const cmPanel=document.getElementById('cmGamePanel');
+const cmState={region:'all',phase:'intro',round:[],stage:0,capitalOrder:[],matched:new Set(),selectedIso:null,wrong:0,lastWrong:null,notice:'',noticeType:'info',startedAt:0,finishedAt:0};
+let geoGameMode='puzzle';
+function geoGameModeFromURL(){
+ const selected=new URLSearchParams(window.location.search).get('game');
+ return selected==='capitals'||selected==='initials'?selected:'puzzle';
+}
+function geoSetGameMode(mode,{record=false}={}){
+ geoGameMode=['capitals','initials'].includes(mode)?mode:'puzzle';
+ document.getElementById('gpPuzzleLayout').hidden=geoGameMode!=='puzzle';
+ document.getElementById('cmScreen').hidden=geoGameMode!=='capitals';
+ document.getElementById('iqScreen').hidden=geoGameMode!=='initials';
+ document.getElementById('gpPuzzleChoice').setAttribute('aria-pressed',String(geoGameMode==='puzzle'));
+ document.getElementById('cmCapitalChoice').setAttribute('aria-pressed',String(geoGameMode==='capitals'));
+ document.getElementById('iqInitialChoice').setAttribute('aria-pressed',String(geoGameMode==='initials'));
+ const descriptions={
+  puzzle:'국가의 윤곽을 관찰하고 퍼즐 조각을 알맞은 지도 위치에 채워 보세요.',
+  capitals:'국가와 수도의 짝을 찾아 보세요. 10쌍을 5쌍씩 두 단계로 도전해요.',
+  initials:'초성을 보고 이름을 맞혀 보세요. 국가와 수도 중 선택해 10문제에 도전할 수 있어요.'
+ };
+ document.getElementById('gpGameDescription').textContent=descriptions[geoGameMode];
+ if(record&&state.tab==='games'){
+  const url=new URL(window.location.href);
+  if(geoGameMode==='puzzle')url.searchParams.delete('game');
+  else url.searchParams.set('game',geoGameMode);
+  if(url.href!==window.location.href)window.history.pushState({geoTab:'games',geoGame:geoGameMode},'',url.href);
+ }
+ if(state.tab==='games'){
+  if(geoGameMode==='puzzle')gpInit();
+  else if(geoGameMode==='capitals')cmRender();
+  else iqRender();
+ }
+}
+function cmPool(region){
+ const list=region==='all'?Object.values(CM_REGION_CODES).flat():(CM_REGION_CODES[region]||[]);
+ const usedCapitals=new Set();
+ return list.filter(iso=>{
+  const cap=capitals[iso];
+  if(!cap||cap.includes('(')||cap.includes('·')||cap.includes('없음')||usedCapitals.has(cap))return false;
+  usedCapitals.add(cap);return true;
+ }).map(iso=>({iso,country:nameKR({cca2:iso}),capital:capitals[iso]}));
+}
+function cmStart(sameRound=false){
+ const pool=cmPool(cmState.region);
+ if(pool.length<CM_SIZE){cmState.notice='이 지역에 출제할 수 있는 국가가 충분하지 않아요.';cmState.noticeType='failure';cmRender();return}
+ if(!sameRound||cmState.round.length!==CM_SIZE)cmState.round=cfShuffle(pool).slice(0,CM_SIZE);
+ cmState.stage=0;cmState.phase='playing';cmState.matched.clear();cmState.selectedIso=null;cmState.lastWrong=null;cmState.wrong=0;
+ cmState.notice='왼쪽에서 나라를 고른 뒤 오른쪽에서 그 나라의 수도를 선택하세요.';cmState.noticeType='info';
+ cmState.startedAt=Date.now();cmState.finishedAt=0;
+ cmState.capitalOrder=cfShuffle(cmState.round.slice(0,CM_STAGE_SIZE).map(p=>p.iso));
+ cmRender();
+}
+function cmStagePairs(){return cmState.round.slice(cmState.stage*CM_STAGE_SIZE,(cmState.stage+1)*CM_STAGE_SIZE)}
+function cmAnswerCapital(iso){
+ if(cmState.phase!=='playing')return;
+ if(!cmState.selectedIso){cmState.notice='먼저 왼쪽에서 나라를 선택해 주세요.';cmState.noticeType='failure';cmState.lastWrong=null;cmRender();return}
+ if(iso!==cmState.selectedIso){
+  cmState.wrong++;cmState.lastWrong=iso;cmState.notice='아쉬워요! 선택한 수도는 그 나라의 수도가 아니에요. 다시 골라 보세요.';cmState.noticeType='failure';cmRender();return;
+ }
+ const country=cmState.round.find(p=>p.iso===iso);
+ cmState.matched.add(iso);cmState.lastWrong=null;cmState.selectedIso=null;
+ cmState.notice=`정답! ${country.country} — ${country.capital} 🎉`;cmState.noticeType='success';
+ if(cmStagePairs().every(p=>cmState.matched.has(p.iso))){
+  if(cmState.matched.size===CM_SIZE){cmState.phase='finished';cmState.finishedAt=Date.now()}
+  else cmState.phase='between';
+ }
+ cmRender();
+}
+function cmNextStage(){
+ if(cmState.phase!=='between'||cmState.stage!==0)return;
+ cmState.stage=1;cmState.capitalOrder=cfShuffle(cmStagePairs().map(p=>p.iso));cmState.selectedIso=null;cmState.lastWrong=null;
+ cmState.phase='playing';cmState.notice='2단계 도전! 남은 5쌍도 맞혀 보세요.';cmState.noticeType='info';cmRender();
+}
+function cmRender(){
+ if(!cmPanel)return;
+ const available=cmPool(cmState.region).length;
+ if(cmState.phase==='intro'){
+  cmPanel.innerHTML=`<div class="cm-intro-head"><span class="cm-intro-icon" aria-hidden="true">🏙️</span><div><h2>수도와 나라 매칭</h2><p>나라와 수도의 올바른 짝을 찾아 보세요!</p></div></div>
+   <div class="cm-intro-settings"><div><label class="gp-label" for="cmRegion">도전할 지역</label><select class="gp-select" id="cmRegion">${REGION_CHOICES.map(([id,label])=>`<option value="${id}" ${id===cmState.region?'selected':''}>${label}</option>`).join('')}</select></div>
+   <div class="cm-intro-note"><strong>총 10쌍 도전</strong><span>한 단계에 5쌍씩, 총 2단계로 진행해요.</span><span>해당 지역의 출제 가능 국가: ${available}개국</span></div></div>
+   <div class="cm-lesson">① 나라를 선택하고 → ② 알맞은 수도를 선택하세요.<br>정답은 초록색으로 고정되고, 틀리면 다시 선택할 수 있어요. PC와 모바일 모두 클릭·터치로 진행해요.</div>
+   ${cmState.notice?`<div class="cm-feedback ${cmState.noticeType}" role="status">${safe(cmState.notice)}</div>`:''}
+   <button type="button" class="gp-btn primary" data-cm-action="start" style="min-height:49px;width:100%" ${available<CM_SIZE?'disabled':''}>🏁 10쌍 매칭 시작!</button>`;
+  return;
+ }
+ const completed=cmState.matched.size,total=CM_SIZE;
+ const stats=`<div class="cm-stats"><div class="cm-stat"><strong>${Math.min(cmState.stage+1,2)} / 2</strong><span>진행 단계</span></div><div class="cm-stat"><strong>${completed} / ${total}</strong><span>맞힌 짝</span></div><div class="cm-stat"><strong>${cmState.wrong}</strong><span>틀린 횟수</span></div></div><div class="cm-progress" role="progressbar" aria-label="수도 매칭 진행률" aria-valuemin="0" aria-valuemax="10" aria-valuenow="${completed}"><span style="width:${completed/total*100}%"></span></div>`;
+ if(cmState.phase==='finished'){
+  const seconds=Math.max(1,Math.round((cmState.finishedAt-cmState.startedAt)/1000));
+  const accuracy=Math.round(100*CM_SIZE/(CM_SIZE+cmState.wrong));
+  const review=cmState.round.map(p=>`<div class="cm-answer"><strong>${safe(p.country)}</strong><span>↔ ${safe(p.capital)}</span></div>`).join('');
+  cmPanel.innerHTML=`<h2>🎉 수도 매칭 도전 완료!</h2>${stats}<div class="cm-perfect"><strong>${completed}쌍 모두 정답!</strong><span>정확도 ${accuracy}% · 오답 ${cmState.wrong}회 · ${Math.floor(seconds/60)}분 ${seconds%60}초</span></div><h3 style="font-size:15px;color:#295667;margin-top:19px">이번 도전 정답 복습</h3><div class="cm-answer-list">${review}</div><div class="cm-actions"><button type="button" class="gp-btn primary" data-cm-action="new">새로운 10쌍 도전</button><button type="button" class="gp-btn" data-cm-action="retry">같은 10쌍 다시</button><button type="button" class="gp-btn ghost" data-cm-action="menu">지역 다시 선택</button></div>`;
+  return;
+ }
+ const pairs=cmStagePairs();
+ const countryButtons=pairs.map(p=>`<button type="button" class="cm-pair-button ${cmState.matched.has(p.iso)?'matched':cmState.selectedIso===p.iso?'selected':''}" data-cm-country="${p.iso}" aria-pressed="${cmState.selectedIso===p.iso}" ${cmState.matched.has(p.iso)?'disabled':''}>${cmState.matched.has(p.iso)?'✓ ':''}${safe(p.country)}</button>`).join('');
+ const capitalButtons=cmState.capitalOrder.map(iso=>{const p=pairs.find(p=>p.iso===iso);return `<button type="button" class="cm-pair-button ${cmState.matched.has(iso)?'matched':cmState.lastWrong===iso?'wrong':''}" data-cm-capital="${iso}" ${cmState.matched.has(iso)?'disabled':''}>${cmState.matched.has(iso)?'✓ ':''}${safe(p.capital)}</button>`}).join('');
+ cmPanel.innerHTML=`<h2>🏙️ 수도와 나라 매칭</h2>${stats}<p class="cm-stage-caption">${regionName(cmState.region)} · ${cmState.stage+1}단계 · 나라와 수도 5쌍을 연결해 보세요</p>
+ <div class="cm-columns"><div class="cm-column" role="group" aria-label="나라 선택"><h3>🌍 나라 <small>Country</small></h3>${countryButtons}</div><div class="cm-column" role="group" aria-label="수도 선택"><h3>📍 수도 <small>Capital</small></h3>${capitalButtons}</div></div>
+ <div class="cm-feedback ${cmState.noticeType}" role="status">${safe(cmState.notice)}</div>
+ ${cmState.phase==='between'?'<div class="cm-stage-done">✨ 1단계 성공! 5쌍 모두 맞혔어요.</div><div class="cm-actions"><button type="button" class="gp-btn primary" data-cm-action="next">다음 5쌍 도전하기 →</button></div>':''}
+ <div class="cm-actions"><button type="button" class="gp-btn ghost" data-cm-action="retry">↻ 같은 10쌍 다시</button><button type="button" class="gp-btn" data-cm-action="menu">지역 다시 선택</button></div>`;
+}
+cmPanel.addEventListener('change',e=>{
+ if(e.target?.id==='cmRegion'){
+  cmState.region=e.target.value;cmState.notice='';cmState.phase='intro';cmRender();
+ }
+});
+cmPanel.addEventListener('click',e=>{
+ const country=e.target.closest('button[data-cm-country]');
+ if(country&&cmState.phase==='playing'&&!cmState.matched.has(country.dataset.cmCountry)){
+  cmState.selectedIso=country.dataset.cmCountry;cmState.lastWrong=null;
+  const chosen=cmState.round.find(p=>p.iso===cmState.selectedIso);
+  cmState.notice=`${chosen.country}의 수도는 어디일까요? 오른쪽에서 선택하세요.`;cmState.noticeType='info';cmRender();return;
+ }
+ const capital=e.target.closest('button[data-cm-capital]');
+ if(capital){cmAnswerCapital(capital.dataset.cmCapital);return}
+ const action=e.target.closest('button[data-cm-action]')?.dataset.cmAction;
+ if(!action)return;
+ if(action==='start'||action==='new')cmStart();
+ else if(action==='retry'){
+  if(cmState.phase!=='finished'&&cmState.matched.size>0&&!window.confirm('현재 수도 매칭을 처음부터 다시 할까요?'))return;
+  cmStart(true);
+ }else if(action==='next')cmNextStage();
+ else if(action==='menu'){
+  if(cmState.phase!=='finished'&&cmState.matched.size>0&&!window.confirm('지역 선택으로 돌아갈까요? 진행 중인 매칭은 초기화됩니다.'))return;
+  cmState.phase='intro';cmState.round=[];cmState.matched.clear();cmState.selectedIso=null;cmState.notice='';cmRender();
+ }
+});
+
+
+/* ==============================
+   초성 퀴즈 — 국가 / 수도, 전체 / 6대륙, 10문제
+   국가 이름: Intl.DisplayNames(ko)와 수도 매칭의 지역별 ISO 코드
+   수도 이름: 기존 capitals 한글 표기를 사용. 복수 수도/행정수도 설명은 제외.
+   힌트·오답 3회·정답 복습·주소별 탭 이동을 지원합니다.
+   ============================== */
+const IQ_SIZE=10,IQ_MAX_TRIES=3;
+const IQ_CHOSEONG=['ㄱ','ㄲ','ㄴ','ㄷ','ㄸ','ㄹ','ㅁ','ㅂ','ㅃ','ㅅ','ㅆ','ㅇ','ㅈ','ㅉ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'];
+const iqPanel=document.getElementById('iqGamePanel');
+const iqState={kind:'country',region:'all',phase:'intro',questions:[],index:0,attempts:0,hints:0,correct:0,wrong:0,results:[],notice:'',noticeType:'info',startedAt:0,endedAt:0};
+// 통상적인 국명 약칭을 입력해도 정답으로 인정합니다.
+const IQ_COUNTRY_ALIASES={KR:['한국'],US:['미합중국','미국'],GB:['영국','영국연합왕국'],CN:['중국'],AE:['아랍에미리트'],CZ:['체코'],NL:['네덜란드']};
+function iqNormalize(text){return String(text||'').normalize('NFKC').toLocaleLowerCase('ko').replace(/[\s\u00b7·.()'’‘\-_,]/g,'')}
+function iqConsonant(ch){const code=ch.charCodeAt(0);return code>=0xAC00&&code<=0xD7A3?IQ_CHOSEONG[Math.floor((code-0xAC00)/588)]:ch}
+function iqInitials(text){return String(text).trim().split(/\s+/).map(w=>Array.from(w).map(iqConsonant).join(' ')).join('　/　')}
+function iqPool(kind,region){
+ const codes=region==='all'?Object.values(CM_REGION_CODES).flat():(CM_REGION_CODES[region]||[]);
+ const used=new Set();
+ return codes.map(iso=>{
+  const country=nameKR({cca2:iso}),capital=capitals[iso];
+  if(used.has(iso))return null;
+  used.add(iso);
+  const answer=kind==='country'?country:capital;
+  // 괄호나 로마자·주석 등이 포함된 표기는 교과용 초성 문제로 쓰지 않습니다.
+  if(!answer||!(/^[가-힣]+(?:[ \u00b7·-][가-힣]+)*$/u.test(answer)))return null;
+  if(answer.length<2||answer.length>18)return null;
+  return {iso,country,capital:capital||'',answer};
+ }).filter(Boolean);
+}
+function iqCurrent(){return iqState.questions[iqState.index]}
+function iqStart(retrySame=false){
+ const pool=iqPool(iqState.kind,iqState.region);
+ if(pool.length<IQ_SIZE){iqState.notice='이 지역에는 출제 가능한 문제가 충분하지 않아요.';iqState.noticeType='failure';iqRender();return}
+ if(!retrySame||iqState.questions.length!==IQ_SIZE)iqState.questions=cfShuffle(pool).slice(0,IQ_SIZE);
+ iqState.index=0;iqState.attempts=0;iqState.hints=0;iqState.correct=0;iqState.wrong=0;
+ iqState.results=[];iqState.phase='playing';iqState.notice='초성을 보고 정답을 입력하세요!';iqState.noticeType='info';iqState.startedAt=Date.now();iqState.endedAt=0;
+ iqRender();iqFocusAnswer();
+}
+function iqAnswerIsCorrect(input,q){
+ const normalized=iqNormalize(input);
+ if(!normalized)return false;
+ const candidates=[q.answer,...(iqState.kind==='country'?(IQ_COUNTRY_ALIASES[q.iso]||[]):[])];
+ return candidates.some(str=>iqNormalize(str)===normalized);
+}
+function iqResolve(isCorrect){
+ const q=iqCurrent();
+ iqState.results.push({iso:q.iso,country:q.country,capital:q.capital,answer:q.answer,correct:isCorrect});
+ if(isCorrect)iqState.correct++;
+ iqState.phase='reveal';
+ iqState.notice=isCorrect?'정답이에요! 🎉':'세 번 모두 틀렸어요. 정답을 확인하고 다음 문제로 넘어가세요.';
+ iqState.noticeType=isCorrect?'success':'failure';
+ iqRender();
+}
+function iqSubmit(input){
+ if(iqState.phase!=='playing')return;
+ if(!iqNormalize(input)){iqState.notice='정답을 입력한 다음 확인 버튼을 눌러 주세요.';iqState.noticeType='failure';iqRender();iqFocusAnswer();return}
+ const q=iqCurrent();
+ if(iqAnswerIsCorrect(input,q)){iqResolve(true);return}
+ iqState.wrong++;iqState.attempts++;
+ if(iqState.attempts>=IQ_MAX_TRIES){iqResolve(false);return}
+ iqState.notice=`아쉬워요! 다시 도전해 보세요. 남은 기회 ${IQ_MAX_TRIES-iqState.attempts}번`;
+ iqState.noticeType='failure';iqRender();iqFocusAnswer();
+}
+function iqSkip(){
+ if(iqState.phase!=='playing')return;
+ const q=iqCurrent();iqState.results.push({iso:q.iso,country:q.country,capital:q.capital,answer:q.answer,correct:false});
+ iqState.phase='reveal';iqState.notice='문제를 건너뛰었어요. 정답을 확인하세요.';iqState.noticeType='info';iqRender();
+}
+function iqNext(){
+ if(iqState.phase!=='reveal')return;
+ if(iqState.index>=IQ_SIZE-1){iqState.phase='finished';iqState.endedAt=Date.now();iqRender();return}
+ iqState.index++;iqState.attempts=0;iqState.hints=0;iqState.phase='playing';iqState.notice='';iqState.noticeType='info';iqRender();iqFocusAnswer();
+}
+function iqHint(){
+ if(iqState.phase!=='playing'||iqState.hints>=2)return;
+ const typed=iqPanel.querySelector('#iqInput')?.value||'';
+ iqState.hints++;iqRender();
+ const input=iqPanel.querySelector('#iqInput');if(input){input.value=typed;input.focus()}
+}
+function iqFocusAnswer(){
+ if(state.tab==='games'&&geoGameMode==='initials')requestAnimationFrame(()=>iqPanel.querySelector('#iqInput')?.focus({preventScroll:true}));
+}
+function iqRender(){
+ if(!iqPanel)return;
+ if(iqState.phase==='intro'){
+  const amount=iqPool(iqState.kind,iqState.region).length;
+  iqPanel.innerHTML=`<div class="iq-heading"><span class="iq-heading-icon" aria-hidden="true">🔤</span><div><h2>초성 퀴즈</h2><p>국가 또는 수도의 이름을 초성만 보고 맞혀 보세요!</p></div></div>
+  <div class="iq-type-label">어떤 문제를 풀어 볼까요?</div>
+  <div class="iq-types" role="group" aria-label="초성 퀴즈 출제 유형">
+   <button type="button" class="iq-type" data-iq-kind="country" aria-pressed="${iqState.kind==='country'}">🌏 국가 이름<span>국가명 초성 맞히기</span></button>
+   <button type="button" class="iq-type" data-iq-kind="capital" aria-pressed="${iqState.kind==='capital'}">📍 수도 이름<span>수도명 초성 맞히기</span></button>
+  </div>
+  <div class="iq-settings"><div><label class="gp-label" for="iqRegion">도전할 지역</label><select class="gp-select" id="iqRegion">${REGION_CHOICES.map(([key,label])=>`<option value="${key}" ${key===iqState.region?'selected':''}>${label}</option>`).join('')}</select></div>
+  <div class="iq-note"><strong>10문제 · 총 100점</strong><span>정답은 직접 입력하며 문제마다 최대 3번 도전할 수 있어요.</span><span>현재 선택 지역의 출제 가능 문제: ${amount}개</span></div></div>
+  <div class="iq-info">① 국가 또는 수도 선택 → ② 지역 선택 → ③ 10문제 도전!<br>띄어쓰기와 구분 기호는 채점에 영향을 주지 않아요. 어려우면 힌트를 확인해 보세요.</div>
+  ${iqState.notice?`<div class="iq-feedback ${iqState.noticeType}" role="status">${safe(iqState.notice)}</div>`:''}
+  <button type="button" class="gp-btn primary" style="min-height:50px;width:100%" data-iq-action="start" ${amount<IQ_SIZE?'disabled':''}>🏁 10문제 도전 시작!</button>`;
+  return;
+ }
+ const label=iqState.kind==='country'?'국가 이름':'수도 이름';
+ const completed=iqState.results.length;
+ if(iqState.phase==='finished'){
+  const elapsed=Math.max(1,Math.round((iqState.endedAt-iqState.startedAt)/1000));
+  const reviews=iqState.results.map((r,i)=>`<div class="iq-review-item"><span class="iq-review-mark ${r.correct?'':'missed'}" aria-label="${r.correct?'정답':'오답'}">${r.correct?'✓':'✗'}</span><div><strong>${i+1}. ${safe(r.answer)}</strong><span>${safe(r.country)} · ${safe(r.capital)}</span></div></div>`).join('');
+  iqPanel.innerHTML=`<h2>🎉 초성 퀴즈 도전 완료!</h2><p>${safe(regionName(iqState.region))} · ${label}</p>
+   <div class="iq-final-score"><strong>${iqState.correct*10} / 100점</strong><span>정답 ${iqState.correct} / ${IQ_SIZE}문제 · 오답 입력 ${iqState.wrong}회 · ${Math.floor(elapsed/60)}분 ${elapsed%60}초</span></div>
+   <h3 style="font-size:15px;color:#295a67;margin-top:20px">이번 도전 정답 복습</h3><div class="iq-review">${reviews}</div>
+   <div class="iq-action-row"><button type="button" class="gp-btn primary" data-iq-action="new">새로운 10문제 도전</button><button type="button" class="gp-btn" data-iq-action="retry">같은 10문제 다시</button><button type="button" class="gp-btn ghost" data-iq-action="menu">유형·지역 다시 선택</button></div>`;
+  return;
+ }
+ const q=iqCurrent();
+ const totalSyllables=Array.from(q.answer.replace(/\s/g,'')).length;
+ const context=iqState.kind==='country'?`선택 지역: ${regionName(iqState.region)}`:'어느 나라의 수도인지도 생각해 보세요!';
+ let hintHtml='';
+ if(iqState.hints>=1)hintHtml+=`<div class="iq-hint-text">💡 첫 글자: <strong>${safe(q.answer.trim().charAt(0))}</strong></div>`;
+ if(iqState.hints>=2){
+  const detail=iqState.kind==='country'?(q.capital&&!/[()·]/.test(q.capital)?`수도는 ${q.capital}입니다.`:`${regionName(iqState.region)}에 속한 국가입니다.`):`이 수도가 있는 국가는 ${q.country}입니다.`;
+  hintHtml+=`<div class="iq-hint-text">🔎 추가 힌트: <strong>${safe(detail)}</strong></div>`;
+ }
+ iqPanel.innerHTML=`<div class="iq-status"><span><strong>${iqState.index+1}</strong> / ${IQ_SIZE}문제 · ${label}</span><span>현재 점수 <strong>${iqState.correct*10}</strong>점</span></div>
+ <div class="iq-progress" role="progressbar" aria-label="초성 퀴즈 진행률" aria-valuemin="0" aria-valuemax="10" aria-valuenow="${completed}"><span style="width:${completed/IQ_SIZE*100}%"></span></div>
+ <div class="iq-problem"><span class="iq-kind-chip">${label} 초성</span><div class="iq-initial" aria-label="초성 ${safe(iqInitials(q.answer))}">${safe(iqInitials(q.answer))}</div><div class="iq-details">${totalSyllables}글자 · ${safe(context)}</div></div>
+ ${iqState.phase==='playing'?`
+ <label for="iqInput" class="iq-answer-label">정답을 입력하세요 <small style="color:#73909a">(남은 도전 ${IQ_MAX_TRIES-iqState.attempts}회)</small></label>
+ <form class="iq-form" id="iqAnswerForm"><input class="iq-input" id="iqInput" type="text" inputmode="text" autocapitalize="off" autocomplete="off" autocorrect="off" spellcheck="false" placeholder="한글 이름 입력" maxlength="45" required aria-label="초성 퀴즈 정답"><button type="submit" class="gp-btn primary">정답 확인</button></form>
+ <div class="iq-hints"><button type="button" class="gp-btn ghost" data-iq-action="hint" ${iqState.hints>=2?'disabled':''}>💡 힌트 보기 (${iqState.hints}/2)</button><button type="button" class="gp-btn ghost" data-iq-action="skip">이 문제 건너뛰기</button></div>
+ ${hintHtml}`:''}
+ ${iqState.notice?`<div class="iq-feedback ${iqState.noticeType}" role="status" aria-live="polite">${safe(iqState.notice)}</div>`:''}
+ ${iqState.phase==='reveal'?`<div class="iq-reveal"><small>정답</small><strong>${safe(q.answer)}</strong><small>${safe(q.country)} · ${safe(q.capital)}</small></div><div class="iq-action-row"><button type="button" class="gp-btn primary" data-iq-action="next">${iqState.index===IQ_SIZE-1?'결과 확인하기':'다음 문제 →'}</button></div>`:''}
+ <div class="iq-action-row"><button type="button" class="gp-btn ghost" data-iq-action="retry">같은 10문제 다시</button><button type="button" class="gp-btn" data-iq-action="menu">유형·지역 다시 선택</button></div>`;
+}
+iqPanel.addEventListener('click',event=>{
+ const type=event.target.closest('button[data-iq-kind]');
+ if(type&&iqState.phase==='intro'){
+  iqState.kind=type.dataset.iqKind==='capital'?'capital':'country';iqState.notice='';iqRender();return;
+ }
+ const action=event.target.closest('button[data-iq-action]')?.dataset.iqAction;
+ if(!action)return;
+ if(action==='start'||action==='new')iqStart();
+ else if(action==='retry'){
+  if(['playing','reveal'].includes(iqState.phase)&&iqState.index>0&&!window.confirm('같은 초성 문제를 처음부터 다시 풀까요? 진행 상황은 초기화됩니다.'))return;
+  iqStart(true);
+ }else if(action==='hint')iqHint();
+ else if(action==='skip')iqSkip();
+ else if(action==='next')iqNext();
+ else if(action==='menu'){
+  if(['playing','reveal'].includes(iqState.phase)&&iqState.index>0&&!window.confirm('유형과 지역을 다시 선택할까요? 진행 상황은 초기화됩니다.'))return;
+  iqState.phase='intro';iqState.questions=[];iqState.notice='';iqRender();
+ }
+});
+iqPanel.addEventListener('change',event=>{
+ if(event.target?.id==='iqRegion'&&iqState.phase==='intro'){
+  iqState.region=event.target.value;iqState.notice='';iqRender();
+ }
+});
+iqPanel.addEventListener('submit',event=>{
+ if(event.target?.id==='iqAnswerForm'){
+  event.preventDefault();iqSubmit(event.target.querySelector('#iqInput')?.value||'');
+ }
+});
+
 const gpPreparing=document.getElementById('gpPreparing');
 function gpClosePreparing(){gpPreparing.hidden=true;document.getElementById('gpComingChoice')?.focus()}
 document.getElementById('gpPreparingClose').addEventListener('click',gpClosePreparing);
@@ -3194,7 +3632,7 @@ document.querySelectorAll('[data-gp-choice]').forEach(b=>b.addEventListener('cli
  if(b.dataset.gpChoice==='coming'){
   gpPreparing.hidden=false;document.getElementById('gpPreparingClose').focus();return;
  }
- gpInit();
+ geoSetGameMode(b.dataset.gpChoice,{record:true});
 }));
 
 // 이벤트 위임으로 패널 내용이 갱신되어도 기능이 유지됩니다.
