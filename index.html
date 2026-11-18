@@ -758,6 +758,38 @@ body.home-active .tabs{display:none}
  body:not(.home-active) #tab-padlets .tab-ko::after{font-size:10px}
 }
 
+
+/* 2026-11-18: Home and learning tabs use the identical brand typography. */
+header .brand,
+body.home-active header .brand {
+  font-family:'Pretendard Variable',Pretendard,-apple-system,BlinkMacSystemFont,'Noto Sans KR',sans-serif;
+  font-size:26px;
+  font-weight:850;
+  line-height:1.12;
+  letter-spacing:-.6px;
+  flex-shrink:0;
+}
+header .brand small,
+body.home-active header .brand small {
+  display:block;
+  font-family:inherit;
+  font-size:12px;
+  font-weight:600;
+  line-height:1.45;
+  letter-spacing:0;
+  margin-top:2px;
+}
+header .tabs{min-width:0}
+/* Use a font-independent, bold and geometrically centered white chevron. */
+.home-tile-arrow{display:grid;place-items:center;flex-shrink:0;line-height:0}
+.home-tile-arrow svg{display:block;width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:3.8;stroke-linecap:round;stroke-linejoin:round;overflow:visible}
+@media(max-width:800px){.home-tile-arrow svg{width:17px;height:17px}}
+@media(max-width:650px){
+  header .brand,body.home-active header .brand{font-size:19px;line-height:1.12}
+  header .brand small,body.home-active header .brand small{font-size:12px;line-height:1.45}
+  .home-tile-arrow svg{width:16px;height:16px}
+}
+
 </style>
 </head>
 <body class="home-active">
@@ -808,30 +840,30 @@ body.home-active .tabs{display:none}
     <div class="home-cards" role="group" aria-label="지리 학습 기능"><button class="home-tile map" type="button" data-open-tab="map" aria-label="지도 열기">
 <span class="home-tile-image"><svg viewBox="0 0 120 90" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path fill="#69c46f" d="M6 33L24 15L43 18L46 29L36 38L44 48L35 55L28 71L18 60L12 48ZM44 22L59 13L71 20L78 29L65 33L57 42L46 37ZM64 51L74 45L87 50L95 60L88 70L77 75L68 64ZM87 17L99 14L112 27L105 41L93 38L84 29ZM5 13L17 8L24 14L17 22Z"/></svg></span>
 <span class="home-tile-content"><strong class="home-tile-title">지도</strong><span class="home-tile-en" lang="en">MAP</span><span class="home-tile-description">국가의 위치와 지리 정보를 알아보세요</span></span>
-<span class="home-tile-arrow" aria-hidden="true">›</span></button>
+<span class="home-tile-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M9 5.5 15.5 12 9 18.5"/></svg></span></button>
 <button class="home-tile compare" type="button" data-open-tab="compare" aria-label="비교하기 열기">
 <span class="home-tile-image"><svg viewBox="0 0 120 90" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect x="14" y="49" width="22" height="32" rx="5" fill="#58aaf0"/><rect x="47" y="34" width="22" height="47" rx="5" fill="#f8c55b"/><rect x="80" y="17" width="22" height="64" rx="5" fill="#59bd9a"/><path d="M19 31L51 12L67 21L94 4" fill="none" stroke="#31b5c1" stroke-width="5" stroke-linecap="round"/><circle cx="19" cy="31" r="5" fill="#2aadb9"/><circle cx="51" cy="12" r="5" fill="#2aadb9"/><circle cx="67" cy="21" r="5" fill="#2aadb9"/><circle cx="94" cy="4" r="5" fill="#2aadb9"/></svg></span>
 <span class="home-tile-content"><strong class="home-tile-title">비교하기</strong><span class="home-tile-en" lang="en">COMPARE</span><span class="home-tile-description">최대 3개 국가의 특징을 비교해요</span></span>
-<span class="home-tile-arrow" aria-hidden="true">›</span></button>
+<span class="home-tile-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M9 5.5 15.5 12 9 18.5"/></svg></span></button>
 <button class="home-tile find" type="button" data-open-tab="find" aria-label="나라찾기 열기">
 <span class="home-tile-image"><svg viewBox="0 0 120 90" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M8 29L42 20L80 29L112 19V76L79 85L43 75L8 85Z" fill="#b6edc8" stroke="#61b888" stroke-width="3" stroke-linejoin="round"/><path d="M43 21V75M79 29V85" stroke="#82caa0" stroke-width="3"/><path d="M70 23C70 10 79 3 91 3S111 10 111 23C111 35 91 57 91 57S70 35 70 23Z" fill="#f0564f" stroke="#b73738" stroke-width="2"/><circle cx="91" cy="23" r="8" fill="white"/></svg></span>
 <span class="home-tile-content"><strong class="home-tile-title">나라찾기</strong><span class="home-tile-en" lang="en">FIND COUNTRY</span><span class="home-tile-description">전 세계 또는 대륙을 선택해 국가 위치를 찾아요</span></span>
-<span class="home-tile-arrow" aria-hidden="true">›</span></button>
+<span class="home-tile-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M9 5.5 15.5 12 9 18.5"/></svg></span></button>
 <button class="home-tile games" type="button" data-open-tab="games" aria-label="지리 게임 열기">
 <span class="home-tile-image" aria-hidden="true">
 <svg viewBox="0 0 120 90" xmlns="http://www.w3.org/2000/svg"><path d="M12 18H47V37C59 27 71 38 68 49C66 58 55 61 47 54V78H12Z" fill="#ffd876" stroke="#cba254" stroke-width="3" stroke-linejoin="round"/><path d="M54 12H108V77H75V57C63 62 54 52 57 43C60 34 69 34 75 38V12Z" fill="#a6cfed" stroke="#568fbd" stroke-width="3" stroke-linejoin="round"/><path d="M13 12L32 5 46 15 43 26 28 30 20 45 10 31Z" fill="#91d1b2" stroke="#3c9773" stroke-width="2"/></svg>
 </span>
 <span class="home-tile-content"><strong class="home-tile-title">게임</strong><span class="home-tile-en" lang="en">GAMES</span><span class="home-tile-description">지도 퍼즐로 국가의 모양과 위치를 익혀요</span></span>
-<span class="home-tile-arrow" aria-hidden="true">›</span></button>
+<span class="home-tile-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M9 5.5 15.5 12 9 18.5"/></svg></span></button>
 
 <button class="home-tile quiz" type="button" data-open-tab="quiz" aria-label="퀴즈 Quiz 열기">
 <span class="home-tile-image"><svg viewBox="0 0 120 90" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect x="13" y="13" width="80" height="72" rx="6" fill="#f4fbff" stroke="#548fbc" stroke-width="5"/><rect x="35" y="6" width="34" height="15" rx="6" fill="#8bc6e7" stroke="#477ca8" stroke-width="3"/><g stroke="#51bba6" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M23 37L28 43L38 31M23 56L28 62L38 50M23 74L28 80L38 68"/></g><g stroke="#9ab5ca" stroke-width="3"><path d="M46 38H80M46 56H75M46 74H73"/></g><path d="M75 76L102 34L112 42L85 83L72 88Z" fill="#ffca55" stroke="#d29431" stroke-width="2"/><path d="M72 88L77 76L85 83Z" fill="#517b9d"/></svg></span>
 <span class="home-tile-content"><strong class="home-tile-title">퀴즈 Quiz</strong><span class="home-tile-en" lang="en">QUIZ</span><span class="home-tile-description">기후·종교·인구를 복습해요</span></span>
-<span class="home-tile-arrow" aria-hidden="true">›</span></button>
+<span class="home-tile-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M9 5.5 15.5 12 9 18.5"/></svg></span></button>
 <button class="home-tile padlets" type="button" data-open-tab="padlets" aria-label="우리의 지리 탐구 Students Archive 열기">
 <span class="home-tile-image" aria-hidden="true"><svg viewBox="0 0 120 90" xmlns="http://www.w3.org/2000/svg"><rect x="10" y="19" width="59" height="50" rx="8" fill="#a5e9e0" stroke="#3caba9" stroke-width="3"/><rect x="44" y="8" width="62" height="61" rx="8" fill="#e7f7ff" stroke="#5d9fc3" stroke-width="3"/><rect x="57" y="18" width="16" height="17" rx="3" fill="#ffd971"/><rect x="79" y="18" width="16" height="17" rx="3" fill="#b6e0f3"/><path d="M56 44H95 M56 54H87" fill="none" stroke="#7ca6b6" stroke-width="4" stroke-linecap="round"/><path d="M19 41H38M19 51H33" stroke="#399a99" stroke-width="4" stroke-linecap="round"/></svg></span>
 <span class="home-tile-content"><strong class="home-tile-title">우리의 지리 탐구</strong><span class="home-tile-en" lang="en">Students Archive</span><span class="home-tile-description">학기별로 모아 둔 학생들의 Padlet 탐구 자료를 살펴보세요.</span></span>
-<span class="home-tile-arrow" aria-hidden="true">›</span></button></div>
+<span class="home-tile-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M9 5.5 15.5 12 9 18.5"/></svg></span></button></div>
     <svg class="home-landscape" viewBox="0 0 1300 105" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" aria-hidden="true"><path d="M0 65L65 29L111 61L166 14L224 63L310 44L360 73L440 39L523 72L620 54L718 76L786 48L850 67L912 35L966 62L1054 15L1113 68L1166 36L1240 64L1300 43V105H0Z" fill="#bce8ed"/><path d="M0 83L44 53L112 91L166 35L211 87L280 59L368 94L460 68L540 102L620 75L711 99L793 68L875 100L946 62L1035 93L1119 38L1202 101L1300 67V105H0Z" fill="#79cfce" opacity=".9"/><path d="M148 52L166 35L185 55L174 54L167 44L159 55Z M1105 53L1119 38L1139 58L1126 54L1119 46L1111 54Z" fill="white" opacity=".8"/></svg>
   </div>
 </section>
