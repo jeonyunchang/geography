@@ -983,6 +983,93 @@ header .tabs{min-width:0}
 }
 @media(max-width:350px){.iq-shell{padding:14px 9px}.iq-type{padding:10px 9px}.iq-initial{font-size:25px}}
 
+
+/* 2026-11-18: 국기 퀴즈 / 국가 형태 퀴즈 - 4지 선다, 전체 · 6대륙 */
+#vqScreen[hidden]{display:none!important}
+#vqScreen{width:100%;max-width:990px;margin:0 auto}
+.vq-shell{background:#fff;border:1px solid #dbe8ed;border-radius:18px;box-shadow:0 8px 28px #18415a0b;padding:clamp(17px,3vw,30px);color:#224f60}
+.vq-shell h2{font-size:clamp(20px,3vw,27px);color:#194a57;letter-spacing:-.6px;font-weight:900;margin:0 0 7px}
+.vq-shell p{color:#597987;font-size:13px;line-height:1.7;margin:5px 0 13px}
+.vq-title{display:flex;align-items:center;gap:13px;margin-bottom:17px}
+.vq-title-symbol{display:grid;place-items:center;width:54px;height:54px;border-radius:16px;font-size:27px;flex-shrink:0;background:linear-gradient(135deg,#e0f5f6,#e9f3ff)}
+.vq-config{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:13px;align-items:end}
+.vq-info{background:#f0f9f7;border:1px solid #d5ece6;border-radius:12px;padding:13px;color:#477568;font-size:12px;line-height:1.6}
+.vq-info strong{display:block;color:#14745e;font-size:15px;margin-bottom:4px}
+.vq-bullets{margin:17px 0;padding:14px 15px;border-radius:12px;background:#f4f9fc;border:1px solid #dcebef;color:#4d7080;font-size:12px;line-height:1.8}
+.vq-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:16px}
+.vq-actions .gp-btn{flex:1 1 170px;min-height:45px}
+.vq-start{min-height:52px;width:100%;font-size:15px}
+.vq-stats{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;font-size:12px;color:#527786;font-weight:800}
+.vq-stats strong{font-size:20px;color:#148571;font-weight:950}
+.vq-track{height:9px;background:#e4f0f2;border-radius:100px;overflow:hidden;margin:11px 0 15px}
+.vq-track span{height:100%;display:block;width:0;background:linear-gradient(90deg,#0da488,#87d6b8);transition:width .17s ease}
+.vq-question{margin:15px 0 18px;text-align:center;background:linear-gradient(150deg,#eaf8fb,#f9fcfd);border:1px solid #d5e9ec;border-radius:17px;padding:20px 14px}
+.vq-chip{display:inline-flex;align-items:center;border:1px solid #d0e7e7;background:#fff;color:#298475;border-radius:100px;padding:6px 12px;font-size:12px;font-weight:850}
+.vq-question h3{font-size:clamp(17px,2.5vw,22px);font-weight:900;color:#24495e;letter-spacing:-.55px;margin:15px 0 7px}
+.vq-media{display:grid;place-items:center;min-height:200px;margin:8px auto 7px;max-width:600px}
+.vq-flag-image{display:block;max-width:min(100%,360px);width:auto;height:auto;max-height:225px;min-height:100px;object-fit:contain;box-shadow:0 4px 18px #284d681b;border-radius:4px;background:#fff}
+.vq-flag-image[hidden],.vq-flag-fallback[hidden]{display:none!important}
+.vq-flag-fallback{display:grid;place-items:center;width:min(100%,350px);min-height:170px;font-size:130px;line-height:1.2}
+.vq-silhouette{width:min(100%,490px);height:245px;display:grid;place-items:center}
+.vq-silhouette svg{width:100%;height:100%;max-width:490px;max-height:245px;filter:drop-shadow(0 3px 2px #22596c19)}
+.vq-silhouette svg path{fill:#2aa38c;stroke:#166b70;stroke-width:1.2;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+.vq-tiny-note{font-size:11px;color:#6c8893;line-height:1.6}
+.vq-choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:10px 0 15px}
+.vq-choice{min-width:0;min-height:61px;background:#fff;border:1.5px solid #cadae3;border-radius:12px;color:#244f61;font:800 15px/1.45 'Pretendard Variable',Pretendard,'Noto Sans KR',sans-serif;cursor:pointer;display:flex;align-items:center;gap:9px;padding:12px 14px;text-align:left;transition:background .15s,border-color .15s}
+.vq-choice:hover:not(:disabled){background:#edf8f6;border-color:#5bb9a6}
+.vq-choice:focus-visible{outline:3px solid #238dab;outline-offset:2px}
+.vq-choice:disabled{opacity:1;cursor:default}
+.vq-letter{display:grid;place-items:center;border-radius:8px;background:#eaf1f5;color:#507280;font-size:12px;width:27px;height:27px;flex-shrink:0}
+.vq-choice.correct{background:#e5f9ec;border-color:#19a67d;color:#136f53}
+.vq-choice.correct .vq-letter{background:#1da37b;color:#fff}
+.vq-choice.wrong{background:#fff0ef;border-color:#e38e85;color:#a4423d}
+.vq-choice.wrong .vq-letter{background:#cb6b60;color:#fff}
+.vq-choice.muted{background:#f5f8f9;border-color:#e4ebee;color:#8aa2ad}
+.vq-feedback{padding:12px 14px;border-radius:11px;background:#eef8fa;border:1px solid #d2e5e9;color:#336d7a;font-size:13px;line-height:1.7;font-weight:750;margin:8px 0}
+.vq-feedback.success{color:#19704c;background:#eaf9ef;border-color:#bce4ca}
+.vq-feedback.failure{color:#a4443a;background:#fff2f0;border-color:#efd1ca}
+.vq-result{background:linear-gradient(125deg,#e7f8ef,#eaf5fc);border:1px solid #cee5dd;border-radius:17px;text-align:center;padding:25px 14px;margin:15px 0}
+.vq-result strong{display:block;font-size:clamp(36px,7vw,48px);color:#13856d;line-height:1.25;font-weight:950}
+.vq-result span{display:block;font-size:13px;color:#587481;margin-top:8px}
+.vq-review{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin:13px 0}
+.vq-review-item{display:flex;align-items:center;gap:10px;border:1px solid #dfebee;border-radius:10px;background:#f9fcfc;padding:10px 12px;font-size:12px;color:#58788a;min-width:0}
+.vq-review-item strong{display:block;color:#31596a;font-size:13px;margin-bottom:3px}
+.vq-review-item .symbol{font-size:17px;font-weight:950;color:#178466}
+.vq-review-item .symbol.no{color:#ba5d4f}
+.vq-inline-flag{font-size:22px;line-height:1.2}
+@media(max-width:650px){
+ .vq-shell{padding:16px 12px;border-radius:13px}.vq-title{gap:10px}.vq-title-symbol{width:46px;height:46px;font-size:24px;border-radius:12px}
+ .vq-config{grid-template-columns:1fr;gap:10px}
+ .vq-question{padding:16px 10px}.vq-question h3{margin:12px 0 6px}
+ .vq-media{min-height:168px}.vq-flag-image{max-height:185px;max-width:min(100%,275px)}.vq-flag-fallback{font-size:110px;min-height:160px}
+ .vq-silhouette{height:195px}.vq-silhouette svg{height:190px}
+ .vq-choices{gap:8px}.vq-choice{min-height:66px;gap:7px;padding:10px 9px;font-size:13px}.vq-letter{width:23px;height:23px;font-size:11px}
+ .vq-review{grid-template-columns:1fr}
+}
+@media(max-width:350px){.vq-shell{padding:13px 9px}.vq-choice{font-size:12px;padding:9px 7px;min-height:67px}.vq-letter{width:21px;height:21px}.vq-flag-image{max-height:155px}.vq-silhouette{height:175px}.vq-silhouette svg{height:170px}}
+
+
+/* 2026-11-18: 국기/국가 형태 퀴즈 정답 유형 (4지선다 · 단답형) */
+.vq-answer-block{margin:0 0 18px}
+.vq-answer-modes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:8px}
+.vq-answer-mode{display:flex;flex-direction:column;gap:4px;align-items:flex-start;justify-content:center;min-width:0;min-height:82px;padding:13px 16px;border:1.5px solid #d6e5e8;border-radius:13px;background:#fff;color:#315767;text-align:left;cursor:pointer;font-family:inherit;transition:border-color .15s,background .15s}
+.vq-answer-mode strong{font-size:15px;font-weight:900}
+.vq-answer-mode small{font-size:11px;line-height:1.5;color:#75909a;font-weight:600}
+.vq-answer-mode[aria-pressed="true"]{background:#eaf8f3;border-color:#199a7c;box-shadow:inset 0 0 0 1px #199a7c;color:#13765e}
+.vq-answer-mode[aria-pressed="true"] small{color:#497d70}
+.vq-answer-mode:focus-visible{outline:3px solid #2696ad;outline-offset:2px}
+.vq-short-form{display:flex;gap:10px;align-items:stretch;margin:10px 0 14px}
+.vq-short-input{flex:1 1 210px;min-width:0;min-height:51px;border:1.5px solid #c9dce3;border-radius:12px;padding:12px 14px;color:#204957;background:#fff;font:750 15px/1.45 'Pretendard Variable',Pretendard,'Noto Sans KR',sans-serif}
+.vq-short-input:focus{outline:3px solid #caeee6;border-color:#169b7d}
+.vq-short-form .gp-btn{flex:0 0 auto;min-width:105px;padding:12px 14px}
+.vq-try-note{font-size:12px;color:#597987;font-weight:750;margin:0 0 10px}
+.vq-short-hint{padding:10px 13px;background:#f0f7ff;border:1px solid #d7e9f5;border-radius:10px;color:#3c6c86;font-size:12px;line-height:1.6;margin:8px 0}
+@media(max-width:650px){
+ .vq-answer-mode{min-height:77px;padding:11px 12px}.vq-answer-mode strong{font-size:13px}.vq-answer-mode small{font-size:10.5px}
+ .vq-short-input{font-size:14px}.vq-short-form{gap:7px}.vq-short-form .gp-btn{min-width:88px;padding:11px 9px;font-size:12px}
+}
+@media(max-width:350px){.vq-answer-modes{gap:7px}.vq-answer-mode{padding:10px 9px}.vq-answer-mode small{font-size:10px}}
+
 </style>
 </head>
 <body class="home-active">
@@ -1164,6 +1251,8 @@ header .tabs{min-width:0}
       <button class="gp-game-option" id="gpPuzzleChoice" type="button" aria-pressed="true" data-gp-choice="puzzle">🧩 지도 퍼즐</button>
       <button class="gp-game-option" id="cmCapitalChoice" type="button" aria-pressed="false" data-gp-choice="capitals">🏙️ 수도 매칭</button>
       <button class="gp-game-option" id="iqInitialChoice" type="button" aria-pressed="false" data-gp-choice="initials">🔤 초성 퀴즈</button>
+      <button class="gp-game-option" id="vqFlagChoice" type="button" aria-pressed="false" data-gp-choice="flags">🚩 국기 퀴즈</button>
+      <button class="gp-game-option" id="vqShapeChoice" type="button" aria-pressed="false" data-gp-choice="shapes">🗺️ 국가 형태 퀴즈</button>
       <button class="gp-game-option" id="gpComingChoice" type="button" aria-pressed="false" data-gp-choice="coming">🎲 새로운 게임 <span style="color:#78909b;font-size:11px;font-weight:650">Coming Soon</span></button>
     </div>
     <div id="gpPuzzleLayout" class="gp-layout">
@@ -1179,6 +1268,9 @@ header .tabs{min-width:0}
     </div>
     <div id="iqScreen" hidden aria-label="국가 또는 수도 이름 초성 퀴즈">
       <div class="iq-shell" id="iqGamePanel"></div>
+    </div>
+    <div id="vqScreen" hidden aria-label="국기 및 국가 형태 맞히기 퀴즈">
+      <div class="vq-shell" id="vqGamePanel" aria-live="polite"></div>
     </div>
   </div>
   <div id="gpPreparing" class="gp-preparing" hidden>
@@ -2037,7 +2129,7 @@ async function loadCountries(){let rc;for(const url of ['https://cdn.jsdelivr.ne
  allCountries.length=0;for(const c of rc){if(!c.ccn3||!c.cca3||!c.cca2)continue;countries[key(c.ccn3)]=c;allCountries.push(c)}
  // 통계에 없는 국가의 인구는 국가 기본정보의 참고값으로 보충하고, 자료 연도를 명확히 구분합니다.
  for(const c of allCountries){const n=Number(c.population);if(Number.isFinite(n)&&n>0){stat.population[key(c.ccn3)]=n;statYear.population[key(c.ccn3)]='미상';statSource.population[key(c.ccn3)]='국가 기본정보(참고값)'}}
- populateCompare();draw();buildCountrySearchIndex();if(state.tab==='find')setTimeout(cfInit,40);if(state.tab==='games'&&geoGameMode==='puzzle')setTimeout(gpInit,40);
+ populateCompare();draw();buildCountrySearchIndex();if(state.tab==='find')setTimeout(cfInit,40);if(state.tab==='games'&&geoGameMode==='puzzle')setTimeout(gpInit,40);if(state.tab==='games'&&['flags','shapes'].includes(geoGameMode))setTimeout(vqRender,40);
 }
 async function loadCapitalMetadata(){
  // World Bank 국가 메타데이터는 정식 수도 좌표를 제공합니다. 없는 국가는 REST Countries로 보완합니다.
@@ -3336,20 +3428,25 @@ const cmState={region:'all',phase:'intro',round:[],stage:0,capitalOrder:[],match
 let geoGameMode='puzzle';
 function geoGameModeFromURL(){
  const selected=new URLSearchParams(window.location.search).get('game');
- return selected==='capitals'||selected==='initials'?selected:'puzzle';
+ return ['capitals','initials','flags','shapes'].includes(selected)?selected:'puzzle';
 }
 function geoSetGameMode(mode,{record=false}={}){
- geoGameMode=['capitals','initials'].includes(mode)?mode:'puzzle';
+ geoGameMode=['capitals','initials','flags','shapes'].includes(mode)?mode:'puzzle';
  document.getElementById('gpPuzzleLayout').hidden=geoGameMode!=='puzzle';
  document.getElementById('cmScreen').hidden=geoGameMode!=='capitals';
  document.getElementById('iqScreen').hidden=geoGameMode!=='initials';
+ document.getElementById('vqScreen').hidden=!['flags','shapes'].includes(geoGameMode);
  document.getElementById('gpPuzzleChoice').setAttribute('aria-pressed',String(geoGameMode==='puzzle'));
  document.getElementById('cmCapitalChoice').setAttribute('aria-pressed',String(geoGameMode==='capitals'));
  document.getElementById('iqInitialChoice').setAttribute('aria-pressed',String(geoGameMode==='initials'));
+ document.getElementById('vqFlagChoice').setAttribute('aria-pressed',String(geoGameMode==='flags'));
+ document.getElementById('vqShapeChoice').setAttribute('aria-pressed',String(geoGameMode==='shapes'));
  const descriptions={
   puzzle:'국가의 윤곽을 관찰하고 퍼즐 조각을 알맞은 지도 위치에 채워 보세요.',
   capitals:'국가와 수도의 짝을 찾아 보세요. 10쌍을 5쌍씩 두 단계로 도전해요.',
-  initials:'초성을 보고 이름을 맞혀 보세요. 국가와 수도 중 선택해 10문제에 도전할 수 있어요.'
+  initials:'초성을 보고 이름을 맞혀 보세요. 국가와 수도 중 선택해 10문제에 도전할 수 있어요.',
+  flags:'국기를 보고 어떤 국가인지 맞혀 보세요. 전체 또는 대륙별로 10문제에 도전해요.',
+  shapes:'국가의 실제 윤곽을 보고 어떤 국가인지 맞혀 보세요. 전체 또는 대륙별로 도전해요.'
  };
  document.getElementById('gpGameDescription').textContent=descriptions[geoGameMode];
  if(record&&state.tab==='games'){
@@ -3361,7 +3458,8 @@ function geoSetGameMode(mode,{record=false}={}){
  if(state.tab==='games'){
   if(geoGameMode==='puzzle')gpInit();
   else if(geoGameMode==='capitals')cmRender();
-  else iqRender();
+  else if(geoGameMode==='initials')iqRender();
+  else vqRender();
  }
 }
 function cmPool(region){
@@ -3622,6 +3720,237 @@ iqPanel.addEventListener('submit',event=>{
   event.preventDefault();iqSubmit(event.target.querySelector('#iqInput')?.value||'');
  }
 });
+
+
+/* ==============================
+   국기 퀴즈 / 국가 형태 퀴즈
+   - 전체 또는 6개 대륙 선택, 최대 10문제
+   - 4지선다형(50:50 도움) 또는 단답형(3회 입력), 정답 복습
+   - 국기는 FlagCDN의 국기 이미지(실패하면 국기 이모지),
+     국가 형태는 기존 Natural Earth 경계 geo와 gpSilhouette() 재사용
+   - 두 게임은 각각 상태를 유지하며 ?tab=games&game=flags|shapes 주소를 사용합니다.
+   ============================== */
+const VQ_TARGET=10,VQ_SHORT_TRIES=3;
+const vqPanel=document.getElementById('vqGamePanel');
+function vqNewState(){return {region:'all',answerMode:'choice',phase:'intro',round:[],index:0,results:[],choice:null,attempts:0,usedHint:false,hiddenOptions:[],notice:'',noticeType:'',startedAt:0,endedAt:0}}
+const vqStates={flags:vqNewState(),shapes:vqNewState()};
+function vqMode(){return geoGameMode==='shapes'?'shapes':'flags'}
+function vqState(){return vqStates[vqMode()]}
+function vqIcon(kind){return kind==='flags'?'🚩':'🗺️'}
+function vqTitle(kind){return kind==='flags'?'국기 보고 나라 맞히기':'국가 형태 보고 나라 맞히기'}
+function vqFlagEmoji(iso){return /^[A-Z]{2}$/.test(iso)?Array.from(iso).map(ch=>String.fromCodePoint(ch.charCodeAt(0)-65+0x1F1E6)).join(''):'🌐'}
+function vqDataReady(kind){return allCountries.length>0&&(kind==='flags'||!!geo?.features?.length)}
+function vqPool(kind,region){
+ if(!vqDataReady(kind))return [];
+ const areaMinimum=kind==='shapes'?({all:150,asia:100, europe:100,africa:100,northamerica:100,southamerica:100,oceania:0}[region]??0):0;
+ const validShapes=kind==='shapes'?new Set((geo?.features||[]).filter(f=>f.geometry&&['Polygon','MultiPolygon'].includes(f.geometry.type)).map(f=>key(f.id))):null;
+ const seen=new Set(),items=[];
+ for(const c of allCountries){
+  const iso=c.cca2,id=key(c.ccn3),name=nameKR(c);
+  if(!/^[A-Z]{2}$/.test(iso)||!/^[0-9]{3}$/.test(id))continue;
+  if(!regionContainsCountry(c,region))continue;
+  if(!['Asia','Europe','Africa','Oceania','Americas'].includes(c.region))continue;
+  // 영토/속령 대신 교과서에서 다루는 독립 국가 중심으로 출제합니다.
+  if(!(c.unMember===true||c.independent===true||['TWN','PSE'].includes(c.cca3)))continue;
+  if(!name||name==='국가 정보 없음'||name===iso)continue;
+  if(validShapes&&(!validShapes.has(id)||!(Number(c.area)>=areaMinimum)))continue;
+  if(seen.has(name))continue;
+  seen.add(name);
+  items.push({iso,id,name,region:countryContinentKey(c),capital:capitals[iso]||''});
+ }
+ return items;
+}
+function vqQuestionOptions(round,pool){
+ // 같은 대륙의 오답을 우선 사용해 위치별 학습이 가능합니다.
+ return round.map(correct=>{
+  const other=pool.filter(x=>x.iso!==correct.iso);
+  const neighbors=cfShuffle(other.filter(x=>x.region===correct.region));
+  const others=cfShuffle(other.filter(x=>x.region!==correct.region));
+  return {...correct,options:cfShuffle([correct,...neighbors.concat(others).slice(0,3)])};
+ });
+}
+function vqStart(same=false){
+ const kind=vqMode(),st=vqState(),pool=vqPool(kind,st.region);
+ if(pool.length<(st.answerMode==='choice'?4:1)){st.notice='이 지역에서 출제할 수 있는 국가 자료가 충분하지 않아요. 다른 지역을 선택해 주세요.';st.noticeType='failure';vqRender();return}
+ if(!same||!st.round.length){
+  const round=cfShuffle(pool).slice(0,Math.min(VQ_TARGET,pool.length));
+  st.round=vqQuestionOptions(round,pool);
+ }
+ st.index=0;st.results=[];st.choice=null;st.attempts=0;st.usedHint=false;st.hiddenOptions=[];st.notice='';st.noticeType='';st.startedAt=Date.now();st.endedAt=0;st.phase='playing';
+ vqRender();
+}
+function vqChoose(iso){
+ const st=vqState();if(st.phase!=='playing'||st.answerMode!=='choice')return;
+ const q=st.round[st.index];if(!q.options.some(opt=>opt.iso===iso))return;
+ if(st.hiddenOptions.includes(iso))return;
+ const ok=iso===q.iso;
+ st.choice=iso;st.phase='reveal';
+ st.notice=ok?'정답이에요! 🎉':`아쉬워요! 정답은 ${q.name}입니다.`;st.noticeType=ok?'success':'failure';
+ st.results.push({iso:q.iso,name:q.name,chosen:iso,correct:ok,usedHint:st.usedHint});
+ vqRender();
+}
+function vqHint(){
+ const st=vqState();if(st.phase!=='playing'||st.answerMode!=='choice'||st.usedHint)return;
+ const q=st.round[st.index];const wrong=q.options.filter(o=>o.iso!==q.iso);
+ st.hiddenOptions=cfShuffle(wrong).slice(0,2).map(o=>o.iso);
+ st.usedHint=true;st.notice='정답이 아닌 보기 2개를 지웠어요. 남은 보기 중에서 선택해 보세요.';st.noticeType='';
+ vqRender();
+}
+function vqShortIsCorrect(input,q){
+ const typed=iqNormalize(input);
+ if(!typed)return false;
+ const country=allCountries.find(c=>c.cca2===q.iso);
+ const accepted=[q.name,...(IQ_COUNTRY_ALIASES[q.iso]||[])];
+ if(country?.translations?.kor?.common)accepted.push(country.translations.kor.common);
+ if(country?.translations?.kor?.official)accepted.push(country.translations.kor.official);
+ return accepted.some(value=>iqNormalize(value)===typed);
+}
+function vqShortHint(st,q){
+ if(st.attempts===0)return '';
+ const first=Array.from(q.name)[0]||'';
+ if(st.attempts===1)return `💡 힌트: 첫 글자는 ‘${safe(first)}’예요.`;
+ const capital=q.capital&&!/[()·,/]/.test(q.capital)?`수도는 ‘${safe(q.capital)}’예요.`:`이름은 ${Array.from(q.name.replace(/\s/g,'')).length}글자예요.`;
+ return `💡 힌트: 첫 글자 ‘${safe(first)}’ · ${capital}`;
+}
+function vqFocusShortInput(){
+ if(vqState().answerMode!=='short'||vqState().phase!=='playing'||state.tab!=='games')return;
+ requestAnimationFrame(()=>vqPanel.querySelector('#vqShortInput')?.focus({preventScroll:true}));
+}
+function vqSubmitShort(input){
+ const st=vqState();if(st.phase!=='playing'||st.answerMode!=='short')return;
+ const text=String(input||'').trim();
+ if(!iqNormalize(text)){
+  st.notice='나라 이름을 입력한 후 정답 확인을 눌러 주세요.';st.noticeType='failure';vqRender();vqFocusShortInput();return;
+ }
+ const q=st.round[st.index];
+ const ok=vqShortIsCorrect(text,q);
+ if(!ok)st.attempts++;
+ st.choice=text;
+ if(ok||st.attempts>=VQ_SHORT_TRIES){
+  st.phase='reveal';st.noticeType=ok?'success':'failure';
+  st.notice=ok?'정답이에요! 🎉':`세 번 모두 틀렸어요. 정답은 ${q.name}입니다.`;
+  st.results.push({iso:q.iso,name:q.name,chosen:text,correct:ok,attempts:st.attempts});
+  vqRender();return;
+ }
+ st.notice=`아쉬워요! 다시 도전해 보세요. 남은 기회 ${VQ_SHORT_TRIES-st.attempts}번`;
+ st.noticeType='failure';vqRender();vqFocusShortInput();
+}
+function vqSkipShort(){
+ const st=vqState();if(st.phase!=='playing'||st.answerMode!=='short')return;
+ const q=st.round[st.index];st.phase='reveal';st.choice='';
+ st.results.push({iso:q.iso,name:q.name,chosen:'',correct:false,skipped:true,attempts:st.attempts});
+ st.notice=`문제를 건너뛰었어요. 정답은 ${q.name}입니다.`;st.noticeType='';vqRender();
+}
+function vqNext(){
+ const st=vqState();if(st.phase!=='reveal')return;
+ if(st.index>=st.round.length-1){st.phase='finished';st.endedAt=Date.now();vqRender();return}
+ st.index++;st.choice=null;st.attempts=0;st.usedHint=false;st.hiddenOptions=[];st.phase='playing';st.notice='';st.noticeType='';vqRender();vqFocusShortInput();
+ if(window.matchMedia('(max-width:650px)').matches)requestAnimationFrame(()=>vqPanel.scrollIntoView({behavior:'auto',block:'start'}));
+}
+function vqMenu(){
+ const st=vqState();if(st.phase!=='intro'&&st.phase!=='finished'&&st.results.length&&!window.confirm('지역 선택으로 돌아갈까요? 진행 중인 결과는 초기화됩니다.'))return;
+ st.phase='intro';st.round=[];st.index=0;st.results=[];st.choice=null;st.attempts=0;st.hiddenOptions=[];st.usedHint=false;st.notice='';st.noticeType='';vqRender();
+}
+function vqVisual(kind,q){
+ if(kind==='shapes'){
+  const svg=gpSilhouette(q.id);
+  return `<div class="vq-silhouette" aria-label="정답 국가의 외곽선 실루엣" role="img">${svg}</div><span class="vq-tiny-note">실제 국가 경계의 단순화된 윤곽 · 크기는 비교 비율이 아니에요</span>`;
+ }
+ const iso=safe(q.iso.toLowerCase()),flag=safe(vqFlagEmoji(q.iso));
+ return `<img class="vq-flag-image" alt="국가를 맞혀 볼 국기" src="https://flagcdn.com/w320/${iso}.png" referrerpolicy="no-referrer"><span class="vq-flag-fallback" hidden aria-label="국기 이모지 대체 표시">${flag}</span>`;
+}
+function vqRender(){
+ if(!vqPanel||!['flags','shapes'].includes(geoGameMode))return;
+ const kind=vqMode(),st=vqState(),title=vqTitle(kind),pool=vqPool(kind,st.region),isReady=vqDataReady(kind);
+ const isShort=st.answerMode==='short',modeName=isShort?'단답형':'4지선다형';
+ if(st.phase==='intro'){
+  const count=pool.length,target=Math.min(VQ_TARGET,count),enough=count>=(isShort?1:4);
+  vqPanel.innerHTML=`<div class="vq-title"><span class="vq-title-symbol" aria-hidden="true">${vqIcon(kind)}</span><div><h2>${title}</h2><p>${kind==='flags'?'국기를 보고 국가 이름을 맞혀 보세요.':'실제 국가의 윤곽을 보고 이름을 맞혀 보세요.'} 정답 방식을 골라 도전할 수 있어요.</p></div></div>
+   <div class="vq-answer-block"><div class="gp-label" id="vqModeLabel">정답 방식 선택</div><div class="vq-answer-modes" role="group" aria-labelledby="vqModeLabel">
+     <button type="button" class="vq-answer-mode" data-vq-answer-mode="choice" aria-pressed="${!isShort}"><strong>🔢 4지선다형</strong><small>보기 4개 중 하나를 골라요</small></button>
+     <button type="button" class="vq-answer-mode" data-vq-answer-mode="short" aria-pressed="${isShort}"><strong>✏️ 단답형</strong><small>나라 이름을 직접 입력해요</small></button>
+   </div></div>
+   <div class="vq-config"><div><label class="gp-label" for="vqRegion">도전할 지역</label><select id="vqRegion" class="gp-select">${REGION_CHOICES.map(([r,label])=>`<option value="${r}" ${st.region===r?'selected':''}>${label}</option>`).join('')}</select></div>
+   <div class="vq-info"><strong>${isReady?`${target}문제 · ${modeName}`:'국가 자료를 불러오는 중'}</strong><span>${isReady?`출제 가능한 국가 ${count}개 · ${isShort?'직접 입력, 최대 3번 도전':'문제당 보기 4개'}`:'인터넷 연결을 확인해 주세요. 국가 경계와 기본 정보를 불러오면 게임이 시작돼요.'}</span></div></div>
+   <div class="vq-bullets">① 정답 방식과 지역 선택 → ② ${target||10}문제 도전 → ③ 정답 확인 및 복습<br>${isShort?'단답형은 <b>3번까지 입력</b>할 수 있고 오답 시 힌트가 나와요. 띄어쓰기 차이와 일부 국가 약칭도 인정해요.':'4지선다형에서는 <b>50:50 도움</b>으로 오답 보기 2개를 지울 수 있어요.'}${kind==='shapes'?'<br>국가 윤곽은 Natural Earth 경계 데이터를 사용하며 작은 섬나라 등은 자료가 누락될 수 있어요.':''}</div>
+   ${st.notice?`<div class="vq-feedback failure" role="status">${safe(st.notice)}</div>`:''}
+   <button type="button" class="gp-btn primary vq-start" data-vq-action="start" ${!enough?'disabled':''}>🏁 ${target||10}문제 도전 시작!</button>`;
+  return;
+ }
+ const total=st.round.length,finished=st.results.length;
+ if(st.phase==='finished'){
+  const correct=st.results.filter(r=>r.correct).length,score=Math.round(correct/total*100);
+  const elapsed=Math.max(1,Math.round((st.endedAt-st.startedAt)/1000));
+  const reviewed=st.results.map((r,i)=>{
+   const selected=isShort?(r.skipped?'건너뜀':r.chosen||'미입력'):(st.round[i].options.find(o=>o.iso===r.chosen)?.name||'미선택');
+   return `<div class="vq-review-item"><span class="symbol ${r.correct?'':'no'}" aria-label="${r.correct?'정답':'오답'}">${r.correct?'✓':'✗'}</span><span class="vq-inline-flag" aria-hidden="true">${vqFlagEmoji(r.iso)}</span><div><strong>${i+1}. ${safe(r.name)}</strong><span>${r.correct?'정답':`${isShort?'입력':'선택'}: ${safe(selected)}`}</span></div></div>`;
+  }).join('');
+  vqPanel.innerHTML=`<div class="vq-title"><span class="vq-title-symbol">🎉</span><div><h2>${title} 도전 완료!</h2><p>${safe(regionName(st.region))} · ${modeName} · 총 ${total}문제</p></div></div>
+   <div class="vq-result"><strong>${score} / 100점</strong><span>정답 ${correct} / ${total}문제 · ${Math.floor(elapsed/60)}분 ${elapsed%60}초</span></div>
+   <h3 style="font-size:15px;color:#295b68">이번 문제 정답 복습</h3><div class="vq-review">${reviewed}</div>
+   <div class="vq-actions"><button type="button" class="gp-btn primary" data-vq-action="new">새로운 문제 도전</button><button type="button" class="gp-btn" data-vq-action="retry">같은 문제 다시</button><button type="button" class="gp-btn ghost" data-vq-action="menu">정답 방식·지역 다시 선택</button></div>`;
+  return;
+ }
+ const q=st.round[st.index];
+ const buttons=isShort?'':q.options.map((opt,i)=>{
+  const correct=st.phase==='reveal'&&opt.iso===q.iso,wrong=st.phase==='reveal'&&opt.iso===st.choice&&opt.iso!==q.iso;
+  const hidden=st.phase==='playing'&&st.hiddenOptions.includes(opt.iso);
+  const klass=correct?'correct':wrong?'wrong':hidden?'muted':'';
+  return `<button type="button" class="vq-choice ${klass}" data-vq-iso="${safe(opt.iso)}" ${st.phase==='reveal'||hidden?'disabled':''} aria-label="${i+1}번 보기 ${safe(opt.name)}${correct?' 정답':''}"><span class="vq-letter">${i+1}</span><span>${safe(opt.name)}</span></button>`;
+ }).join('');
+ const answerArea=isShort
+  ?st.phase==='playing'
+   ?`<form id="vqShortForm" class="vq-short-form"><label for="vqShortInput" class="visually-hidden">나라 이름</label><input id="vqShortInput" class="vq-short-input" type="text" inputmode="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" maxlength="50" placeholder="나라 이름을 입력하세요" required><button type="submit" class="gp-btn primary">정답 확인</button></form><p class="vq-try-note">남은 도전 기회: ${VQ_SHORT_TRIES-st.attempts} / ${VQ_SHORT_TRIES}회</p>${st.attempts?`<div class="vq-short-hint" role="status">${vqShortHint(st,q)}</div>`:''}`
+   :`<div class="vq-feedback ${st.results[st.results.length-1]?.correct?'success':'failure'}" role="status"><strong>정답: ${safe(q.name)}</strong>${st.choice?` · 입력한 답: ${safe(st.choice)}`:''}</div>`
+  :`<div class="vq-choices" role="group" aria-label="정답 보기">${buttons}</div>`;
+ const correctLast=st.phase==='reveal'&&st.results[st.results.length-1]?.correct;
+ vqPanel.innerHTML=`<div class="vq-stats"><span><strong>${st.index+1}</strong> / ${total}문제 · ${safe(regionName(st.region))} · ${modeName}</span><span>현재 점수 <strong>${Math.round(st.results.filter(x=>x.correct).length/total*100)}</strong>점</span></div>
+  <div class="vq-track" role="progressbar" aria-label="게임 진행률" aria-valuemin="0" aria-valuemax="${total}" aria-valuenow="${finished}"><span style="width:${finished/total*100}%"></span></div>
+  <div class="vq-question"><span class="vq-chip">${kind==='flags'?'🚩 국기':'🗺️ 국가 윤곽'} 맞히기</span><h3>이 나라는 어디일까요?</h3><div class="vq-media">${vqVisual(kind,q)}</div></div>
+  ${answerArea}
+  ${st.notice?`<div class="vq-feedback ${st.phase==='reveal'?(correctLast?'success':'failure'):st.noticeType}" role="status">${safe(st.notice)}</div>`:''}
+  ${st.phase==='playing'?isShort?`<div class="vq-actions"><button type="button" class="gp-btn ghost" data-vq-action="skip">문제 건너뛰기</button></div>`:`<div class="vq-actions"><button type="button" class="gp-btn ghost" data-vq-action="hint" ${st.usedHint?'disabled':''}>💡 50:50 도움${st.usedHint?' 사용 완료':''}</button></div>`:''}
+  ${st.phase==='reveal'?`<div class="vq-actions"><button type="button" class="gp-btn primary" data-vq-action="next">${st.index===total-1?'결과 확인하기':'다음 문제 →'}</button></div>`:''}
+  <div class="vq-actions"><button type="button" class="gp-btn" data-vq-action="retry">↻ 같은 문제 다시</button><button type="button" class="gp-btn ghost" data-vq-action="menu">정답 방식·지역 다시 선택</button></div>`;
+}
+vqPanel.addEventListener('change',event=>{
+ if(event.target?.id==='vqRegion'){
+  const st=vqState();if(st.phase!=='intro')return;
+  st.region=event.target.value;st.notice='';vqRender();
+ }
+});
+vqPanel.addEventListener('click',event=>{
+ const btn=event.target.closest('button');if(!btn)return;
+ const mode=btn.dataset.vqAnswerMode;
+ if(mode){
+  const st=vqState();if(st.phase!=='intro'||!['choice','short'].includes(mode))return;
+  st.answerMode=mode;st.notice='';vqRender();return;
+ }
+ if(btn.dataset.vqIso){vqChoose(btn.dataset.vqIso);return;}
+ const action=btn.dataset.vqAction;
+ if(action==='start'||action==='new'){vqStart();vqFocusShortInput();}
+ else if(action==='retry'){
+  const st=vqState();
+  if(st.phase==='playing'&&(st.results.length||st.attempts)&&!window.confirm('같은 문제를 처음부터 다시 풀까요? 지금까지의 점수는 초기화됩니다.'))return;
+  vqStart(true);vqFocusShortInput();
+ }else if(action==='hint')vqHint();
+ else if(action==='skip')vqSkipShort();
+ else if(action==='next')vqNext();
+ else if(action==='menu')vqMenu();
+});
+vqPanel.addEventListener('submit',event=>{
+ if(event.target?.id==='vqShortForm'){
+  event.preventDefault();vqSubmitShort(event.target.querySelector('#vqShortInput')?.value||'');
+ }
+});
+vqPanel.addEventListener('error',event=>{
+ const img=event.target;
+ if(img?.matches?.('img.vq-flag-image')){
+  img.hidden=true;
+  const fallback=img.nextElementSibling;
+  if(fallback?.classList.contains('vq-flag-fallback'))fallback.hidden=false;
+ }
+},true);
 
 const gpPreparing=document.getElementById('gpPreparing');
 function gpClosePreparing(){gpPreparing.hidden=true;document.getElementById('gpComingChoice')?.focus()}
