@@ -824,6 +824,44 @@ header .tabs{min-width:0}
   }
 }
 
+
+/* 2026-11-18: mobile map controls for country-finding and map puzzle. */
+@media (max-width:650px) {
+  /* All three map canvases use right-side zoom; main map has its own toolbar offset. */
+  #cfMap .leaflet-top.leaflet-left,
+  #gpMap .leaflet-top.leaflet-left {
+    left:auto;
+    right:10px;
+    top:10px;
+  }
+  #cfMap .leaflet-top.leaflet-left .leaflet-control-zoom,
+  #gpMap .leaflet-top.leaflet-left .leaflet-control-zoom {
+    float:right;
+    margin:0;
+  }
+  /* These two game maps have no bottom detail panel, unlike the main map. */
+  #cfMap .leaflet-bottom.leaflet-left,
+  #gpMap .leaflet-bottom.leaflet-left {
+    left:0;
+    bottom:0;
+  }
+  #cfMap .leaflet-bottom.leaflet-left .leaflet-control-scale,
+  #gpMap .leaflet-bottom.leaflet-left .leaflet-control-scale {
+    float:left;
+    clear:both;
+    margin:0 0 10px 12px;
+    pointer-events:none;
+  }
+  #cfMap .leaflet-control-scale-line,
+  #gpMap .leaflet-control-scale-line {
+    background:rgba(255,255,255,.94);
+    color:#244760;
+    border-color:#244760;
+    font-size:10px;
+    line-height:1.3;
+  }
+}
+
 </style>
 </head>
 <body class="home-active">
