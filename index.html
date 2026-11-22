@@ -1070,6 +1070,104 @@ header .tabs{min-width:0}
 }
 @media(max-width:350px){.vq-answer-modes{gap:7px}.vq-answer-mode{padding:10px 9px}.vq-answer-mode small{font-size:10px}}
 
+
+/* Game learning review: result / country-info tabs + fact sheet modal */
+.gi-tabs{display:flex;gap:7px;border-bottom:1px solid #dbe8ed;margin:15px 0 17px;padding-bottom:9px}
+.gi-tab{font:800 13px/1.35 'Pretendard Variable',Pretendard,sans-serif;cursor:pointer;border:1px solid #d5e5e9;border-radius:11px;background:#f7fafb;color:#526e7a;padding:11px 17px;min-width:106px}
+.gi-tab[aria-selected="true"]{color:#0f796d;background:#e6f7f1;border-color:#6fc6ab;box-shadow:inset 0 0 0 1px #6fc6ab}
+.gi-tab:focus-visible,.gi-country:focus-visible,.gi-close:focus-visible{outline:3px solid #269b9a;outline-offset:2px}
+.gi-content[hidden],.gi-overlay[hidden]{display:none!important}
+.gi-content{min-width:0}
+.gi-intro{color:#557586;font-size:13px;line-height:1.7;margin:3px 0 15px}
+.gi-country-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.gi-country{border:1px solid #d9e5ec;background:#fff;border-radius:12px;padding:11px 12px;text-align:left;display:flex;align-items:center;gap:9px;min-height:62px;cursor:pointer;font:inherit;color:#23495e;min-width:0}
+.gi-country:hover{background:#f0faf7;border-color:#8acaba}
+.gi-country .gi-flag{font-size:22px;flex:none}
+.gi-country strong{display:block;font-size:13px;font-weight:850;line-height:1.5;overflow-wrap:anywhere}
+.gi-country small{display:block;font-size:11px;color:#6a8693;line-height:1.5;overflow-wrap:anywhere}
+.gi-country .gi-chevron{margin-left:auto;flex:none;font-size:19px;font-weight:900;color:#1f9387}
+body.gi-dialog-open{overflow:hidden}
+.gi-overlay{position:fixed;z-index:3400;inset:0;background:rgba(9,28,46,.65);display:flex;align-items:center;justify-content:center;padding:17px;overscroll-behavior:contain}
+.gi-dialog{position:relative;background:#fff;border-radius:19px;box-shadow:0 20px 70px #061b345b;padding:23px;width:min(590px,100%);max-height:min(93dvh,840px);overflow-y:auto;overscroll-behavior:contain;color:#1f3852;outline:0}
+.gi-close{position:sticky;top:0;float:right;z-index:2;margin:0 0 2px 8px;border:1px solid #d4e4eb;border-radius:50%;background:white;color:#234659;font-size:20px;font-weight:900;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 2px 8px #1a3e5515}
+.gi-heading{display:flex;align-items:center;gap:12px;margin:0 0 12px;padding:3px 0 11px;border-bottom:1px solid #e4edf1;min-width:0}
+.gi-heading .gi-head-flag{font-size:38px;line-height:1}
+.gi-heading h2{font-size:22px;line-height:1.3;margin:0;color:#163e52;font-weight:900;overflow-wrap:anywhere}
+.gi-heading p{margin:5px 0 0;color:#6c8895;font-size:12px;line-height:1.5}
+.gi-foot{font-size:11px;color:#738997;line-height:1.7;margin:15px 0 6px}
+.gi-modal-actions{position:sticky;bottom:-23px;margin:15px -3px -6px;padding:12px 3px 6px;background:#fff;display:flex;gap:9px}
+.gi-modal-actions .gp-btn{flex:1 1 0;min-height:45px}
+.gi-prompt{margin:11px 0;padding:10px 13px;background:#f0f8f6;border-left:3px solid #34ad99;border-radius:8px;font-size:12px;line-height:1.6;color:#3d6e72}
+@media(max-width:650px){
+ .gi-country-grid{grid-template-columns:1fr;gap:8px}
+ .gi-tabs{gap:6px;margin:12px 0 14px}.gi-tab{flex:1;padding:11px 8px;font-size:12px}
+ .gi-overlay{align-items:flex-end;padding:0}
+ .gi-dialog{width:100%;max-width:none;max-height:90dvh;padding:17px 14px calc(16px + env(safe-area-inset-bottom));border-radius:20px 20px 0 0}
+ .gi-heading h2{font-size:19px}.gi-heading .gi-head-flag{font-size:30px}
+ .gi-modal-actions{bottom:calc(-16px - env(safe-area-inset-bottom));padding:11px 0 calc(8px + env(safe-area-inset-bottom));margin:13px -2px -5px}
+}
+@media(max-width:350px){.gi-dialog{padding:13px 10px calc(11px + env(safe-area-inset-bottom))}.gi-country{padding:9px}}
+
+
+/* 2026-11-23: searchable statistical choropleth picker + world indicator overview. */
+#toolbar .toolbar-top #theme{min-width:0;max-width:100%}
+.map-theme-search{position:relative;min-width:0;width:100%}
+.map-theme-search-toggle{display:flex;align-items:center;gap:8px;width:100%;min-height:34px;padding:7px 10px;background:#f0f8fc;border:1px solid #d6e8f1;border-radius:9px;text-align:left;font-size:12px;font-weight:800;color:#245571}
+.map-theme-search-toggle:hover{background:#e4f3fc}
+.map-theme-search-toggle:focus-visible{outline:3px solid #6cc3e2;outline-offset:2px}
+.map-theme-search-toggle>span:first-child{font-size:17px;line-height:1;font-weight:900}
+.map-search-count{margin-left:auto;font-size:10px;color:#668697;font-weight:700}
+.map-search-chevron{font-size:18px;line-height:1;transition:transform .15s}
+.map-theme-search-toggle[aria-expanded=true] .map-search-chevron{transform:rotate(180deg)}
+.map-theme-search-panel{position:absolute;top:calc(100% + 5px);left:0;right:0;z-index:2200;background:#fff;border:1px solid #c5deec;border-radius:12px;box-shadow:0 14px 34px #0b354833;padding:9px;min-width:0}
+.map-theme-search-panel[hidden]{display:none!important}
+#mapThemeSearchInput{display:block;width:100%;height:38px;border:1px solid #b7d5e4;border-radius:8px;padding:8px 10px;background:#f9fcff;font-size:13px;color:#193e55;outline:none}
+#mapThemeSearchInput:focus{border-color:#48a2c5;box-shadow:0 0 0 3px #75bcd62a}
+.map-theme-search-results{overflow-y:auto;max-height:min(310px,37dvh);overscroll-behavior:contain;padding:4px 0 1px;scrollbar-width:thin}
+.map-theme-result{display:flex;width:100%;align-items:center;justify-content:space-between;gap:10px;border:0;background:#fff;color:#203e51;border-radius:8px;text-align:left;padding:9px;cursor:pointer}
+.map-theme-result:hover,.map-theme-result:focus-visible,.map-theme-result[aria-selected=true]{background:#e9f5fc;outline:0}
+.map-theme-result b{display:block;font-size:12.5px;font-weight:850}
+.map-theme-result small{display:block;color:#708598;font-size:10.5px;margin-top:3px;line-height:1.3}
+.map-theme-result .map-theme-check{color:#16917c;font-weight:950;font-size:15px}
+.map-theme-no-match{font-size:12px;color:#708598;padding:14px 7px;line-height:1.6}
+.map-world-card{border:1px solid #dce8f0;background:linear-gradient(155deg,#f7fbff,#fff 55%);border-radius:14px;padding:13px;margin:13px 0}
+.map-world-head{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.map-world-head strong{font-size:17px;color:#1c526e;font-weight:900}
+.map-world-category{border-radius:99px;background:#dff4ed;color:#20705f;font-size:10px;font-weight:800;padding:4px 8px}
+.map-world-note{font-size:12px;color:#50687e;line-height:1.6;margin:8px 0}
+.map-world-counts{display:flex;gap:7px;flex-wrap:wrap;margin:8px 0 11px;font-size:11px;color:#4a7181}
+.map-world-counts span{background:#eaf3f8;border-radius:7px;padding:5px 8px}
+.map-world-sorts{display:flex;gap:6px;margin:12px 0 9px}
+.map-world-sorts button{flex:1;border:1px solid #c5dbe7;background:#fff;border-radius:8px;padding:7px 9px;color:#4d6e82;font-size:12px;font-weight:800}
+.map-world-sorts button[aria-pressed=true]{border-color:#1e8195;background:#e2f4f5;color:#145d6d}
+.map-world-sorts button:hover{border-color:#338da4}
+.map-world-list{list-style:none;padding:0;margin:0;display:grid;gap:6px}
+.map-world-list button{display:grid;grid-template-columns:21px minmax(0,1fr) auto;align-items:center;gap:9px;width:100%;padding:8px;border:1px solid #e0eaf1;border-radius:9px;background:#fff;color:#214057;text-align:left;cursor:pointer;min-width:0}
+.map-world-list button:hover{border-color:#54a5ba;background:#f1fafb}
+.map-world-list button:focus-visible{outline:3px solid #4c9cca}
+.map-world-rank{color:#628599;font-size:12px;font-weight:900;text-align:center}
+.map-world-name{min-width:0;font-weight:800;font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.map-world-value{text-align:right;color:#153d57;font-size:12px;font-weight:950;white-space:nowrap}
+.map-world-value small{display:block;color:#8195a4;font-size:10px;font-weight:600;margin-top:3px}
+.map-world-rail{grid-column:2 / 4;height:4px;background:#e9f0f5;border-radius:99px;overflow:hidden}
+.map-world-rail i{height:100%;display:block;background:linear-gradient(90deg,#7abfca,#25788e);border-radius:99px}
+.map-world-empty{padding:15px 5px;color:#657e90;font-size:12px;line-height:1.6}
+.map-world-source{font-size:10.5px;color:#667d8d;line-height:1.6;margin:13px 0 0}
+.map-world-source a{overflow-wrap:anywhere}
+.map-world-error{font-size:12px;color:#a54b41;line-height:1.6;background:#fff5f3;padding:10px;border-radius:8px}
+.map-focused-stat{padding:13px;border-radius:12px;background:#eef9f7;border:1px solid #cce9e3;margin:13px 0}
+.map-focused-stat .map-focused-top{display:flex;justify-content:space-between;align-items:center;gap:10px;font-weight:800;color:#24756e;font-size:12px}
+.map-focused-stat .map-focused-value{font-size:22px;color:#183f54;font-weight:950;line-height:1.35;margin:7px 0}
+.map-focused-stat p{color:#537581;font-size:11px;margin:4px 0 10px;line-height:1.5}
+.map-focused-stat button{font-size:11px;padding:6px 9px;border-radius:7px;border:1px solid #8bc8bd;background:#fff;color:#176858;font-weight:850}
+@media(max-width:650px){
+ #toolbar .toolbar-top{gap:7px}
+ .map-theme-search-toggle{min-height:32px;padding:6px 10px;font-size:11px}
+ .map-theme-search-results{max-height:min(230px,29dvh)}
+ .map-world-card{padding:11px;margin:10px 0}
+ .map-world-list button{padding:8px 7px}
+}
+
 </style>
 </head>
 <body class="home-active">
@@ -1180,7 +1278,15 @@ header .tabs{min-width:0}
 </section>
 <section id="mapScreen" role="tabpanel" aria-labelledby="tab-map" style="display:none">
   <div id="map" aria-label="국가 선택 지도"></div>
-  <div id="toolbar"><div class="toolbar-top"><label for="theme">지도 주제</label><select id="theme"><option value="population">총인구</option><option value="gdp">명목 GDP</option></select><button id="refresh" class="button" type="button" title="World Bank 자료 다시 불러오기">↻ 통계</button></div>
+  <div id="toolbar"><div class="toolbar-top"><label for="theme">지도 주제</label><select id="theme" aria-label="세계지도에 표시할 통계 지표"><option value="population">총인구</option><option value="gdp">명목 GDP</option></select><button id="refresh" class="button" type="button" title="World Bank 자료 다시 불러오기">↻ 통계</button></div>
+  <div class="map-theme-search" id="mapThemeSearchWrap">
+    <button id="mapThemeSearchToggle" class="map-theme-search-toggle" type="button" aria-controls="mapThemeSearchPanel" aria-expanded="false"><span aria-hidden="true">⌕</span> 통계 항목 검색 <span class="map-search-count" id="mapThemeCount"></span><span aria-hidden="true" class="map-search-chevron">⌄</span></button>
+    <div id="mapThemeSearchPanel" class="map-theme-search-panel" hidden>
+      <label class="visually-hidden" for="mapThemeSearchInput">통계 항목 이름 또는 키워드 검색</label>
+      <input type="search" id="mapThemeSearchInput" placeholder="예: 인구밀도, 고령화, 사망률…" autocomplete="off" aria-controls="mapThemeSearchResults" aria-label="통계 항목 검색어">
+      <div id="mapThemeSearchResults" class="map-theme-search-results" role="listbox" aria-label="통계 검색 결과"></div>
+    </div>
+  </div>
   <div class="country-search" id="countrySearchWrap"><label for="countrySearchInput" class="visually-hidden">국가 검색 (한글, 영어, 약칭)</label><span class="country-search-icon" aria-hidden="true">⌕</span><input id="countrySearchInput" type="search" placeholder="나라 검색 · 한국, Korea, USA…" autocomplete="off" role="combobox" aria-autocomplete="list" aria-controls="countrySearchResults" aria-expanded="false" spellcheck="false"><button id="countrySearchClear" class="country-search-clear" type="button" aria-label="검색어 지우기">×</button><div id="countrySearchResults" role="listbox" aria-label="국가 검색 결과" hidden></div></div></div>
   <button id="panelToggle" class="panel-toggle" type="button" aria-controls="panel" aria-expanded="false"><span aria-hidden="true">⌃</span> <span id="panelToggleLabel">정보 넓게 보기</span></button>
   <aside id="panel"><h2>눈으로 확인하는 지리 정보</h2><p class="loading">지도와 국가 정보를 불러오고 있습니다...</p></aside>
@@ -1282,6 +1388,11 @@ header .tabs{min-width:0}
     </div>
   </div>
 </section>
+
+<!-- Shared learning sheet: opens from any geography game and the post-game country-information tab. -->
+<div id="giOverlay" class="gi-overlay" hidden>
+  <div id="giDialog" class="gi-dialog" role="dialog" aria-modal="true" aria-labelledby="giTitle" tabindex="-1"></div>
+</div>
 
 <section id="quizScreen" role="tabpanel" aria-labelledby="tab-quiz" hidden>
   <div class="qz-wrap">
@@ -1634,6 +1745,7 @@ function refreshReligionBoundViews(){
   const iso=root.getAttribute('data-religion-iso3');const country=allCountries.find(c=>c.cca3===iso);
   if(country)root.innerHTML=religionBreakdownHtml(country,{compact:root.getAttribute('data-religion-compact')==='1'});
  }
+ if(MAP_THEME_BY_ID[themeSelect.value]?.religionIndex!==undefined){draw();mapUpdatePanel();}
 }
 function religionParseCSV(csv){
  const rows=[];let row=[],value='',quoted=false;
@@ -1726,7 +1838,39 @@ const comparePyramidErrors=new Map();
 const numberFmt=new Intl.NumberFormat('ko-KR');
 const pctFmt=new Intl.NumberFormat('ko-KR',{maximumFractionDigits:1});
 const colors=['#edf4fc','#b9d8ee','#77aed4','#367eaf','#114f80'];
-const breaks={population:[1e7,5e7,1e8,5e8],gdp:[1e10,1e11,1e12,1e13]};
+// Country map themes use documented indicators; each country may have a different latest available year.
+// Optional indicators load only when a learner chooses them, keeping initial access fast.
+const MAP_THEMES=[
+ {id:'population',category:'인구·구조',label:'총인구',unit:'명',format:'people',breaks:[1e7,5e7,1e8,5e8],code:'SP.POP.TOTL',description:'국가별 총인구. 인구가 많다고 인구밀도가 높은 것은 아닙니다.',keywords:'인구수 인구 규모 사람'},
+ {id:'density',category:'인구·구조',label:'인구밀도',unit:'명/km²',format:'density',breaks:[25,100,300,1000],code:'EN.POP.DNST',description:'육지 면적 1km²당 인구. 면적이 작은 국가는 수치가 특히 높을 수 있습니다.',keywords:'인구 밀도 분포 밀집'},
+ {id:'popgrowth',category:'인구·구조',label:'인구증가율',unit:'%',format:'percent',breaks:[-1,0,1,3],code:'SP.POP.GROW',description:'전년 대비 인구 증가율. 감소하는 국가는 음수로 나타납니다.',keywords:'인구 변화 증감'},
+ {id:'age0',category:'인구·구조',label:'유소년층(0~14세) 비율',unit:'%',format:'percent',breaks:[10,20,30,40],code:'SP.POP.0014.TO.ZS',description:'전체 인구 중 0~14세 인구의 비중.',keywords:'어린이 출생 유소년 저출산'},
+ {id:'age15',category:'인구·구조',label:'생산가능연령층(15~64세)',unit:'%',format:'percent',breaks:[50,60,70,80],code:'SP.POP.1564.TO.ZS',description:'전체 인구 중 15~64세 인구의 비중.',keywords:'생산가능연령 경제활동'},
+ {id:'age65',category:'인구·구조',label:'고령층(65세 이상) 비율',unit:'%',format:'percent',breaks:[5,10,20,30],code:'SP.POP.65UP.TO.ZS',description:'전체 인구 중 65세 이상 인구의 비중. 고령화 정도를 비교할 수 있습니다.',keywords:'노인 고령화 초고령사회'},
+ {id:'sexratio',category:'인구·구조',label:'성비(여성 100명당 남성)',unit:'명',format:'sex',breaks:[90,95,100,110],description:'남녀 인구가 같은 기준 연도일 때 여성 100명당 남성 수로 계산합니다.',keywords:'남자 여자 인구 성비'},
+ {id:'urban',category:'인구·구조',label:'도시 인구 비율',unit:'%',format:'percent',breaks:[25,50,75,90],code:'SP.URB.TOTL.IN.ZS',description:'전체 인구 가운데 도시 거주 인구의 비율.',keywords:'도시화 도시인구'},
+ {id:'births',category:'인구·보건',label:'조출생률',unit:'명/천 명',format:'permille',breaks:[10,20,30,40],code:'SP.DYN.CBRT.IN',description:'1년간 인구 1,000명당 출생아 수.',keywords:'출생률 출생 아기 인구 증가'},
+ {id:'deaths',category:'인구·보건',label:'조사망률',unit:'명/천 명',format:'permille',breaks:[5,10,15,20],code:'SP.DYN.CDRT.IN',description:'1년간 인구 1,000명당 사망자 수. 연령 구성의 영향을 받으므로 의료 수준을 이 지표 하나로 판단할 수 없습니다.',keywords:'사망률 사망 사망자 보건'},
+ {id:'fertility',category:'인구·보건',label:'합계출산율',unit:'명/여성 1명',format:'fertility',breaks:[1.3,2.1,3,5],code:'SP.DYN.TFRT.IN',description:'여성이 가임 기간 전체에 걸쳐 낳을 것으로 기대되는 출생아 수(기간 출산율).',keywords:'출산율 출생률 저출산'},
+ {id:'life',category:'인구·보건',label:'출생 시 기대수명',unit:'세',format:'age',breaks:[60,70,75,80],code:'SP.DYN.LE00.IN',description:'출생 시점의 연령별 사망률이 계속 적용된다고 가정할 때 예상되는 평균 생존 연수.',keywords:'수명 보건 의료 건강 기대수명'},
+ {id:'gdp',category:'경제',label:'명목 GDP',unit:'미 달러',format:'gdp',breaks:[1e10,1e11,1e12,1e13],code:'NY.GDP.MKTP.CD',description:'해당 연도 가격과 환율로 표시한 국내총생산 규모입니다.',keywords:'국내총생산 경제 규모'},
+ {id:'gdppc',category:'경제',label:'1인당 GDP',unit:'미 달러',format:'dollar',breaks:[1000,5000,20000,50000],code:'NY.GDP.PCAP.CD',description:'명목 GDP를 인구로 나눈 값. 국민 개개인의 소득을 직접 뜻하지는 않습니다.',keywords:'1인당 국민소득 경제 소득 부'},
+ {id:'gdpgrowth',category:'경제',label:'경제성장률',unit:'%',format:'percent',breaks:[-2,0,2,5],code:'NY.GDP.MKTP.KD.ZG',description:'실질 GDP의 전년 대비 증가율입니다.',keywords:'경제 성장 실질 GDP'},
+ {id:'internet',category:'사회·환경',label:'인터넷 이용률',unit:'%',format:'percent',breaks:[20,40,60,80],code:'IT.NET.USER.ZS',description:'전체 인구 중 인터넷을 이용하는 사람의 비율.',keywords:'인터넷 정보통신 디지털 정보격차'},
+ {id:'forest',category:'사회·환경',label:'산림 면적 비율',unit:'%',format:'percent',breaks:[10,25,50,75],code:'AG.LND.FRST.ZS',description:'전체 육지 면적에서 산림이 차지하는 비율입니다.',keywords:'숲 산림 환경 생태'},
+ {id:'co2',category:'사회·환경',label:'1인당 이산화탄소 배출량',unit:'t/인',format:'co2',breaks:[1,3,7,15],code:'EN.ATM.CO2E.PC',description:'인구 1인당 연간 CO₂ 배출량(톤). 국가별 자료 제공 시점이 다를 수 있습니다.',keywords:'탄소 기후변화 이산화탄소 온실가스'},
+ {id:'rel_christian',category:'종교 구성 (2020년)',label:'기독교 인구 비율',unit:'%',format:'percent',breaks:[5,20,50,80],religionIndex:0,description:'Pew Research Center의 2020년 국가별 종교 소속 추정치입니다.',keywords:'기독교 개신교 천주교 종교'},
+ {id:'rel_muslim',category:'종교 구성 (2020년)',label:'이슬람교 인구 비율',unit:'%',format:'percent',breaks:[5,20,50,80],religionIndex:1,description:'Pew Research Center의 2020년 국가별 종교 소속 추정치입니다.',keywords:'이슬람 무슬림 종교'},
+ {id:'rel_unaffiliated',category:'종교 구성 (2020년)',label:'무종교 인구 비율',unit:'%',format:'percent',breaks:[5,20,50,80],religionIndex:2,description:'Pew Research Center의 2020년 무종교·비종교인 비율입니다.',keywords:'종교 없음 비종교 무교'},
+ {id:'rel_buddhist',category:'종교 구성 (2020년)',label:'불교 인구 비율',unit:'%',format:'percent',breaks:[5,20,50,80],religionIndex:3,description:'Pew Research Center의 2020년 국가별 종교 소속 추정치입니다.',keywords:'불교 불자 종교'},
+ {id:'rel_hindu',category:'종교 구성 (2020년)',label:'힌두교 인구 비율',unit:'%',format:'percent',breaks:[5,20,50,80],religionIndex:4,description:'Pew Research Center의 2020년 국가별 종교 소속 추정치입니다.',keywords:'힌두교 힌두 종교'},
+ {id:'rel_jewish',category:'종교 구성 (2020년)',label:'유대교 인구 비율',unit:'%',format:'percent',breaks:[5,20,50,80],religionIndex:5,description:'Pew Research Center의 2020년 국가별 종교 소속 추정치입니다.',keywords:'유대교 유대 종교'},
+ {id:'rel_other',category:'종교 구성 (2020년)',label:'기타 종교 인구 비율',unit:'%',format:'percent',breaks:[5,20,50,80],religionIndex:6,description:'Pew Research Center의 기타 종교 소속 인구 비율입니다. 전통·민간 신앙 등을 포함할 수 있습니다.',keywords:'토착종교 민속종교 전통신앙'}
+];
+const MAP_THEME_BY_ID=Object.fromEntries(MAP_THEMES.map(x=>[x.id,x]));
+const MAP_BASE_FIELDS=new Set(['population','gdp','age0','age15','age65','male','female']);
+const mapThemeRequests=new Map(),mapThemeAttempted=new Set(),mapThemeErrors=new Map();
+let mapThemeSort='high';
 const stat={population:{},gdp:{},age0:{},age15:{},age65:{},male:{},female:{}};
 const statYear={population:{},gdp:{},age0:{},age15:{},age65:{},male:{},female:{}};
 const statSource={population:{},gdp:{},age0:{},age15:{},age65:{},male:{},female:{}};
@@ -1764,16 +1908,71 @@ function yr(field,id){return statYear[field]?.[key(id)]||'미상'}
 function src(field,id){return statSource[field]?.[key(id)]||'World Bank'}
 function statTime(field,id){const v=val(field,id);if(!Number.isFinite(v))return '자료 없음';const y=yr(field,id);return y==='미상'?'기본정보 참고값·연도 미상':y+'년'}
 function sexRatio(id){const m=val('male',id),f=val('female',id);if(!Number.isFinite(m)||!Number.isFinite(f)||f<=0)return null;return yr('male',id)===yr('female',id)?m/f*100:null}
-function breakColor(n,theme){if(!Number.isFinite(n))return '#d5dbe2';const i=breaks[theme].findIndex(v=>n<v);return colors[i<0?4:i]}
-function legendLabels(theme){return theme==='population'?['1천만 명 미만','1천만~5천만 명','5천만~1억 명','1억~5억 명','5억 명 이상']:['100억 달러 미만','100억~1천억 달러','1천억~1조 달러','1조~10조 달러','10조 달러 이상']}
+function mapMetricValue(theme,id){
+ const m=MAP_THEME_BY_ID[theme];if(!m)return NaN;
+ if(m.religionIndex!==undefined){const c=countries[key(id)],data=religionCountryData(c);return data?.[m.religionIndex]?.number??NaN}
+ if(theme==='sexratio')return sexRatio(id)??NaN;
+ const n=val(theme,id);return Number.isFinite(n)?n:NaN;
+}
+function mapMetricDisplay(theme,id){
+ const m=MAP_THEME_BY_ID[theme],c=countries[key(id)];
+ if(m?.religionIndex!==undefined){const d=religionCountryData(c);return d?.[m.religionIndex]?.text||'자료 없음';}
+ return mapMetricFormat(mapMetricValue(theme,id),theme);
+}
+function mapMetricYear(theme,id){
+ const m=MAP_THEME_BY_ID[theme];if(!m)return '미상';
+ if(m.religionIndex!==undefined)return '2020';
+ return theme==='sexratio'?yr('male',id):yr(theme,id);
+}
+function mapMetricFormat(n,theme,{compact=false}={}){
+ if(!Number.isFinite(n))return '자료 없음';
+ const m=MAP_THEME_BY_ID[theme]||MAP_THEME_BY_ID.population;
+ if(m.format==='people'){
+  if(compact&&n>=1e8)return pctFmt.format(n/1e8)+'억 명';
+  if(compact&&n>=1e4)return pctFmt.format(n/1e4)+'만 명';
+  return numberFmt.format(Math.round(n))+'명';
+ }
+ if(m.format==='gdp'){
+  if(compact&&n>=1e12)return pctFmt.format(n/1e12)+'조$';
+  if(compact&&n>=1e8)return pctFmt.format(n/1e8)+'억$';
+  if(n>=1e12)return '약 '+pctFmt.format(n/1e12)+'조 달러';
+  if(n>=1e8)return '약 '+pctFmt.format(n/1e8)+'억 달러';
+  return numberFmt.format(Math.round(n))+'달러';
+ }
+ if(m.format==='dollar')return numberFmt.format(Math.round(n))+'달러';
+ if(m.format==='density')return pctFmt.format(n)+'명/km²';
+ if(m.format==='sex')return compact?pctFmt.format(n)+'명':`여성 100명당 남성 ${pctFmt.format(n)}명`;
+ if(m.format==='permille')return compact?pctFmt.format(n)+'명':`1천 명당 ${pctFmt.format(n)}명`;
+ if(m.format==='fertility')return compact?pctFmt.format(n)+'명':`여성 1명당 ${pctFmt.format(n)}명`;
+ if(m.format==='age')return pctFmt.format(n)+'세';
+ if(m.format==='co2')return pctFmt.format(n)+'t/인';
+ return pctFmt.format(n)+'%';
+}
+function breakColor(n,theme){
+ if(!Number.isFinite(n))return '#d5dbe2';
+ const limits=MAP_THEME_BY_ID[theme]?.breaks||MAP_THEME_BY_ID.population.breaks;
+ const i=limits.findIndex(v=>n<v);return colors[i<0?4:i];
+}
+function legendLabels(theme){
+ const limits=MAP_THEME_BY_ID[theme]?.breaks||MAP_THEME_BY_ID.population.breaks;
+ const f=n=>mapMetricFormat(n,theme,{compact:true});
+ return [`${f(limits[0])} 미만`,...limits.slice(0,3).map((v,i)=>`${f(v)} ~ ${f(limits[i+1])} 미만`),`${f(limits[3])} 이상`];
+}
 const legend=L.control({position:'bottomleft'});
 legend.onAdd=()=>{const d=L.DomUtil.create('div','legend');d.id='legend';L.DomEvent.disableClickPropagation(d);return d};legend.addTo(map);
 function updateLegend(){
- const theme=themeSelect.value, mobile=window.matchMedia('(max-width:650px)').matches;
- const title=theme==='population'?'총인구 (명)':'명목 GDP (미 달러)';
- const items=legendLabels(theme).map((t,i)=>`<div class="legend-item"><span class="swatch" style="background:${colors[i]}"></span>${t}</div>`).join('')+
- '<div class="legend-item"><span class="swatch" style="background:#d5dbe2"></span>자료 없음</div><div class="muted">노란색: 현재 선택 국가</div><p class="muted" style="margin:7px 0 0">국경: Natural Earth '+mapBoundaryScale+' · 메르카토르 도법(고위도 면적 확대). 간략화된 경계이며 일부 국경에 분쟁이 있습니다.</p>';
- document.getElementById('legend').innerHTML=`<details class="legend-disclosure" ${mobile?'':'open'}><summary>${mobile?'색상 범례':title}</summary><div class="legend-body"><strong>${title}</strong>${items}</div></details>`;
+ const theme=themeSelect.value,m=MAP_THEME_BY_ID[theme]||MAP_THEME_BY_ID.population;
+ const mobile=window.matchMedia('(max-width:650px)').matches;
+ const title=m.label+' ('+m.unit+')';
+ const items=legendLabels(theme).map((t,i)=>`<div class="legend-item"><span class="swatch" style="background:${colors[i]}"></span>${safe(t)}</div>`).join('')+
+ '<div class="legend-item"><span class="swatch" style="background:#d5dbe2"></span>자료 없음</div><div class="muted">노란색: 현재 선택 국가</div>'+
+ `<p class="muted" style="margin:7px 0 0">${m.religionIndex!==undefined?'2020년 Pew 추정치':'국가별 최신 가용 연도(상이할 수 있음)'} · 경계: Natural Earth ${safe(mapBoundaryScale)} · 메르카토르 도법(고위도 면적 확대)</p>`;
+ document.getElementById('legend').innerHTML=`<details class="legend-disclosure" ${mobile?'':'open'}><summary>${mobile?'색상 범례':safe(title)}</summary><div class="legend-body"><strong>${safe(title)}</strong>${items}</div></details>`;
+}
+function mapCountryTooltip(feature){
+ const id=key(feature.id),c=countries[id],theme=themeSelect.value,m=MAP_THEME_BY_ID[theme],n=mapMetricValue(theme,id);
+ const year=mapMetricYear(theme,id);
+ return `<b>${safe(nameKR(c)||'국가 정보 없음')}</b><div>${safe(m.label)}: ${safe(mapMetricDisplay(theme,id))}${Number.isFinite(n)?` <small>(${safe(year==='미상'?'연도 미상':year+'년')})</small>`:''}</div>`;
 }
 if(window.matchMedia){const mobileQuery=window.matchMedia('(max-width:650px)');if(mobileQuery.addEventListener)mobileQuery.addEventListener('change',()=>{if(document.getElementById('legend'))updateLegend()});}
 
@@ -1871,7 +2070,7 @@ function updateWorldCopies(){
    style:countryShapeStyle,
    onEachFeature:(f,l)=>{
     l.on('click',()=>selectCountry(f.id));
-    l.bindTooltip(nameKR(countries[key(f.id)]),{sticky:true});
+    l.bindTooltip(mapCountryTooltip(f),{sticky:true});
    }
   });
   layer.addLayer(copy);
@@ -1895,7 +2094,10 @@ map.on('moveend zoomend resize',()=>updateWorldCopies());
 function draw(){
  if(!geo)return;
  updateWorldCopies();
- for(const copy of worldCopyLayers.values())copy.setStyle(countryShapeStyle);
+ for(const copy of worldCopyLayers.values()){
+  copy.setStyle(countryShapeStyle);
+  copy.eachLayer(shape=>{if(shape.feature&&shape.getTooltip())shape.setTooltipContent(mapCountryTooltip(shape.feature))});
+ }
  updateLegend();
  syncMapPointCopies();
 }
@@ -2129,7 +2331,9 @@ async function loadCountries(){let rc;for(const url of ['https://cdn.jsdelivr.ne
  allCountries.length=0;for(const c of rc){if(!c.ccn3||!c.cca3||!c.cca2)continue;countries[key(c.ccn3)]=c;allCountries.push(c)}
  // 통계에 없는 국가의 인구는 국가 기본정보의 참고값으로 보충하고, 자료 연도를 명확히 구분합니다.
  for(const c of allCountries){const n=Number(c.population);if(Number.isFinite(n)&&n>0){stat.population[key(c.ccn3)]=n;statYear.population[key(c.ccn3)]='미상';statSource.population[key(c.ccn3)]='국가 기본정보(참고값)'}}
- populateCompare();draw();buildCountrySearchIndex();if(state.tab==='find')setTimeout(cfInit,40);if(state.tab==='games'&&geoGameMode==='puzzle')setTimeout(gpInit,40);if(state.tab==='games'&&['flags','shapes'].includes(geoGameMode))setTimeout(vqRender,40);
+ populateCompare();draw();buildCountrySearchIndex();
+ if(MAP_THEME_BY_ID[themeSelect.value]?.code&&!MAP_BASE_FIELDS.has(themeSelect.value))void mapLoadTheme(themeSelect.value);
+ if(state.tab==='find')setTimeout(cfInit,40);if(state.tab==='games'&&geoGameMode==='puzzle')setTimeout(gpInit,40);if(state.tab==='games'&&['flags','shapes'].includes(geoGameMode))setTimeout(vqRender,40);
 }
 async function loadCapitalMetadata(){
  // World Bank 국가 메타데이터는 정식 수도 좌표를 제공합니다. 없는 국가는 REST Countries로 보완합니다.
@@ -2180,7 +2384,111 @@ async function load(){try{
  }catch(e){console.error(e);panel.innerHTML=`<h2 class="error">자료 로딩 오류</h2><p>외부 데이터 연결 상태를 확인하고 페이지를 새로고침해 주세요.</p><p class="muted">${safe(e.message)}</p>`;
   if(state.tab==='find')cfPanel.innerHTML=`<h2 class="error">지도 데이터 로딩 오류</h2><p>${safe(e.message)}</p>`;}
 }
-function welcome(){if(state.selectedId)return;panel.innerHTML=`<h2>세계를 탐색해 보세요 🌏</h2><p class="lead">지도에서 국가를 선택하면 수도, 인구 피라미드, 종교, 쾨펜 기후와 실제 지역의 기후 그래프를 확인할 수 있습니다.</p><div class="section"><h3>수업 활용 방법</h3><p class="mini-fact">① 지도의 색상은 인구 또는 GDP에 따라 다릅니다.<br>② 국가를 검색하거나 클릭하면 노란색으로 강조되고 수도 위치에 빨간 핀이 표시됩니다.<br>③ 기후 유형과 지역을 선택하면 월별 기온·강수량 그래프가 나타납니다.<br>④ <b>인구 피라미드</b>에서 연령·성별 인구 분포를 분석할 수 있습니다.<br>⑤ <b>비교하기</b> 탭에서 세 나라를 나란히 비교할 수 있습니다.</p></div><p class="muted">통계 출처: World Bank WDI·HNP (UN 인구추계 기반). 기후 그래프: NASA POWER / Open-Meteo 재분석 자료(1991~2020).</p>`}
+
+// ------------------------------------------------------------
+// World indicator explorer: searchable metric index + country rankings
+// ------------------------------------------------------------
+function mapThemeLink(m){return m.religionIndex!==undefined?RELIGION_PEW_URL:`https://data.worldbank.org/indicator/${encodeURIComponent(m.code||'SP.POP.TOTL')}`}
+function mapThemeEntries(theme=themeSelect.value){
+ if(!allCountries.length)return [];
+ const mapIds=geo?new Set(geo.features.map(f=>key(f.id))):null;
+ return allCountries.filter(c=>!mapIds||mapIds.has(key(c.ccn3))).map(c=>({id:key(c.ccn3),c,value:mapMetricValue(theme,c.ccn3),year:mapMetricYear(theme,c.ccn3)})).filter(x=>Number.isFinite(x.value));
+}
+function mapWorldCardHtml(){
+ const theme=themeSelect.value,m=MAP_THEME_BY_ID[theme]||MAP_THEME_BY_ID.population;
+ const entries=mapThemeEntries(theme),pending=mapThemeRequests.has(theme),error=mapThemeErrors.get(theme);
+ const rows=entries.slice().sort((a,b)=>mapThemeSort==='high'?b.value-a.value:a.value-b.value).slice(0,10);
+ const values=entries.map(x=>x.value),min=Math.min(...values),max=Math.max(...values);
+ const knownYears=entries.map(x=>x.year).filter(y=>/^\d{4}$/.test(y)).map(Number);
+ const years=knownYears.length?`${Math.min(...knownYears)}~${Math.max(...knownYears)}년`:'연도 확인 중';
+ const list=rows.map((row,i)=>{
+  const size=max>min?Math.max(5,100*(row.value-min)/(max-min)):70;
+  return `<li><button type="button" data-map-country-select="${safe(row.id)}" title="${safe(nameKR(row.c))} 국가 정보 열기"><span class="map-world-rank">${i+1}</span><span class="map-world-name">${safe(nameKR(row.c))}</span><span class="map-world-value">${safe(mapMetricDisplay(theme,row.id))}<small>${safe(row.year==='미상'?'연도 미상':row.year+'년')}</small></span><span class="map-world-rail" aria-hidden="true"><i style="width:${size.toFixed(1)}%"></i></span></button></li>`;
+ }).join('');
+ const hint=error?`<p class="map-world-error">통계 서버에서 데이터를 가져오지 못했어. 인터넷 연결을 확인하고 <button class="button" type="button" data-map-action="retry">이 지표 다시 조회</button>를 눌러 줘.</p>`:
+  pending?'<p class="loading">세계은행 통계 자료를 불러오는 중입니다…</p>':
+  !entries.length?'<div class="map-world-empty">해당 항목의 자료가 아직 없습니다. 외부 통계 제공 여부를 확인해 주세요.</div>':'';
+ return `<div class="map-world-card"><div class="map-world-head"><strong>${safe(m.label)}</strong><span class="map-world-category">${safe(m.category)}</span></div>
+ <p class="map-world-note">${safe(m.description)}</p>
+ <div class="map-world-counts"><span>지도에 표시된 국가·지역 ${entries.length}곳</span><span>${m.religionIndex!==undefined?'2020년 추정치':safe(years)}</span></div>
+ <div class="map-world-sorts" aria-label="국가별 수치 정렬"><button type="button" data-map-sort="high" aria-pressed="${mapThemeSort==='high'}">수치 높은 순</button><button type="button" data-map-sort="low" aria-pressed="${mapThemeSort==='low'}">수치 낮은 순</button></div>
+ ${hint}<ol class="map-world-list">${list}</ol>
+ <p class="map-world-source">${m.religionIndex!==undefined?'종교 구성 비율은 국교 지정과 별개의 통계입니다.':m.id==='population'?'국가별 최신 가용 연도가 다르며, 일부 미제공국의 인구는 국가 기본정보의 연도 미상 참고값을 사용합니다.':'국가별 최신 비결측 연도를 사용하므로 기준 연도가 서로 다를 수 있습니다.'} 수치 출처: <a href="${safe(mapThemeLink(m))}" target="_blank" rel="noopener">${m.religionIndex!==undefined?'Pew Research Center (2020년)':'World Bank Open Data'}</a>. 국가 이름을 누르면 상세 정보를 확인할 수 있습니다.</p></div>`;
+}
+function mapSelectedMetricHtml(id=state.selectedId){
+ const m=MAP_THEME_BY_ID[themeSelect.value]||MAP_THEME_BY_ID.population,n=mapMetricValue(m.id,id),year=mapMetricYear(m.id,id);
+ const status=mapThemeRequests.has(m.id)?'자료 조회 중…':mapThemeErrors.has(m.id)?'데이터 조회 실패 · 재시도 필요':Number.isFinite(n)?(year==='미상'?'자료 연도 미상':`${year}년 기준`):'자료 없음';
+ return `<div class="map-focused-stat" id="mapSelectedMetricSlot"><div class="map-focused-top"><span>현재 지도 주제 · ${safe(m.label)}</span><span>${safe(status)}</span></div><div class="map-focused-value">${safe(mapMetricDisplay(m.id,id))}</div>
+ <p>${safe(m.description)}</p><button type="button" data-map-action="all">← 세계 통계 순위 보기</button></div>`;
+}
+function mapUpdatePanel(){
+ if(state.selectedId){const slot=document.getElementById('mapSelectedMetricSlot');if(slot)slot.outerHTML=mapSelectedMetricHtml();}
+ else welcome();
+}
+function mapChooseTheme(theme,{fromHistory=false}={}){
+ if(!MAP_THEME_BY_ID[theme])return;
+ themeSelect.value=theme;mapThemeSort='high';
+ if(!fromHistory&&state.tab==='map'){
+  const url=new URL(location.href);
+  if(theme==='population')url.searchParams.delete('indicator');else url.searchParams.set('indicator',theme);
+  history.replaceState(history.state,'',url.pathname+url.search+url.hash);
+ }
+ draw();mapUpdatePanel();
+ if(state.tab==='map'&&window.matchMedia('(max-width:650px)').matches)panel.scrollTop=0;
+ const m=MAP_THEME_BY_ID[theme];
+ if(m.code&&!MAP_BASE_FIELDS.has(theme))void mapLoadTheme(theme);
+}
+async function mapLoadTheme(theme,{force=false}={}){
+ const m=MAP_THEME_BY_ID[theme];if(!m?.code||MAP_BASE_FIELDS.has(theme)||!allCountries.length)return;
+ if(mapThemeRequests.has(theme))return mapThemeRequests.get(theme);
+ if(mapThemeAttempted.has(theme)&&!force)return;
+ mapThemeAttempted.add(theme);mapThemeErrors.delete(theme);
+ // These optional series are queried only once after selection, not on every map click.
+ const iso3toNum=Object.fromEntries(allCountries.map(c=>[c.cca3,key(c.ccn3)]));
+ const task=(async()=>{
+  try{
+   stat[theme]||={};statYear[theme]||={};statSource[theme]||={};
+   if(force){stat[theme]={};statYear[theme]={};statSource[theme]={};}
+   const ok=await fetchWB(theme,m.code,iso3toNum);
+   if(!ok||!Object.keys(stat[theme]).length)mapThemeErrors.set(theme,'통계 제공 서버 연결 또는 자료 없음');
+  }catch(e){mapThemeErrors.set(theme,String(e));}
+  finally{mapThemeRequests.delete(theme);if(themeSelect.value===theme){draw();mapUpdatePanel();}}
+ })();
+ mapThemeRequests.set(theme,task);
+ if(themeSelect.value===theme)mapUpdatePanel();
+ return task;
+}
+function mapRenderThemeSearch(){
+ const input=document.getElementById('mapThemeSearchInput'),root=document.getElementById('mapThemeSearchResults');
+ const query=input.value.trim().toLocaleLowerCase('ko-KR').replace(/\s+/g,'');
+ const found=MAP_THEMES.filter(m=>!query||[m.label,m.category,m.keywords,m.description].join(' ').toLocaleLowerCase('ko-KR').replace(/\s+/g,'').includes(query));
+ root.innerHTML=found.length?found.map(m=>`<button type="button" class="map-theme-result" role="option" data-map-theme="${safe(m.id)}" aria-selected="${m.id===themeSelect.value}"><span><b>${safe(m.label)}</b><small>${safe(m.category)} · ${safe(m.unit)}</small></span><span class="map-theme-check">${m.id===themeSelect.value?'✓':'↗'}</span></button>`).join(''):'<div class="map-theme-no-match">검색 결과가 없습니다. 다른 키워드로 검색해 보세요.</div>';
+}
+function mapOpenThemeSearch(open){
+ const wrap=document.getElementById('mapThemeSearchWrap'),popup=document.getElementById('mapThemeSearchPanel'),toggle=document.getElementById('mapThemeSearchToggle');
+ popup.hidden=!open;toggle.setAttribute('aria-expanded',String(open));
+ if(open){closeCountrySearch();mapRenderThemeSearch();document.getElementById('mapThemeSearchInput').focus();}
+ else if(wrap.contains(document.activeElement)&&document.activeElement!==toggle)toggle.blur();
+}
+function mapInitThemePicker(){
+ const opts=[...new Set(MAP_THEMES.map(x=>x.category))].map(group=>`<optgroup label="${safe(group)}">${MAP_THEMES.filter(x=>x.category===group).map(x=>`<option value="${safe(x.id)}">${safe(x.label)}</option>`).join('')}</optgroup>`).join('');
+ themeSelect.innerHTML=opts;
+ document.getElementById('mapThemeCount').textContent=MAP_THEMES.length+'개 지표';
+ const toggle=document.getElementById('mapThemeSearchToggle');
+ toggle.addEventListener('click',()=>mapOpenThemeSearch(document.getElementById('mapThemeSearchPanel').hidden));
+ document.getElementById('mapThemeSearchInput').addEventListener('input',mapRenderThemeSearch);
+ document.getElementById('mapThemeSearchInput').addEventListener('keydown',e=>{
+  if(e.key==='Escape'){e.preventDefault();mapOpenThemeSearch(false);return;}
+  if(e.key==='Enter'){const first=document.querySelector('#mapThemeSearchResults [data-map-theme]');if(first){e.preventDefault();mapChooseTheme(first.dataset.mapTheme);mapOpenThemeSearch(false);}}
+ });
+ document.getElementById('mapThemeSearchResults').addEventListener('click',e=>{
+  const b=e.target.closest('button[data-map-theme]');if(!b)return;
+  mapChooseTheme(b.dataset.mapTheme);mapOpenThemeSearch(false);
+ });
+ document.addEventListener('pointerdown',e=>{if(!document.getElementById('mapThemeSearchWrap').contains(e.target))mapOpenThemeSearch(false)});
+}
+function welcome(){if(state.selectedId)return;panel.innerHTML=`<h2>🌏 세계 통계 탐색</h2><p class="lead">지도 위쪽에서 통계 지표를 선택하거나 검색하면 세계지도 색상과 국가별 수치 순위가 함께 바뀝니다. 국가를 선택하지 않아도 주요 통계를 비교할 수 있어요.</p>${mapWorldCardHtml()}<div class="section"><h3>수업 활용 방법</h3><p class="mini-fact">① 통계 항목을 검색하거나 지도의 주제 목록에서 선택해 보세요.<br>② 지도 색상과 범례를 비교하고, 정보창의 국가별 상위·하위 순위를 확인해 보세요.<br>③ 국가 이름이나 지도를 누르면 세부 정보와 인구 피라미드·기후 그래프를 확인할 수 있어요.</p></div><p class="muted">통계: World Bank Open Data. 종교 구성: Pew Research Center의 2020년 추정치. 지표마다 제공 연도가 다를 수 있습니다.</p>`}
+
 function selectCountry(id){const normalized=key(id);if(state.selectedId!==normalized)state.siteIndex=null;
  state.selectedId=normalized;clearMarkers();draw();setCapitalMarker(normalized);showInfo();
  if(window.matchMedia('(max-width:650px)').matches)panel.scrollTop=0;
@@ -2281,6 +2589,7 @@ function showInfo(){const id=state.selectedId,c=countries[id];if(!c){panel.inner
   <div class="nav-buttons" style="justify-content:space-between;align-items:center"><span class="pill">국가 정보</span><button class="button" data-action="add-compare" type="button">＋ 비교하기에 담기</button></div>
   ${/^[A-Z]{2}$/.test(c.cca2)?`<p><img class="flag" src="https://flagcdn.com/w160/${c.cca2.toLowerCase()}.png" alt="${safe(nameKR(c))} 국기" loading="lazy"></p>`:''}
   <h2>${safe(nameKR(c))}</h2>
+  ${mapSelectedMetricHtml(id)}
   ${statsFact('수도',safe(capitalName(c)),capitalCoords[c.cca3]?'지도에 빨간 핀으로 표시':'수도 좌표 확인 중 또는 미제공')}
   ${statsFact('지역',safe(countryRegion(c)))}
   ${statsFact('주요 언어',safe(countryLanguages(c)))}
@@ -2732,6 +3041,8 @@ function geoPushTabURL(tab){
  if(tab==='home')url.searchParams.delete('tab');
  else url.searchParams.set('tab',tab);
  if(tab!=='games')url.searchParams.delete('game');
+ if(tab!=='map')url.searchParams.delete('indicator');
+ else if(themeSelect.value!=='population')url.searchParams.set('indicator',themeSelect.value);
  const nextURL=url.pathname+url.search+url.hash;
  const currentURL=window.location.pathname+window.location.search+window.location.hash;
  if(nextURL!==currentURL)window.history.pushState({geoTab:tab},'',url.href);
@@ -2760,6 +3071,8 @@ function switchTab(next,{fromHistory=false}={}){
  for(const b of document.querySelectorAll('.tab'))b.setAttribute('aria-selected',String(b.dataset.tab===next));
  // 이전 탭의 모달이 새 화면을 가리지 않도록 정리합니다.
  if(next!=='find')cfHideResult();
+ if(next!=='map'&&!document.getElementById('mapThemeSearchPanel').hidden)mapOpenThemeSearch(false);
+ if(next!=='games'&&next!=='find'&&!document.getElementById('giOverlay')?.hidden)giClose();
  if(next!=='games')document.getElementById('gpPreparing').hidden=true;
  if(next==='compare')renderCompare();
  else if(next==='map')setTimeout(()=>{
@@ -2775,6 +3088,9 @@ function switchTab(next,{fromHistory=false}={}){
  if(next!==previous)window.scrollTo({top:0,behavior:'auto'});
 }
 function geoRestoreTabFromURL(){
+ const params=new URLSearchParams(location.search),indicator=params.get('indicator');
+ if(indicator&&MAP_THEME_BY_ID[indicator]&&indicator!==themeSelect.value)mapChooseTheme(indicator,{fromHistory:true});
+ else if(!indicator&&themeSelect.value!=='population')mapChooseTheme('population',{fromHistory:true});
  switchTab(geoTabFromURL(),{fromHistory:true});
 }
 
@@ -3158,6 +3474,7 @@ function cfRender(){
     <button type="button" class="button" data-cf-action="restart">↻ 이번 10개국 다시 풀기</button>
     <button type="button" class="button" data-cf-action="reset">제외 목록 초기화</button>
     <button type="button" class="button" data-cf-action="region-menu">다른 대륙 선택</button></div>`;
+  giMountResultTabs(cfPanel,cfState.round);
   return;
  }
  const c=countries[cfCurrent()],done=cfState.phase==='review';
@@ -3232,7 +3549,7 @@ function regionFocusMap(m,region){
  const bounds=REGION_BOUNDS[region]||REGION_BOUNDS.all;
  m.fitBounds(bounds,{padding:[12,12],animate:false});
 }
-const gpState={map:null,shapes:null,layers:new Map(),pool:[],region:'all',difficulty:'normal',round:[],placed:new Set(),selectedId:null,wrongPicks:0,phase:'intro',notice:'',noticeType:'info',startedAt:0};
+const gpState={map:null,shapes:null,layers:new Map(),pool:[],region:'all',difficulty:'normal',round:[],placed:new Set(),selectedId:null,wrongPicks:0,phase:'intro',notice:'',noticeType:'info',startedAt:0,lastPlacedId:null};
 const gpPanel=document.getElementById('gpGamePanel');
 const gpIndicator=document.getElementById('gpMapIndicator');
 const GP_PALETTE=['#5cc4a6','#5eafdb','#e3b56d','#a899e7','#66c1c3','#b3c773','#d4a1b4','#7da4d6','#68b5a0','#ddb975'];
@@ -3322,7 +3639,7 @@ function gpStart(keepRound=false){
  const pool=gpFilteredPool();
  if(pool.length<3){gpState.notice='이 지역은 퍼즐을 만들 수 있는 국가가 부족합니다. 다른 지역을 선택해 주세요.';gpState.noticeType='failure';gpRender();return}
  gpState.round=keepRound&&gpState.round.length?[...gpState.round]:cfShuffle(pool).slice(0,10);
- gpState.placed.clear();gpState.selectedId=null;gpState.wrongPicks=0;gpState.phase='playing';gpState.startedAt=Date.now();
+ gpState.placed.clear();gpState.selectedId=null;gpState.lastPlacedId=null;gpState.wrongPicks=0;gpState.phase='playing';gpState.startedAt=Date.now();
  gpState.notice='먼저 왼쪽의 퍼즐 조각을 골라 지도에서 해당 국가의 위치를 눌러 보세요.';gpState.noticeType='info';
  gpRestyle();gpWorldView();gpRender();
 }
@@ -3332,7 +3649,7 @@ function gpPick(id){
  if(!selected){gpState.notice='먼저 퍼즐 조각을 하나 선택해 주세요.';gpState.noticeType='info';gpRender();return}
  if(gpState.placed.has(id)){gpState.notice='이미 완성한 위치예요. 다른 국가의 윤곽을 눌러 보세요.';gpState.noticeType='info';gpRender();return}
  if(id!==selected){gpState.wrongPicks++;gpState.notice='아쉽지만 이 조각이 들어갈 위치가 아니에요. 다시 찾아보세요!';gpState.noticeType='failure';gpRender();return}
- gpState.placed.add(id);gpState.selectedId=null;
+ gpState.placed.add(id);gpState.selectedId=null;gpState.lastPlacedId=id;
  if(gpState.placed.size===gpState.round.length){gpState.phase='finished';gpState.notice='축하해요! 모든 지도 조각을 맞혔어요.'}
  else gpState.notice=`${nameKR(countries[id])} 위치를 정확히 찾았어요! 다음 조각을 선택해 주세요.`;
  gpState.noticeType='success';gpRestyle();gpRender();
@@ -3370,6 +3687,7 @@ function gpRender(){
   <div class="gp-status-row"><span>잘못 놓은 횟수: ${gpState.wrongPicks}회</span><span>완료 시간: ${minutes}분 ${sec}초</span></div>
   <div class="gp-instructions">완성한 지도에서 각 나라의 위치를 확인해 보세요. 다른 지역을 선택하거나 같은 국가들로 다시 도전할 수 있어요.</div>
   <div class="gp-action-row"><button class="gp-btn primary" type="button" data-gp-action="new">새 퍼즐</button><button class="gp-btn" type="button" data-gp-action="retry">같은 퍼즐 다시</button><button class="gp-btn" type="button" data-gp-action="menu">지역 다시 선택</button></div>`;
+  giMountResultTabs(gpPanel,gpState.round);
   gpIndicator.textContent=`${regionName(gpState.region)} · ${total}조각 완성`;return;
  }
  gpPanel.innerHTML=`<div class="gp-progress-line"><span>${regionName(gpState.region)} 지도 조각</span><strong>${done} / ${total}</strong></div><div class="gp-progress-rail" role="progressbar" aria-label="퍼즐 완성률" aria-valuemin="0" aria-valuemax="${total}" aria-valuenow="${done}"><span style="width:${Math.round(100*done/total)}%"></span></div>
@@ -3377,6 +3695,7 @@ function gpRender(){
   <div class="gp-piece-grid" role="group" aria-label="국가별 퍼즐 조각">${pieces}</div>
   <div class="gp-status-row"><span>틀린 위치: ${gpState.wrongPicks}회</span><span>남은 조각: ${total-done}개</span></div>
   ${gpState.notice?`<div class="gp-feedback ${gpState.noticeType}" role="status">${safe(gpState.notice)}</div>`:''}
+  ${gpState.lastPlacedId&&gpState.placed.has(gpState.lastPlacedId)?`<div class="gp-action-row"><button type="button" class="gp-btn" data-gi-country="${safe(gpState.lastPlacedId)}">🌍 방금 맞힌 나라 정보 보기</button></div>`:''}
   <div class="gp-action-row"><button type="button" class="gp-btn ghost" data-gp-action="retry">↻ 같은 퍼즐 다시</button><button type="button" class="gp-btn" data-gp-action="menu">지역 다시 선택</button></div>`;
  const selected=gpState.selectedId;gpIndicator.textContent=selected?`${gpState.difficulty==='hard'?'선택한 실루엣':nameKR(countries[selected])} · 지도에서 위치 찾기`:'퍼즐 조각을 선택해 주세요';
 }
@@ -3424,7 +3743,7 @@ const CM_REGION_CODES={
 };
 const CM_SIZE=10,CM_STAGE_SIZE=5;
 const cmPanel=document.getElementById('cmGamePanel');
-const cmState={region:'all',phase:'intro',round:[],stage:0,capitalOrder:[],matched:new Set(),selectedIso:null,wrong:0,lastWrong:null,notice:'',noticeType:'info',startedAt:0,finishedAt:0};
+const cmState={region:'all',phase:'intro',round:[],stage:0,capitalOrder:[],matched:new Set(),selectedIso:null,wrong:0,lastWrong:null,notice:'',noticeType:'info',startedAt:0,finishedAt:0,lastMatchIso:null};
 let geoGameMode='puzzle';
 function geoGameModeFromURL(){
  const selected=new URLSearchParams(window.location.search).get('game');
@@ -3475,7 +3794,7 @@ function cmStart(sameRound=false){
  const pool=cmPool(cmState.region);
  if(pool.length<CM_SIZE){cmState.notice='이 지역에 출제할 수 있는 국가가 충분하지 않아요.';cmState.noticeType='failure';cmRender();return}
  if(!sameRound||cmState.round.length!==CM_SIZE)cmState.round=cfShuffle(pool).slice(0,CM_SIZE);
- cmState.stage=0;cmState.phase='playing';cmState.matched.clear();cmState.selectedIso=null;cmState.lastWrong=null;cmState.wrong=0;
+ cmState.stage=0;cmState.phase='playing';cmState.lastMatchIso=null;cmState.matched.clear();cmState.selectedIso=null;cmState.lastWrong=null;cmState.wrong=0;
  cmState.notice='왼쪽에서 나라를 고른 뒤 오른쪽에서 그 나라의 수도를 선택하세요.';cmState.noticeType='info';
  cmState.startedAt=Date.now();cmState.finishedAt=0;
  cmState.capitalOrder=cfShuffle(cmState.round.slice(0,CM_STAGE_SIZE).map(p=>p.iso));
@@ -3489,7 +3808,7 @@ function cmAnswerCapital(iso){
   cmState.wrong++;cmState.lastWrong=iso;cmState.notice='아쉬워요! 선택한 수도는 그 나라의 수도가 아니에요. 다시 골라 보세요.';cmState.noticeType='failure';cmRender();return;
  }
  const country=cmState.round.find(p=>p.iso===iso);
- cmState.matched.add(iso);cmState.lastWrong=null;cmState.selectedIso=null;
+ cmState.matched.add(iso);cmState.lastMatchIso=iso;cmState.lastWrong=null;cmState.selectedIso=null;
  cmState.notice=`정답! ${country.country} — ${country.capital} 🎉`;cmState.noticeType='success';
  if(cmStagePairs().every(p=>cmState.matched.has(p.iso))){
   if(cmState.matched.size===CM_SIZE){cmState.phase='finished';cmState.finishedAt=Date.now()}
@@ -3521,6 +3840,7 @@ function cmRender(){
   const accuracy=Math.round(100*CM_SIZE/(CM_SIZE+cmState.wrong));
   const review=cmState.round.map(p=>`<div class="cm-answer"><strong>${safe(p.country)}</strong><span>↔ ${safe(p.capital)}</span></div>`).join('');
   cmPanel.innerHTML=`<h2>🎉 수도 매칭 도전 완료!</h2>${stats}<div class="cm-perfect"><strong>${completed}쌍 모두 정답!</strong><span>정확도 ${accuracy}% · 오답 ${cmState.wrong}회 · ${Math.floor(seconds/60)}분 ${seconds%60}초</span></div><h3 style="font-size:15px;color:#295667;margin-top:19px">이번 도전 정답 복습</h3><div class="cm-answer-list">${review}</div><div class="cm-actions"><button type="button" class="gp-btn primary" data-cm-action="new">새로운 10쌍 도전</button><button type="button" class="gp-btn" data-cm-action="retry">같은 10쌍 다시</button><button type="button" class="gp-btn ghost" data-cm-action="menu">지역 다시 선택</button></div>`;
+  giMountResultTabs(cmPanel,cmState.round.map(p=>p.iso));
   return;
  }
  const pairs=cmStagePairs();
@@ -3529,6 +3849,7 @@ function cmRender(){
  cmPanel.innerHTML=`<h2>🏙️ 수도와 나라 매칭</h2>${stats}<p class="cm-stage-caption">${regionName(cmState.region)} · ${cmState.stage+1}단계 · 나라와 수도 5쌍을 연결해 보세요</p>
  <div class="cm-columns"><div class="cm-column" role="group" aria-label="나라 선택"><h3>🌍 나라 <small>Country</small></h3>${countryButtons}</div><div class="cm-column" role="group" aria-label="수도 선택"><h3>📍 수도 <small>Capital</small></h3>${capitalButtons}</div></div>
  <div class="cm-feedback ${cmState.noticeType}" role="status">${safe(cmState.notice)}</div>
+ ${cmState.lastMatchIso?`<div class="cm-actions"><button type="button" class="gp-btn ghost" data-gi-country="${safe(cmState.lastMatchIso)}">🌍 방금 맞힌 나라 정보 보기</button></div>`:''}
  ${cmState.phase==='between'?'<div class="cm-stage-done">✨ 1단계 성공! 5쌍 모두 맞혔어요.</div><div class="cm-actions"><button type="button" class="gp-btn primary" data-cm-action="next">다음 5쌍 도전하기 →</button></div>':''}
  <div class="cm-actions"><button type="button" class="gp-btn ghost" data-cm-action="retry">↻ 같은 10쌍 다시</button><button type="button" class="gp-btn" data-cm-action="menu">지역 다시 선택</button></div>`;
 }
@@ -3668,6 +3989,7 @@ function iqRender(){
    <div class="iq-final-score"><strong>${iqState.correct*10} / 100점</strong><span>정답 ${iqState.correct} / ${IQ_SIZE}문제 · 오답 입력 ${iqState.wrong}회 · ${Math.floor(elapsed/60)}분 ${elapsed%60}초</span></div>
    <h3 style="font-size:15px;color:#295a67;margin-top:20px">이번 도전 정답 복습</h3><div class="iq-review">${reviews}</div>
    <div class="iq-action-row"><button type="button" class="gp-btn primary" data-iq-action="new">새로운 10문제 도전</button><button type="button" class="gp-btn" data-iq-action="retry">같은 10문제 다시</button><button type="button" class="gp-btn ghost" data-iq-action="menu">유형·지역 다시 선택</button></div>`;
+  giMountResultTabs(iqPanel,iqState.questions.map(q=>q.iso));
   return;
  }
  const q=iqCurrent();
@@ -3688,7 +4010,7 @@ function iqRender(){
  <div class="iq-hints"><button type="button" class="gp-btn ghost" data-iq-action="hint" ${iqState.hints>=2?'disabled':''}>💡 힌트 보기 (${iqState.hints}/2)</button><button type="button" class="gp-btn ghost" data-iq-action="skip">이 문제 건너뛰기</button></div>
  ${hintHtml}`:''}
  ${iqState.notice?`<div class="iq-feedback ${iqState.noticeType}" role="status" aria-live="polite">${safe(iqState.notice)}</div>`:''}
- ${iqState.phase==='reveal'?`<div class="iq-reveal"><small>정답</small><strong>${safe(q.answer)}</strong><small>${safe(q.country)} · ${safe(q.capital)}</small></div><div class="iq-action-row"><button type="button" class="gp-btn primary" data-iq-action="next">${iqState.index===IQ_SIZE-1?'결과 확인하기':'다음 문제 →'}</button></div>`:''}
+ ${iqState.phase==='reveal'?`<div class="iq-reveal"><small>정답</small><strong>${safe(q.answer)}</strong><small>${safe(q.country)} · ${safe(q.capital)}</small></div><div class="iq-action-row"><button type="button" class="gp-btn" data-gi-country="${safe(q.iso)}">🌍 나라 정보 보기</button><button type="button" class="gp-btn primary" data-iq-action="next">${iqState.index===IQ_SIZE-1?'결과 확인하기':'다음 문제 →'}</button></div>`:''}
  <div class="iq-action-row"><button type="button" class="gp-btn ghost" data-iq-action="retry">같은 10문제 다시</button><button type="button" class="gp-btn" data-iq-action="menu">유형·지역 다시 선택</button></div>`;
 }
 iqPanel.addEventListener('click',event=>{
@@ -3889,6 +4211,7 @@ function vqRender(){
    <div class="vq-result"><strong>${score} / 100점</strong><span>정답 ${correct} / ${total}문제 · ${Math.floor(elapsed/60)}분 ${elapsed%60}초</span></div>
    <h3 style="font-size:15px;color:#295b68">이번 문제 정답 복습</h3><div class="vq-review">${reviewed}</div>
    <div class="vq-actions"><button type="button" class="gp-btn primary" data-vq-action="new">새로운 문제 도전</button><button type="button" class="gp-btn" data-vq-action="retry">같은 문제 다시</button><button type="button" class="gp-btn ghost" data-vq-action="menu">정답 방식·지역 다시 선택</button></div>`;
+  giMountResultTabs(vqPanel,st.round.map(q=>q.iso));
   return;
  }
  const q=st.round[st.index];
@@ -3910,7 +4233,7 @@ function vqRender(){
   ${answerArea}
   ${st.notice?`<div class="vq-feedback ${st.phase==='reveal'?(correctLast?'success':'failure'):st.noticeType}" role="status">${safe(st.notice)}</div>`:''}
   ${st.phase==='playing'?isShort?`<div class="vq-actions"><button type="button" class="gp-btn ghost" data-vq-action="skip">문제 건너뛰기</button></div>`:`<div class="vq-actions"><button type="button" class="gp-btn ghost" data-vq-action="hint" ${st.usedHint?'disabled':''}>💡 50:50 도움${st.usedHint?' 사용 완료':''}</button></div>`:''}
-  ${st.phase==='reveal'?`<div class="vq-actions"><button type="button" class="gp-btn primary" data-vq-action="next">${st.index===total-1?'결과 확인하기':'다음 문제 →'}</button></div>`:''}
+  ${st.phase==='reveal'?`<div class="vq-actions"><button type="button" class="gp-btn" data-gi-country="${safe(q.iso)}">🌍 나라 정보 보기</button><button type="button" class="gp-btn primary" data-vq-action="next">${st.index===total-1?'결과 확인하기':'다음 문제 →'}</button></div>`:''}
   <div class="vq-actions"><button type="button" class="gp-btn" data-vq-action="retry">↻ 같은 문제 다시</button><button type="button" class="gp-btn ghost" data-vq-action="menu">정답 방식·지역 다시 선택</button></div>`;
 }
 vqPanel.addEventListener('change',event=>{
@@ -3951,6 +4274,145 @@ vqPanel.addEventListener('error',event=>{
   if(fallback?.classList.contains('vq-flag-fallback'))fallback.hidden=false;
  }
 },true);
+
+
+/* ===========================================
+   Game review -> each learned country & its region
+   Reuses the SAME country, region, World Bank, Pew,
+   and climate sources already used by the map.
+   =========================================== */
+const giOverlay=document.getElementById('giOverlay');
+const giDialog=document.getElementById('giDialog');
+let giReturnFocus=null;
+function giResolveCountry(id){
+ const raw=String(id??'').trim().toUpperCase();
+ if(/^\d{1,3}$/.test(raw))return countries[key(raw)]||null;
+ return allCountries.find(c=>c.cca2===raw)||Object.values(countries).find(c=>c.cca2===raw)||null;
+}
+function giISO(id){
+ const raw=String(id??'').trim().toUpperCase();
+ if(/^[A-Z]{2}$/.test(raw))return raw;
+ return giResolveCountry(raw)?.cca2||'';
+}
+function giEmoji(iso){
+ return /^[A-Z]{2}$/.test(iso)?[...iso].map(x=>String.fromCodePoint(x.charCodeAt(0)+127397)).join(''):'🌍';
+}
+function giRegionFallback(iso){
+ const k=Object.keys(CM_REGION_CODES).find(k=>CM_REGION_CODES[k].includes(iso));
+ return k?regionName(k):'자료 확인 중';
+}
+function giCountryName(id){
+ const c=giResolveCountry(id),iso=giISO(id);
+ return c?nameKR(c):(iso?nameKR({cca2:iso}):'국가 정보 없음');
+}
+function giCountryCards(ids){
+ const unique=[...new Set((ids||[]).map(x=>String(x??'').trim().toUpperCase()).filter(Boolean))];
+ return unique.map(id=>{
+  const c=giResolveCountry(id),iso=giISO(id);
+  const sub=c?countryRegion(c):giRegionFallback(iso);
+  return `<button type="button" class="gi-country" data-gi-country="${safe(id)}" aria-label="${safe(giCountryName(id))} 국가 정보 보기">
+   <span class="gi-flag" aria-hidden="true">${giEmoji(iso)}</span><span><strong>${safe(giCountryName(id))}</strong><small>${safe(sub)}</small></span><span class="gi-chevron" aria-hidden="true">›</span></button>`;
+ }).join('');
+}
+function giMountResultTabs(panel,ids){
+ if(!panel||!panel.innerHTML)return;
+ const unique=[...new Set((ids||[]).map(x=>String(x??'').trim().toUpperCase()).filter(Boolean))];
+ if(!unique.length)return;
+ const prefix=panel.id+'-gi';
+ // Existing result controls remain in the first panel, untouched.
+ const previous=panel.innerHTML;
+ panel.innerHTML=`<div class="gi-tabs" role="tablist" aria-label="게임 결과와 국가 정보">
+   <button type="button" class="gi-tab" role="tab" id="${prefix}-result-tab" data-gi-tab="results" aria-controls="${prefix}-results" aria-selected="true">🏅 게임 결과</button>
+   <button type="button" class="gi-tab" role="tab" id="${prefix}-countries-tab" data-gi-tab="countries" aria-controls="${prefix}-countries" aria-selected="false">🌍 국가 정보 (${unique.length})</button>
+  </div>
+  <div class="gi-content" role="tabpanel" id="${prefix}-results" aria-labelledby="${prefix}-result-tab" data-gi-panel="results">${previous}</div>
+  <div class="gi-content" role="tabpanel" id="${prefix}-countries" aria-labelledby="${prefix}-countries-tab" data-gi-panel="countries" hidden>
+   <p class="gi-intro">이번에 만난 ${unique.length}개 국가의 지리 정보를 살펴보세요. 나라를 누르면 <b>위치·대륙·수도·인구·면적·언어·기후·종교</b>를 볼 수 있어요.</p>
+   <div class="gi-country-grid">${giCountryCards(unique)}</div>
+  </div>`;
+}
+function giCountrySheet(id){
+ const c=giResolveCountry(id),iso=giISO(id);
+ if(!iso&&!c)return '<h2 id="giTitle">국가 정보 없음</h2><p>국가 데이터를 확인하지 못했어요.</p>';
+ const label=giCountryName(id);
+ const countryId=c?.ccn3?key(c.ccn3):null;
+ const population=countryId?val('population',countryId):null;
+ const area=Number(c?.area);
+ const capital=c?capitalName(c):(capitals[iso]||'자료 없음');
+ const location=c?countryRegion(c):giRegionFallback(iso);
+ const fact=(name,value,note='',wide=false)=>cfResultFact(name,value,note,wide);
+ const religion=c?.cca3?religionBoundHtml(c,true):'<p class="cf-result-caption">기본 국가 자료를 불러온 뒤 종교 정보를 확인할 수 있어요.</p>';
+ const hasMap=Boolean(countryId&&geo?.features?.some(f=>key(f.id)===countryId));
+ return `<button type="button" class="gi-close" data-gi-close aria-label="국가 정보창 닫기">×</button>
+  <div class="gi-heading"><span class="gi-head-flag" aria-hidden="true">${giEmoji(iso)}</span><div><h2 id="giTitle">${safe(label)}</h2><p>${safe(location)} · 게임에서 만난 국가 알아보기</p></div></div>
+  <h3 class="cf-result-subtitle">📍 국가 및 지역 정보</h3>
+  <dl class="cf-result-facts">
+   ${fact('대륙·지역',location,'국가의 주요 지리 구분',true)}
+   ${fact('수도',capital)}
+   ${fact('인구',Number.isFinite(population)?fmt(population)+'명':'자료 없음',Number.isFinite(population)?statTime('population',countryId):'국가별 자료 수집 중')}
+   ${fact('면적',Number.isFinite(area)&&area>0?fmt(area)+'㎢':'자료 없음')}
+   ${fact('주요 언어',c?countryLanguages(c):'자료 없음','주요 언어 참고 정보',true)}
+   ${fact('대표 기후',c?climateSummary(c):'자료 확인 중','국가 내 지역별로 기후가 달라질 수 있습니다.',true)}
+  </dl>
+  <section class="cf-result-religion" style="margin-top:15px"><h3 class="cf-result-subtitle">종교 구성과 국교</h3>${religion}</section>
+  <p class="gi-prompt">💡 더 알아보기: 이 나라는 같은 대륙의 다른 국가와 기후나 인구 구조가 어떻게 다를까요?</p>
+  <p class="gi-foot">자료: 기존 사이트의 국가 기본 정보, World Bank 인구 통계(표기 연도 확인), 대표 기후 자료, Pew Research Center 종교 구성 추정치(2020년). 국교와 종교 구성은 별개이며 일부 국가의 최신 제도·통계는 확인이 필요합니다.</p>
+  <div class="gi-modal-actions"><button type="button" class="gp-btn" data-gi-close>게임으로 돌아가기</button><button type="button" class="gp-btn primary" data-gi-map="${safe(countryId||'')}" ${hasMap?'':'disabled title="국가 경계 자료가 준비되지 않았어요"'}>🗺️ 지도에서 보기</button></div>`;
+}
+function giOpen(id){
+ if(!giOverlay||!giDialog)return;
+ giReturnFocus=document.activeElement;
+ giDialog.innerHTML=giCountrySheet(id);
+ giOverlay.hidden=false;
+ document.body.classList.add('gi-dialog-open');
+ giDialog.scrollTop=0;
+ giDialog.focus({preventScroll:true});
+}
+function giClose(){
+ if(giOverlay.hidden)return;
+ giOverlay.hidden=true;
+ document.body.classList.remove('gi-dialog-open');
+ giDialog.innerHTML='';
+ if(giReturnFocus?.isConnected)giReturnFocus.focus({preventScroll:true});
+ giReturnFocus=null;
+}
+// Event delegation: every game may replace its own innerHTML after each answer.
+document.addEventListener('click',event=>{
+ const country=event.target.closest('button[data-gi-country]');
+ if(country){giOpen(country.dataset.giCountry);return}
+ const tab=event.target.closest('button[data-gi-tab]');
+ if(!tab)return;
+ const container=tab.closest('.gp-card,.cm-shell,.iq-shell,.vq-shell,.cf-card');
+ if(!container)return;
+ const next=tab.dataset.giTab;
+ for(const button of container.querySelectorAll('.gi-tab')){
+  button.setAttribute('aria-selected',String(button.dataset.giTab===next));
+  button.tabIndex=button.dataset.giTab===next?0:-1;
+ }
+ for(const panel of container.querySelectorAll('[data-gi-panel]'))panel.hidden=panel.dataset.giPanel!==next;
+});
+giOverlay.addEventListener('click',event=>{
+ const target=event.target;
+ if(target===giOverlay||target.closest('button[data-gi-close]')){giClose();return}
+ const mapButton=target.closest('button[data-gi-map]');
+ if(mapButton&&!mapButton.disabled){
+  const id=mapButton.dataset.giMap;
+  giClose();switchTab('map');selectCountry(id);
+  setTimeout(()=>{if(state.tab!=='map'||!geo)return;const item=geo.features?.find(f=>key(f.id)===key(id));if(item&&map)try{
+   const bounds=L.geoJSON(item).getBounds();if(bounds.isValid())map.fitBounds(bounds,{padding:[50,50],maxZoom:5});
+  }catch(e){console.warn('국가 지도 위치 조정 실패',e)}},120);
+ }
+});
+giOverlay.addEventListener('keydown',event=>{
+ if(event.key==='Escape'){event.preventDefault();giClose();return}
+ if(event.key!=='Tab')return;
+ const focusable=[...giDialog.querySelectorAll('button:not([disabled]),a[href],details>summary')].filter(x=>x.getClientRects().length);
+ if(!focusable.length){event.preventDefault();giDialog.focus();return}
+ const first=focusable[0],last=focusable[focusable.length-1];
+ if(event.shiftKey&&(document.activeElement===first||document.activeElement===giDialog)){event.preventDefault();last.focus()}
+ else if(!event.shiftKey&&(document.activeElement===last||document.activeElement===giDialog)){event.preventDefault();first.focus()}
+});
+// Avoid leaving an open information sheet when switching other site tabs.
 
 const gpPreparing=document.getElementById('gpPreparing');
 function gpClosePreparing(){gpPreparing.hidden=true;document.getElementById('gpComingChoice')?.focus()}
@@ -4015,8 +4477,20 @@ document.addEventListener('click',event=>{
  const step=card?card.getBoundingClientRect().width+12:strip.clientWidth;
  strip.scrollBy({left:(Number(b.dataset.scrollDir)||1)*step,behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
 });
-themeSelect.addEventListener('change',draw);
-document.getElementById('refresh').addEventListener('click',()=>{wbSummaryAttempted.clear();void loadStatistics()});
+mapInitThemePicker();
+themeSelect.addEventListener('change',()=>mapChooseTheme(themeSelect.value));
+panel.addEventListener('click',e=>{
+ const b=e.target.closest('[data-map-action],[data-map-sort],[data-map-country-select]');if(!b)return;
+ if(b.dataset.mapSort){mapThemeSort=b.dataset.mapSort;mapUpdatePanel();return}
+ if(b.dataset.mapCountrySelect){selectCountry(b.dataset.mapCountrySelect);return}
+ if(b.dataset.mapAction==='all'){state.selectedId=null;state.siteIndex=null;clearMarkers();draw();welcome();panel.scrollTop=0;return}
+ if(b.dataset.mapAction==='retry'){void mapLoadTheme(themeSelect.value,{force:true});return}
+});
+document.getElementById('refresh').addEventListener('click',()=>{
+ wbSummaryAttempted.clear();
+ const theme=themeSelect.value;
+ void loadStatistics().then(()=>{if(MAP_THEME_BY_ID[theme]?.code&&!MAP_BASE_FIELDS.has(theme))void mapLoadTheme(theme,{force:true})});
+});
 // URL이 지정된 상태로 접속하거나 새로고침하면 해당 탭을 바로 열고,
 // 브라우저 방문 기록을 이동하면 주소에 맞는 탭으로 돌아갑니다.
 window.addEventListener('popstate',geoRestoreTabFromURL);
