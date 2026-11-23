@@ -2159,11 +2159,11 @@ function syncMapPointCopies(){
    const lon=data.lon+360*index;
    let marker;
    if(kind==='capital'){
-    marker=L.marker([data.lat,lon],{icon:data.icon,zIndexOffset:1000,title:'수도 · '+data.label,keyboard:true}).addTo(map);
+    marker=L.marker([data.lat,lon],{icon:data.icon,zIndexOffset:1000,title:'수도 · '+data.label,keyboard:true,bubblingMouseEvents:false}).addTo(map);
     marker.bindTooltip('수도 · '+data.label,{permanent:true,offset:[0,-42],direction:'top',className:'capital-tooltip'}).openTooltip();
     marker.bindPopup(`<b>${safe(nameKR(data.country))}</b><br>수도: ${safe(capitalName(data.country))}`);
    }else{
-    marker=L.circleMarker([data.lat,lon],{radius:6,color:'#fff',weight:2,fillColor:'#367bad',fillOpacity:1}).addTo(map);
+    marker=L.circleMarker([data.lat,lon],{radius:6,color:'#fff',weight:2,fillColor:'#367bad',fillOpacity:1,bubblingMouseEvents:false}).addTo(map);
     marker.bindTooltip('기후 자료 지점: '+data.label,{direction:'right',className:'climate-tooltip'});
    }
    cache.set(index,marker);
@@ -2187,9 +2187,14 @@ function updateWorldCopies(){
   const copy=L.geoJSON(geo,{
    // 좌표를 새로 복제하지 않고 렌더링할 때만 경도를 ±360°씩 이동합니다.
    coordsToLatLng:coords=>L.latLng(coords[1],coords[0]+360*index,coords[2]),
+   // 국가를 클릭한 이벤트가 지도 배경의 '선택 해제' 이벤트로 전파되지 않도록 합니다.
+   bubblingMouseEvents:false,
    style:countryShapeStyle,
    onEachFeature:(f,l)=>{
-    l.on('click',()=>selectCountry(f.id));
+    l.on('click',e=>{
+     if(e.originalEvent)L.DomEvent.stopPropagation(e.originalEvent);
+     toggleMapCountry(f.id);
+    });
     l.bindTooltip(mapCountryTooltip(f),{sticky:true});
    }
   });
@@ -2211,6 +2216,8 @@ map.on('move',()=>{
  requestAnimationFrame(()=>{worldCopyUpdateQueued=false;updateWorldCopies()});
 });
 map.on('moveend zoomend resize',()=>{updateWorldCopies();mapUpdateStatOverlays();});
+// 대양 등 국가 폴리곤이 없는 지도를 클릭하면 현재 선택을 해제합니다.
+map.on('click',()=>{if(state.tab==='map')clearSelectedCountry();});
 
 // Leaflet 통계 심볼: 값(원의 면적) 또는 범주별 비율(원형 그래프)을 표현합니다.
 function mapSvgPie(parts,size){
@@ -2271,12 +2278,15 @@ function mapUpdateStatOverlays(){
    let marker;
    if(renderPie){
     const icon=L.divIcon({className:'map-stat-pie-icon',html:mapSvgPie(item.data.parts,size),iconSize:[size,size],iconAnchor:[size/2,size/2]});
-    marker=L.marker(latlng,{icon,keyboard:true,riseOnHover:true,title:`${nameKR(item.c)} 구성비`});
+    marker=L.marker(latlng,{icon,keyboard:true,riseOnHover:true,bubblingMouseEvents:false,title:`${nameKR(item.c)} 구성비`});
    }else{
-    marker=L.circleMarker(latlng,{radius,color:'#087b6e',weight:1.2,fillColor:'#1ab29e',fillOpacity:.62,opacity:.95});
+    marker=L.circleMarker(latlng,{radius,color:'#087b6e',weight:1.2,fillColor:'#1ab29e',fillOpacity:.62,opacity:.95,bubblingMouseEvents:false});
    }
    marker.bindTooltip(mapOverlayTooltip(item.id),{direction:'top',offset:[0,-5],sticky:!renderPie});
-   marker.on('click',()=>selectCountry(item.id));
+   marker.on('click',e=>{
+    if(e.originalEvent)L.DomEvent.stopPropagation(e.originalEvent);
+    toggleMapCountry(item.id);
+   });
    marker.addTo(mapStatOverlay);
   }
  }
@@ -2683,11 +2693,27 @@ function mapInitThemePicker(){
  });
  document.addEventListener('pointerdown',e=>{if(!document.getElementById('mapThemeSearchWrap').contains(e.target))mapOpenThemeSearch(false)});
 }
-function welcome(){if(state.selectedId)return;panel.innerHTML=`<h2>🌏 세계 통계 탐색</h2><p class="lead">지도 위쪽에서 지표와 표현 방식을 선택해 보세요. 단계구분도뿐 아니라 도형표현도, 인구·종교 구성 원형 그래프, 최다 종교 분포도를 비교할 수 있어요.</p>${mapWorldCardHtml()}<div class="section"><h3>수업 활용 방법</h3><p class="mini-fact">① 통계 항목을 고르고 ‘지도 표현 방식’을 전환해 보세요.<br>② 도형의 크기·원형 그래프의 비율·국가별 색상을 비교해 보세요.<br>③ 국가 이름이나 지도 위의 도형을 누르면 세부 통계와 기후 그래프를 확인할 수 있어요.</p></div><p class="muted">통계: World Bank Open Data. 종교 구성: Pew Research Center의 2020년 추정치. 지표마다 제공 연도가 다를 수 있습니다.</p>`}
+function welcome(){if(state.selectedId)return;panel.innerHTML=`<h2>🌏 세계 통계 탐색</h2><p class="lead">지도 위쪽에서 지표와 표현 방식을 선택해 보세요. 단계구분도뿐 아니라 도형표현도, 인구·종교 구성 원형 그래프, 최다 종교 분포도를 비교할 수 있어요. 선택한 국가는 다시 클릭하거나 대양을 누르면 선택 해제됩니다.</p>${mapWorldCardHtml()}<div class="section"><h3>수업 활용 방법</h3><p class="mini-fact">① 통계 항목을 고르고 ‘지도 표현 방식’을 전환해 보세요.<br>② 도형의 크기·원형 그래프의 비율·국가별 색상을 비교해 보세요.<br>③ 국가 이름이나 지도 위의 도형을 누르면 세부 통계와 기후 그래프를 확인할 수 있어요.</p></div><p class="muted">통계: World Bank Open Data. 종교 구성: Pew Research Center의 2020년 추정치. 지표마다 제공 연도가 다를 수 있습니다.</p>`}
 
 function selectCountry(id){const normalized=key(id);if(state.selectedId!==normalized)state.siteIndex=null;
  state.selectedId=normalized;clearMarkers();draw();setCapitalMarker(normalized);showInfo();
  if(window.matchMedia('(max-width:650px)').matches)panel.scrollTop=0;
+}
+// 지도에서 선택한 국가를 다시 클릭하거나 대양을 클릭하면 세계 통계 탐색으로 돌아갑니다.
+// 검색창·통계 순위·다른 기능에서 호출하는 selectCountry()는 기존처럼 국가를 선택합니다.
+function clearSelectedCountry(){
+ if(!state.selectedId)return;
+ state.selectedId=null;
+ state.siteIndex=null;
+ map.closePopup();
+ clearMarkers();
+ draw();
+ welcome();
+ panel.scrollTop=0;
+}
+function toggleMapCountry(id){
+ if(state.selectedId===key(id))clearSelectedCountry();
+ else selectCountry(id);
 }
 function availableSites(c){if(!c)return [];
  const own=climateSites[c.cca2];if(own?.length)return own.map(([code,city,lat,lon])=>({code,city,lat,lon,kind:'대표 기후 지점'}));
@@ -4681,7 +4707,7 @@ panel.addEventListener('click',e=>{
  const b=e.target.closest('[data-map-action],[data-map-sort],[data-map-country-select]');if(!b)return;
  if(b.dataset.mapSort){mapThemeSort=b.dataset.mapSort;mapUpdatePanel();return}
  if(b.dataset.mapCountrySelect){selectCountry(b.dataset.mapCountrySelect);return}
- if(b.dataset.mapAction==='all'){state.selectedId=null;state.siteIndex=null;clearMarkers();draw();welcome();panel.scrollTop=0;return}
+ if(b.dataset.mapAction==='all'){clearSelectedCountry();return}
  if(b.dataset.mapAction==='retry'){void mapLoadTheme(themeSelect.value,{force:true});return}
 });
 document.getElementById('refresh').addEventListener('click',()=>{
