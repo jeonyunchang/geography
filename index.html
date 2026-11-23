@@ -1168,6 +1168,33 @@ body.gi-dialog-open{overflow:hidden}
  .map-world-list button{padding:8px 7px}
 }
 
+
+/* 2026-11-23 | 지도 통계의 표현 방식 전환 (도형/구성비/질적 구역도) */
+.map-viz-picker{border:1px solid #d6e9e9;background:linear-gradient(115deg,#f2faf8,#f9fcff);border-radius:10px;padding:9px 10px;min-width:0}
+.map-viz-picker-row{display:flex;gap:10px;align-items:center;min-width:0}
+#toolbar .map-viz-picker label{font-size:12px;font-weight:850;color:#276b65;white-space:nowrap}
+#mapVizMode{flex:1;min-width:0;max-width:100%;height:35px;padding:5px 9px;font-size:12px;font-weight:760;border:1px solid #bdd7d8;border-radius:8px;background:#fff;color:#234c5c}
+#mapVizMode:focus-visible{outline:3px solid #b7e6d7;outline-offset:1px}
+.map-viz-note{font-size:10.8px;color:#4a7572;line-height:1.52;margin-top:7px;font-weight:620}
+.map-stat-pie-icon{background:transparent!important;border:0!important;filter:drop-shadow(0 2px 3px #153c4b42)}
+.map-stat-pie-icon svg{display:block;overflow:visible}
+.map-viz-legend-caption{font-size:11px;color:#496577;line-height:1.5;margin:6px 0 7px}
+.map-viz-key-item{display:flex;gap:7px;align-items:center;padding:3px 0;font-size:11px}
+.map-viz-dot{display:inline-block;width:12px;height:12px;border-radius:50%;border:1px solid #ffffff;box-shadow:0 0 0 1px #8ea8a9;flex-shrink:0}
+.map-viz-bubbles{height:44px;display:flex;align-items:flex-end;gap:13px;margin:7px 0 4px}
+.map-viz-sample{display:flex;align-items:center;justify-content:center;width:45px;height:42px;position:relative}
+.map-viz-sample i{border-radius:50%;background:#29a89299;border:1.5px solid #0b8174;display:block}
+.map-viz-bubble-legend{font-size:10.5px;color:#547383}
+.map-viz-coverage{font-size:11px;color:#587180;margin:9px 1px 0;line-height:1.6}
+@media(max-width:650px){
+ .map-viz-picker{padding:7px 9px}.map-viz-picker-row{gap:7px}
+ #toolbar .map-viz-picker label{font-size:11px}
+ #mapVizMode{height:33px;font-size:11.5px}
+ .map-viz-note{font-size:10px;line-height:1.35;margin-top:5px}
+ .legend-body{max-height:min(250px,30dvh);overflow-y:auto}
+}
+@media(max-width:350px){#mapVizMode{font-size:10.8px;padding:5px 4px}.map-viz-picker-row{gap:5px}}
+
 </style>
 </head>
 <body class="home-active">
@@ -1286,6 +1313,10 @@ body.gi-dialog-open{overflow:hidden}
       <input type="search" id="mapThemeSearchInput" placeholder="예: 인구밀도, 고령화, 사망률…" autocomplete="off" aria-controls="mapThemeSearchResults" aria-label="통계 항목 검색어">
       <div id="mapThemeSearchResults" class="map-theme-search-results" role="listbox" aria-label="통계 검색 결과"></div>
     </div>
+  </div>
+  <div class="map-viz-picker" id="mapVizPicker">
+    <div class="map-viz-picker-row"><label for="mapVizMode">지도 표현 방식</label><select id="mapVizMode" aria-label="선택한 통계의 지도 표현 방식"><option value="bubble">도형표현도</option></select></div>
+    <div id="mapVizNote" class="map-viz-note" aria-live="polite">원의 면적은 국가별 총인구 규모에 비례합니다.</div>
   </div>
   <div class="country-search" id="countrySearchWrap"><label for="countrySearchInput" class="visually-hidden">국가 검색 (한글, 영어, 약칭)</label><span class="country-search-icon" aria-hidden="true">⌕</span><input id="countrySearchInput" type="search" placeholder="나라 검색 · 한국, Korea, USA…" autocomplete="off" role="combobox" aria-autocomplete="list" aria-controls="countrySearchResults" aria-expanded="false" spellcheck="false"><button id="countrySearchClear" class="country-search-clear" type="button" aria-label="검색어 지우기">×</button><div id="countrySearchResults" role="listbox" aria-label="국가 검색 결과" hidden></div></div></div>
   <button id="panelToggle" class="panel-toggle" type="button" aria-controls="panel" aria-expanded="false"><span aria-hidden="true">⌃</span> <span id="panelToggleLabel">정보 넓게 보기</span></button>
@@ -1817,10 +1848,10 @@ async function loadReligionData(){
   try{
    const result=await fetchReligionSource(url);
    for(const [iso,groups] of result)religion2020Cache.set(iso,groups);
-   religionSourceStatus='ready';refreshReligionBoundViews();return;
+   religionSourceStatus='ready';refreshReligionBoundViews();draw();mapUpdatePanel();return;
   }catch(err){console.warn('종교 데이터 연결 실패:',url,err);}
  }
- religionSourceStatus='error';refreshReligionBoundViews();
+ religionSourceStatus='error';refreshReligionBoundViews();draw();mapUpdatePanel();
 }
 
 
@@ -1847,6 +1878,7 @@ const MAP_THEMES=[
  {id:'age0',category:'인구·구조',label:'유소년층(0~14세) 비율',unit:'%',format:'percent',breaks:[10,20,30,40],code:'SP.POP.0014.TO.ZS',description:'전체 인구 중 0~14세 인구의 비중.',keywords:'어린이 출생 유소년 저출산'},
  {id:'age15',category:'인구·구조',label:'생산가능연령층(15~64세)',unit:'%',format:'percent',breaks:[50,60,70,80],code:'SP.POP.1564.TO.ZS',description:'전체 인구 중 15~64세 인구의 비중.',keywords:'생산가능연령 경제활동'},
  {id:'age65',category:'인구·구조',label:'고령층(65세 이상) 비율',unit:'%',format:'percent',breaks:[5,10,20,30],code:'SP.POP.65UP.TO.ZS',description:'전체 인구 중 65세 이상 인구의 비중. 고령화 정도를 비교할 수 있습니다.',keywords:'노인 고령화 초고령사회'},
+ {id:'agecomposition',category:'인구·구조',label:'연령별 인구 구성',unit:'구성비',format:'percent',breaks:[5,10,20,30],composition:'age',description:'같은 연도의 0~14세·15~64세·65세 이상 인구 비율을 원형 그래프로 비교합니다. 단계구분도는 고령층 비율을 나타냅니다.',keywords:'인구 구성 연령 구조 청소년 고령화 파이차트 원형 그래프'},
  {id:'sexratio',category:'인구·구조',label:'성비(여성 100명당 남성)',unit:'명',format:'sex',breaks:[90,95,100,110],description:'남녀 인구가 같은 기준 연도일 때 여성 100명당 남성 수로 계산합니다.',keywords:'남자 여자 인구 성비'},
  {id:'urban',category:'인구·구조',label:'도시 인구 비율',unit:'%',format:'percent',breaks:[25,50,75,90],code:'SP.URB.TOTL.IN.ZS',description:'전체 인구 가운데 도시 거주 인구의 비율.',keywords:'도시화 도시인구'},
  {id:'births',category:'인구·보건',label:'조출생률',unit:'명/천 명',format:'permille',breaks:[10,20,30,40],code:'SP.DYN.CBRT.IN',description:'1년간 인구 1,000명당 출생아 수.',keywords:'출생률 출생 아기 인구 증가'},
@@ -1859,6 +1891,7 @@ const MAP_THEMES=[
  {id:'internet',category:'사회·환경',label:'인터넷 이용률',unit:'%',format:'percent',breaks:[20,40,60,80],code:'IT.NET.USER.ZS',description:'전체 인구 중 인터넷을 이용하는 사람의 비율.',keywords:'인터넷 정보통신 디지털 정보격차'},
  {id:'forest',category:'사회·환경',label:'산림 면적 비율',unit:'%',format:'percent',breaks:[10,25,50,75],code:'AG.LND.FRST.ZS',description:'전체 육지 면적에서 산림이 차지하는 비율입니다.',keywords:'숲 산림 환경 생태'},
  {id:'co2',category:'사회·환경',label:'1인당 이산화탄소 배출량',unit:'t/인',format:'co2',breaks:[1,3,7,15],code:'EN.ATM.CO2E.PC',description:'인구 1인당 연간 CO₂ 배출량(톤). 국가별 자료 제공 시점이 다를 수 있습니다.',keywords:'탄소 기후변화 이산화탄소 온실가스'},
+ {id:'religioncomposition',category:'종교 구성 (2020년)',label:'종교 구성 · 최다 종교',unit:'구성비',format:'percent',breaks:[20,40,60,80],composition:'religion',description:'2020년 각국에서 가장 비중이 높은 종교를 색으로 비교합니다. 원형 그래프는 7개 집단의 비율을 보여줍니다. 최다 종교는 반드시 국교나 과반수 종교가 아닙니다.',keywords:'종교 분포 최다 종교 우세 종교 파이차트 원형 그래프 국교'},
  {id:'rel_christian',category:'종교 구성 (2020년)',label:'기독교 인구 비율',unit:'%',format:'percent',breaks:[5,20,50,80],religionIndex:0,description:'Pew Research Center의 2020년 국가별 종교 소속 추정치입니다.',keywords:'기독교 개신교 천주교 종교'},
  {id:'rel_muslim',category:'종교 구성 (2020년)',label:'이슬람교 인구 비율',unit:'%',format:'percent',breaks:[5,20,50,80],religionIndex:1,description:'Pew Research Center의 2020년 국가별 종교 소속 추정치입니다.',keywords:'이슬람 무슬림 종교'},
  {id:'rel_unaffiliated',category:'종교 구성 (2020년)',label:'무종교 인구 비율',unit:'%',format:'percent',breaks:[5,20,50,80],religionIndex:2,description:'Pew Research Center의 2020년 무종교·비종교인 비율입니다.',keywords:'종교 없음 비종교 무교'},
@@ -1897,6 +1930,9 @@ let geo=null,layer=null,capitalMarker=null,climateMarker=null;
 const worldCopyLayers=new Map();
 const capitalMarkerCopies=new Map(),climateMarkerCopies=new Map();
 let activeCapital=null,activeClimate=null;
+let mapVizMode='bubble';
+const mapStatOverlay=L.layerGroup().addTo(map);
+const MAP_AGE_TYPES=[{label:'0~14세',color:'#45b79c'},{label:'15~64세',color:'#3f82cc'},{label:'65세 이상',color:'#e69b54'}];
 
 function key(id){return String(id??'').padStart(3,'0')}
 function val(field,id){return stat[field]?.[key(id)]}
@@ -1908,20 +1944,86 @@ function yr(field,id){return statYear[field]?.[key(id)]||'미상'}
 function src(field,id){return statSource[field]?.[key(id)]||'World Bank'}
 function statTime(field,id){const v=val(field,id);if(!Number.isFinite(v))return '자료 없음';const y=yr(field,id);return y==='미상'?'기본정보 참고값·연도 미상':y+'년'}
 function sexRatio(id){const m=val('male',id),f=val('female',id);if(!Number.isFinite(m)||!Number.isFinite(f)||f<=0)return null;return yr('male',id)===yr('female',id)?m/f*100:null}
+
+// 통계 구성 자료를 기존 국가 정보/World Bank 자료와 동일하게 이용합니다.
+function mapReligionDominant(id){
+ const d=religionCountryData(countries[key(id)]);if(!d)return null;
+ let index=0;for(let i=1;i<d.length;i++)if(d[i].number>d[index].number)index=i;
+ return {index,label:RELIGION_TYPES[index].label,share:d[index].number,text:d[index].text,color:RELIGION_TYPES[index].color};
+}
+function mapAgeComposition(id){return consistentAgeStructure(key(id));}
+function mapCompositionParts(id,theme=themeSelect.value){
+ const m=MAP_THEME_BY_ID[theme];if(!m)return null;
+ if(m.composition==='age'||['age0','age15','age65'].includes(theme)){
+  const d=mapAgeComposition(id);if(!d)return null;
+  return {kind:'age',year:d.year,parts:MAP_AGE_TYPES.map((g,i)=>({...g,value:d.values[i]}))};
+ }
+ if(m.composition==='religion'||m.religionIndex!==undefined){
+  const data=religionCountryData(countries[key(id)]);if(!data)return null;
+  return {kind:'religion',year:'2020',parts:RELIGION_TYPES.map((g,i)=>({...g,value:data[i].number,text:data[i].text}))};
+ }
+ return null;
+}
+function mapAllowedViews(theme=themeSelect.value){
+ const m=MAP_THEME_BY_ID[theme];if(!m)return ['choropleth'];
+ if(['population','gdp'].includes(theme))return ['bubble','choropleth'];
+ if(m.composition==='age')return ['pie','choropleth'];
+ if(m.composition==='religion')return ['category','pie','choropleth'];
+ if(['age0','age15','age65'].includes(theme))return ['choropleth','pie'];
+ if(m.religionIndex!==undefined)return ['choropleth','category','pie'];
+ return ['choropleth'];
+}
+function mapDefaultView(theme=themeSelect.value){return mapAllowedViews(theme)[0]}
+const MAP_VIZ_LABELS={choropleth:'단계구분도',bubble:'도형표현도 (원 크기)',pie:'원형 그래프 지도',category:'최다 종교 분포도'};
+function mapViewNote(mode=mapVizMode,theme=themeSelect.value){
+ if(mode==='bubble')return '원 면적이 국가별 총량에 비례합니다. 단계구분도로도 전환할 수 있어요.';
+ if(mode==='pie')return '한 원의 크기는 동일하며 색깔 조각이 구성 비율을 뜻합니다. 확대하면 더 많은 국가가 나타나요.';
+ if(mode==='category')return '색상은 가장 비중이 큰 종교입니다. 최다 종교가 국교이거나 과반수라는 뜻은 아니에요.';
+ if(theme==='agecomposition')return '단계구분도에서는 고령층(65세 이상) 비율을 나타냅니다.';
+ if(theme==='religioncomposition')return '단계구분도에서는 가장 비중이 큰 종교의 비율을 나타냅니다.';
+ return '수치나 비율이 클수록 진한 색으로 표현합니다.';
+}
+function mapSyncViewPicker(){
+ const select=document.getElementById('mapVizMode');if(!select)return;
+ const modes=mapAllowedViews();if(!modes.includes(mapVizMode))mapVizMode=mapDefaultView();
+ select.innerHTML=modes.map(v=>`<option value="${v}">${MAP_VIZ_LABELS[v]}</option>`).join('');
+ select.value=mapVizMode;
+ document.getElementById('mapVizNote').textContent=mapViewNote();
+}
+function mapSetVizMode(mode,{fromHistory=false}={}){
+ if(!mapAllowedViews().includes(mode))mode=mapDefaultView();
+ const changed=mode!==mapVizMode;mapVizMode=mode;mapSyncViewPicker();
+ if(!fromHistory&&state.tab==='map'){
+  const url=new URL(location.href);
+  if(mode===mapDefaultView())url.searchParams.delete('view');else url.searchParams.set('view',mode);
+  history.replaceState(history.state,'',url.pathname+url.search+url.hash);
+ }
+ if(changed){draw();mapUpdatePanel();}
+}
+function mapInitViewPicker(){
+ mapSyncViewPicker();
+ document.getElementById('mapVizMode').addEventListener('change',e=>mapSetVizMode(e.target.value));
+}
+
 function mapMetricValue(theme,id){
  const m=MAP_THEME_BY_ID[theme];if(!m)return NaN;
+ if(m.composition==='age')return mapAgeComposition(id)?.values[2]??NaN;
+ if(m.composition==='religion')return mapReligionDominant(id)?.share??NaN;
  if(m.religionIndex!==undefined){const c=countries[key(id)],data=religionCountryData(c);return data?.[m.religionIndex]?.number??NaN}
  if(theme==='sexratio')return sexRatio(id)??NaN;
  const n=val(theme,id);return Number.isFinite(n)?n:NaN;
 }
 function mapMetricDisplay(theme,id){
  const m=MAP_THEME_BY_ID[theme],c=countries[key(id)];
+ if(m?.composition==='age'){const d=mapAgeComposition(id);return d?`0~14세 ${percent(d.values[0])} · 15~64세 ${percent(d.values[1])} · 65세 이상 ${percent(d.values[2])}`:'자료 없음';}
+ if(m?.composition==='religion'){const d=mapReligionDominant(id);return d?`${d.label} ${d.text} (국가 내 최다 비중)`:'자료 없음';}
  if(m?.religionIndex!==undefined){const d=religionCountryData(c);return d?.[m.religionIndex]?.text||'자료 없음';}
  return mapMetricFormat(mapMetricValue(theme,id),theme);
 }
 function mapMetricYear(theme,id){
  const m=MAP_THEME_BY_ID[theme];if(!m)return '미상';
- if(m.religionIndex!==undefined)return '2020';
+ if(m.composition==='religion'||m.religionIndex!==undefined)return '2020';
+ if(m.composition==='age')return mapAgeComposition(id)?.year||'미상';
  return theme==='sexratio'?yr('male',id):yr(theme,id);
 }
 function mapMetricFormat(n,theme,{compact=false}={}){
@@ -1963,11 +2065,26 @@ legend.onAdd=()=>{const d=L.DomUtil.create('div','legend');d.id='legend';L.DomEv
 function updateLegend(){
  const theme=themeSelect.value,m=MAP_THEME_BY_ID[theme]||MAP_THEME_BY_ID.population;
  const mobile=window.matchMedia('(max-width:650px)').matches;
- const title=m.label+' ('+m.unit+')';
- const items=legendLabels(theme).map((t,i)=>`<div class="legend-item"><span class="swatch" style="background:${colors[i]}"></span>${safe(t)}</div>`).join('')+
- '<div class="legend-item"><span class="swatch" style="background:#d5dbe2"></span>자료 없음</div><div class="muted">노란색: 현재 선택 국가</div>'+
- `<p class="muted" style="margin:7px 0 0">${m.religionIndex!==undefined?'2020년 Pew 추정치':'국가별 최신 가용 연도(상이할 수 있음)'} · 경계: Natural Earth ${safe(mapBoundaryScale)} · 메르카토르 도법(고위도 면적 확대)</p>`;
- document.getElementById('legend').innerHTML=`<details class="legend-disclosure" ${mobile?'':'open'}><summary>${mobile?'색상 범례':safe(title)}</summary><div class="legend-body"><strong>${safe(title)}</strong>${items}</div></details>`;
+ const isReligion=!!(m.composition==='religion'||m.religionIndex!==undefined);
+ const title=mapVizMode==='category'?'국가별 최다 종교':mapVizMode==='pie'?'국가별 구성 비율':m.label+' ('+m.unit+')';
+ let items='';
+ if(mapVizMode==='category'){
+  items='<p class="map-viz-legend-caption">2020년 국가별 최대 비중 종교 · 범주형 지도</p>'+RELIGION_TYPES.map(g=>`<div class="map-viz-key-item"><span class="swatch" style="background:${g.color}"></span>${safe(g.label)}</div>`).join('');
+ }else if(mapVizMode==='pie'){
+  const types=isReligion?RELIGION_TYPES:MAP_AGE_TYPES;
+  items='<p class="map-viz-legend-caption">원 크기는 동일하며 색상별 원 조각이 인구 비율을 나타냅니다.</p>'+types.map(g=>`<div class="map-viz-key-item"><span class="map-viz-dot" style="background:${g.color}"></span>${safe(g.label)}</div>`).join('');
+ }else if(mapVizMode==='bubble'){
+  items='<p class="map-viz-legend-caption">원 면적 ∝ 국가별 '+safe(m.label)+'. 큰 원일수록 총량이 큽니다.</p><div class="map-viz-bubbles" aria-hidden="true">'+[10,23,40].map(d=>`<div class="map-viz-sample"><i style="width:${d}px;height:${d}px"></i></div>`).join('')+'</div><p class="map-viz-bubble-legend">작은 규모 → 큰 규모 · 국가별 최신 자료</p>';
+ }else{
+  const displayTheme=m.composition==='age'?'age65':theme;
+  const titlePrefix=m.composition==='age'?'고령층 비율: ':m.composition==='religion'?'국가 내 최다 종교 비율: ':'';
+  items=(titlePrefix?`<p class="map-viz-legend-caption">${titlePrefix}색의 진하기</p>`:'')+legendLabels(displayTheme).map((txt,i)=>`<div class="legend-item"><span class="swatch" style="background:${colors[i]}"></span>${safe(txt)}</div>`).join('');
+ }
+ items+='<div class="map-viz-key-item"><span class="swatch" style="background:#d5dbe2"></span>자료 없음</div><div class="muted">노란색: 현재 선택 국가</div>'+
+  `<p class="muted" style="margin:7px 0 0">${isReligion?'종교: Pew의 2020년 추정치':'통계: 국가별 최신 가용 연도(상이할 수 있음)'} · 국경: Natural Earth ${safe(mapBoundaryScale)} · 메르카토르 도법</p>`;
+ if(mapVizMode==='pie')items+='<p class="muted">겹침 방지를 위해 일부 국가의 그래프만 보이며 지도를 확대하면 더 많이 나타납니다.</p>';
+ if(mapVizMode==='category')items+='<p class="muted">최다 종교는 국교 또는 과반수 종교와 동일한 개념이 아닙니다.</p>';
+ document.getElementById('legend').innerHTML=`<details class="legend-disclosure" ${mobile?'':'open'}><summary>${mobile?'지도 범례':safe(title)}</summary><div class="legend-body"><strong>${safe(title)}</strong>${items}</div></details>`;
 }
 function mapCountryTooltip(feature){
  const id=key(feature.id),c=countries[id],theme=themeSelect.value,m=MAP_THEME_BY_ID[theme],n=mapMetricValue(theme,id);
@@ -2025,7 +2142,10 @@ function desiredWorldCopies(){
 }
 function countryShapeStyle(f){
  const theme=themeSelect.value,selected=state.selectedId===key(f.id);
- return {fillColor:selected?'#ffd33f':breakColor(val(theme,f.id),theme),fillOpacity:selected?.9:.86,color:selected?'#e0a200':'#ffffff',weight:selected?2.2:.65,opacity:1};
+ const cat=mapVizMode==='category'?mapReligionDominant(f.id):null;
+ const neutral=mapVizMode==='pie'||mapVizMode==='bubble';
+ const base=neutral?'#edf3f1':mapVizMode==='category'?(cat?.color||'#d5dbe2'):breakColor(mapMetricValue(theme,f.id),theme);
+ return {fillColor:selected?'#ffd33f':base,fillOpacity:selected?.9:neutral?.83:.86,color:selected?'#e0a200':'#ffffff',weight:selected?2.2:.65,opacity:1};
 }
 function syncMapPointCopies(){
  const visible=new Set(worldCopyLayers.keys());
@@ -2090,7 +2210,78 @@ map.on('move',()=>{
  worldCopyUpdateQueued=true;
  requestAnimationFrame(()=>{worldCopyUpdateQueued=false;updateWorldCopies()});
 });
-map.on('moveend zoomend resize',()=>updateWorldCopies());
+map.on('moveend zoomend resize',()=>{updateWorldCopies();mapUpdateStatOverlays();});
+
+// Leaflet 통계 심볼: 값(원의 면적) 또는 범주별 비율(원형 그래프)을 표현합니다.
+function mapSvgPie(parts,size){
+ const sum=parts.reduce((v,p)=>v+Math.max(0,p.value),0);if(!(sum>0))return '';
+ const radius=size/2-1.5,cx=size/2,cy=size/2;
+ let angle=-Math.PI/2;
+ const slices=parts.map(p=>{
+  const part=Math.max(0,p.value)/sum;if(part<0.0003){angle+=Math.PI*2*part;return '';}
+  const end=angle+Math.PI*2*part;
+  let path;
+  if(part>0.9999)path=`<circle cx="${cx}" cy="${cy}" r="${radius}" fill="${p.color}"/>`;
+  else{
+   const x1=cx+radius*Math.cos(angle),y1=cy+radius*Math.sin(angle),x2=cx+radius*Math.cos(end),y2=cy+radius*Math.sin(end);
+   path=`<path d="M ${cx} ${cy} L ${x1.toFixed(2)} ${y1.toFixed(2)} A ${radius} ${radius} 0 ${part>.5?1:0} 1 ${x2.toFixed(2)} ${y2.toFixed(2)} Z" fill="${p.color}"/>`;
+  }
+  angle=end;return path;
+ }).join('');
+ return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${size} ${size}" width="${size}" height="${size}" aria-hidden="true">${slices}<circle cx="${cx}" cy="${cy}" r="${radius}" fill="none" stroke="#fff" stroke-width="1.5"/></svg>`;
+}
+function mapOverlayTooltip(id){
+ const m=MAP_THEME_BY_ID[themeSelect.value],c=countries[key(id)];
+ const d=mapCompositionParts(id);
+ if(mapVizMode==='pie'&&d){
+  const parts=d.parts.map(p=>`${p.label} ${p.text||percent(p.value)}`).join(' · ');
+  return `<b>${safe(nameKR(c))}</b><div>${safe(parts)}</div><small>${safe(d.year)}년 기준</small>`;
+ }
+ return `<b>${safe(nameKR(c))}</b><div>${safe(m.label)}: ${safe(mapMetricDisplay(themeSelect.value,id))}</div>`;
+}
+function mapOverlaySize(){const z=map.getZoom();return z<=2?30:z<=3?34:z<=4?39:44;}
+function mapUpdateStatOverlays(){
+ mapStatOverlay.clearLayers();
+ if(!geo||!allCountries.length||!['bubble','pie'].includes(mapVizMode)||state.tab!=='map')return;
+ const theme=themeSelect.value,renderPie=mapVizMode==='pie',size=mapOverlaySize();
+ const allowed=new Set(geo.features.map(f=>key(f.id)));
+ let candidates=allCountries.filter(c=>allowed.has(key(c.ccn3))&&Array.isArray(c.latlng)&&c.latlng.length>=2&&c.latlng.slice(0,2).every(Number.isFinite)).map(c=>{
+  const id=key(c.ccn3),latitude=Math.max(-83,Math.min(83,c.latlng[0])),longitude=c.latlng[1];
+  return {id,c,lat:latitude,lon:longitude,metric:mapMetricValue(theme,id),data:renderPie?mapCompositionParts(id):null,pop:val('population',id)||c.population||0};
+ }).filter(item=>renderPie?!!item.data:Number.isFinite(item.metric)&&item.metric>0);
+ if(!candidates.length)return;
+ // 전 세계 축척에서는 대규모 국가를 우선하되, 지도 확대 시 지역 국가가 나타납니다.
+ candidates.sort((a,b)=>(Number(b.id===state.selectedId)-Number(a.id===state.selectedId))||(renderPie?(b.pop-a.pop):(b.metric-a.metric)));
+ const maxVal=renderPie?1:Math.max(...candidates.map(x=>x.metric));
+ const z=map.getZoom(),maxRadius=z<=2?26:z<=3?29:z<=4?34:40;
+ const collision=renderPie?size*.79:z<=2?22:18;
+ const viewport=map.getSize(),occupied=[];
+ const indexes=[...worldCopyLayers.keys()];
+ for(const item of candidates){
+  for(const copyIndex of indexes){
+   const latlng=L.latLng(item.lat,item.lon+360*copyIndex);
+   const pos=map.latLngToContainerPoint(latlng);
+   const half=renderPie?size/2:26;
+   if(pos.x< -half||pos.x>viewport.x+half||pos.y< -half||pos.y>viewport.y+half)continue;
+   const radius=renderPie?size/2:maxRadius*Math.sqrt(item.metric/maxVal);
+   if(!renderPie&&radius<2.6)continue;
+   const reach=renderPie?collision:Math.max(6,radius*.8);
+   if(occupied.some(o=>Math.hypot(o.x-pos.x,o.y-pos.y)<o.reach+reach))continue;
+   occupied.push({x:pos.x,y:pos.y,reach});
+   let marker;
+   if(renderPie){
+    const icon=L.divIcon({className:'map-stat-pie-icon',html:mapSvgPie(item.data.parts,size),iconSize:[size,size],iconAnchor:[size/2,size/2]});
+    marker=L.marker(latlng,{icon,keyboard:true,riseOnHover:true,title:`${nameKR(item.c)} 구성비`});
+   }else{
+    marker=L.circleMarker(latlng,{radius,color:'#087b6e',weight:1.2,fillColor:'#1ab29e',fillOpacity:.62,opacity:.95});
+   }
+   marker.bindTooltip(mapOverlayTooltip(item.id),{direction:'top',offset:[0,-5],sticky:!renderPie});
+   marker.on('click',()=>selectCountry(item.id));
+   marker.addTo(mapStatOverlay);
+  }
+ }
+}
+
 function draw(){
  if(!geo)return;
  updateWorldCopies();
@@ -2099,6 +2290,7 @@ function draw(){
   copy.eachLayer(shape=>{if(shape.feature&&shape.getTooltip())shape.setTooltipContent(mapCountryTooltip(shape.feature))});
  }
  updateLegend();
+ mapUpdateStatOverlays();
  syncMapPointCopies();
 }
 function clearMarkers(){
@@ -2388,7 +2580,7 @@ async function load(){try{
 // ------------------------------------------------------------
 // World indicator explorer: searchable metric index + country rankings
 // ------------------------------------------------------------
-function mapThemeLink(m){return m.religionIndex!==undefined?RELIGION_PEW_URL:`https://data.worldbank.org/indicator/${encodeURIComponent(m.code||'SP.POP.TOTL')}`}
+function mapThemeLink(m){return (m.religionIndex!==undefined||m.composition==='religion')?RELIGION_PEW_URL:`https://data.worldbank.org/indicator/${encodeURIComponent(m.composition==='age'?'SP.POP.65UP.TO.ZS':m.code||'SP.POP.TOTL')}`}
 function mapThemeEntries(theme=themeSelect.value){
  if(!allCountries.length)return [];
  const mapIds=geo?new Set(geo.features.map(f=>key(f.id))):null;
@@ -2398,22 +2590,25 @@ function mapWorldCardHtml(){
  const theme=themeSelect.value,m=MAP_THEME_BY_ID[theme]||MAP_THEME_BY_ID.population;
  const entries=mapThemeEntries(theme),pending=mapThemeRequests.has(theme),error=mapThemeErrors.get(theme);
  const rows=entries.slice().sort((a,b)=>mapThemeSort==='high'?b.value-a.value:a.value-b.value).slice(0,10);
+ const isReligion=!!(m.religionIndex!==undefined||m.composition==='religion');
+ const rankTitle=m.composition==='age'?'고령층 비율':m.composition==='religion'?'최다 종교의 비중':'수치';
  const values=entries.map(x=>x.value),min=Math.min(...values),max=Math.max(...values);
  const knownYears=entries.map(x=>x.year).filter(y=>/^\d{4}$/.test(y)).map(Number);
  const years=knownYears.length?`${Math.min(...knownYears)}~${Math.max(...knownYears)}년`:'연도 확인 중';
  const list=rows.map((row,i)=>{
+  const rowLabel=m.composition==='age'?`65세 이상 ${percent(row.value)}`:mapMetricDisplay(theme,row.id);
   const size=max>min?Math.max(5,100*(row.value-min)/(max-min)):70;
-  return `<li><button type="button" data-map-country-select="${safe(row.id)}" title="${safe(nameKR(row.c))} 국가 정보 열기"><span class="map-world-rank">${i+1}</span><span class="map-world-name">${safe(nameKR(row.c))}</span><span class="map-world-value">${safe(mapMetricDisplay(theme,row.id))}<small>${safe(row.year==='미상'?'연도 미상':row.year+'년')}</small></span><span class="map-world-rail" aria-hidden="true"><i style="width:${size.toFixed(1)}%"></i></span></button></li>`;
+  return `<li><button type="button" data-map-country-select="${safe(row.id)}" title="${safe(nameKR(row.c))} 국가 정보 열기"><span class="map-world-rank">${i+1}</span><span class="map-world-name">${safe(nameKR(row.c))}</span><span class="map-world-value">${safe(rowLabel)}<small>${safe(row.year==='미상'?'연도 미상':row.year+'년')}</small></span><span class="map-world-rail" aria-hidden="true"><i style="width:${size.toFixed(1)}%"></i></span></button></li>`;
  }).join('');
  const hint=error?`<p class="map-world-error">통계 서버에서 데이터를 가져오지 못했어. 인터넷 연결을 확인하고 <button class="button" type="button" data-map-action="retry">이 지표 다시 조회</button>를 눌러 줘.</p>`:
   pending?'<p class="loading">세계은행 통계 자료를 불러오는 중입니다…</p>':
   !entries.length?'<div class="map-world-empty">해당 항목의 자료가 아직 없습니다. 외부 통계 제공 여부를 확인해 주세요.</div>':'';
  return `<div class="map-world-card"><div class="map-world-head"><strong>${safe(m.label)}</strong><span class="map-world-category">${safe(m.category)}</span></div>
- <p class="map-world-note">${safe(m.description)}</p>
- <div class="map-world-counts"><span>지도에 표시된 국가·지역 ${entries.length}곳</span><span>${m.religionIndex!==undefined?'2020년 추정치':safe(years)}</span></div>
- <div class="map-world-sorts" aria-label="국가별 수치 정렬"><button type="button" data-map-sort="high" aria-pressed="${mapThemeSort==='high'}">수치 높은 순</button><button type="button" data-map-sort="low" aria-pressed="${mapThemeSort==='low'}">수치 낮은 순</button></div>
+ <p class="map-world-note">${safe(m.description)}</p><p class="map-viz-coverage">현재 표현: <b>${safe(MAP_VIZ_LABELS[mapVizMode])}</b>${mapVizMode==='pie'?' · 지도를 확대하면 더 많은 국가의 원형 그래프가 표시됩니다.':''}</p>
+ <div class="map-world-counts"><span>통계 자료 확보 국가·지역 ${entries.length}곳</span><span>${isReligion?'2020년 추정치':safe(years)}</span></div>
+ <div class="map-world-sorts" aria-label="국가별 수치 정렬"><button type="button" data-map-sort="high" aria-pressed="${mapThemeSort==='high'}">${safe(rankTitle)} 높은 순</button><button type="button" data-map-sort="low" aria-pressed="${mapThemeSort==='low'}">${safe(rankTitle)} 낮은 순</button></div>
  ${hint}<ol class="map-world-list">${list}</ol>
- <p class="map-world-source">${m.religionIndex!==undefined?'종교 구성 비율은 국교 지정과 별개의 통계입니다.':m.id==='population'?'국가별 최신 가용 연도가 다르며, 일부 미제공국의 인구는 국가 기본정보의 연도 미상 참고값을 사용합니다.':'국가별 최신 비결측 연도를 사용하므로 기준 연도가 서로 다를 수 있습니다.'} 수치 출처: <a href="${safe(mapThemeLink(m))}" target="_blank" rel="noopener">${m.religionIndex!==undefined?'Pew Research Center (2020년)':'World Bank Open Data'}</a>. 국가 이름을 누르면 상세 정보를 확인할 수 있습니다.</p></div>`;
+ <p class="map-world-source">${isReligion?'종교 구성 비율은 국교 지정과 별개의 통계입니다.':m.id==='population'?'국가별 최신 가용 연도가 다르며, 일부 미제공국의 인구는 국가 기본정보의 연도 미상 참고값을 사용합니다.':'국가별 최신 비결측 연도를 사용하므로 기준 연도가 서로 다를 수 있습니다.'} 수치 출처: <a href="${safe(mapThemeLink(m))}" target="_blank" rel="noopener">${isReligion?'Pew Research Center (2020년)':'World Bank Open Data'}</a>. 국가 이름을 누르면 상세 정보를 확인할 수 있습니다.</p></div>`;
 }
 function mapSelectedMetricHtml(id=state.selectedId){
  const m=MAP_THEME_BY_ID[themeSelect.value]||MAP_THEME_BY_ID.population,n=mapMetricValue(m.id,id),year=mapMetricYear(m.id,id);
@@ -2427,10 +2622,11 @@ function mapUpdatePanel(){
 }
 function mapChooseTheme(theme,{fromHistory=false}={}){
  if(!MAP_THEME_BY_ID[theme])return;
- themeSelect.value=theme;mapThemeSort='high';
+ themeSelect.value=theme;mapThemeSort='high';mapVizMode=mapDefaultView(theme);mapSyncViewPicker();
  if(!fromHistory&&state.tab==='map'){
   const url=new URL(location.href);
   if(theme==='population')url.searchParams.delete('indicator');else url.searchParams.set('indicator',theme);
+  url.searchParams.delete('view');
   history.replaceState(history.state,'',url.pathname+url.search+url.hash);
  }
  draw();mapUpdatePanel();
@@ -2487,7 +2683,7 @@ function mapInitThemePicker(){
  });
  document.addEventListener('pointerdown',e=>{if(!document.getElementById('mapThemeSearchWrap').contains(e.target))mapOpenThemeSearch(false)});
 }
-function welcome(){if(state.selectedId)return;panel.innerHTML=`<h2>🌏 세계 통계 탐색</h2><p class="lead">지도 위쪽에서 통계 지표를 선택하거나 검색하면 세계지도 색상과 국가별 수치 순위가 함께 바뀝니다. 국가를 선택하지 않아도 주요 통계를 비교할 수 있어요.</p>${mapWorldCardHtml()}<div class="section"><h3>수업 활용 방법</h3><p class="mini-fact">① 통계 항목을 검색하거나 지도의 주제 목록에서 선택해 보세요.<br>② 지도 색상과 범례를 비교하고, 정보창의 국가별 상위·하위 순위를 확인해 보세요.<br>③ 국가 이름이나 지도를 누르면 세부 정보와 인구 피라미드·기후 그래프를 확인할 수 있어요.</p></div><p class="muted">통계: World Bank Open Data. 종교 구성: Pew Research Center의 2020년 추정치. 지표마다 제공 연도가 다를 수 있습니다.</p>`}
+function welcome(){if(state.selectedId)return;panel.innerHTML=`<h2>🌏 세계 통계 탐색</h2><p class="lead">지도 위쪽에서 지표와 표현 방식을 선택해 보세요. 단계구분도뿐 아니라 도형표현도, 인구·종교 구성 원형 그래프, 최다 종교 분포도를 비교할 수 있어요.</p>${mapWorldCardHtml()}<div class="section"><h3>수업 활용 방법</h3><p class="mini-fact">① 통계 항목을 고르고 ‘지도 표현 방식’을 전환해 보세요.<br>② 도형의 크기·원형 그래프의 비율·국가별 색상을 비교해 보세요.<br>③ 국가 이름이나 지도 위의 도형을 누르면 세부 통계와 기후 그래프를 확인할 수 있어요.</p></div><p class="muted">통계: World Bank Open Data. 종교 구성: Pew Research Center의 2020년 추정치. 지표마다 제공 연도가 다를 수 있습니다.</p>`}
 
 function selectCountry(id){const normalized=key(id);if(state.selectedId!==normalized)state.siteIndex=null;
  state.selectedId=normalized;clearMarkers();draw();setCapitalMarker(normalized);showInfo();
@@ -3079,7 +3275,7 @@ function switchTab(next,{fromHistory=false}={}){
   if(state.tab!=='map')return;
   map.invalidateSize({pan:false});
   if(!window.__geoInitialMapVisible&&!state.selectedId)map.setView([20,0],2,{animate:false});
-  window.__geoInitialMapVisible=true;updateWorldCopies();repositionZoomBelowToolbar();
+  window.__geoInitialMapVisible=true;updateWorldCopies();mapUpdateStatOverlays();repositionZoomBelowToolbar();
  },90);
  else if(next==='find')setTimeout(()=>{if(state.tab==='find')cfInit()},75);
  else if(next==='games')setTimeout(()=>{if(state.tab==='games')geoSetGameMode(geoGameModeFromURL())},75);
@@ -3091,6 +3287,7 @@ function geoRestoreTabFromURL(){
  const params=new URLSearchParams(location.search),indicator=params.get('indicator');
  if(indicator&&MAP_THEME_BY_ID[indicator]&&indicator!==themeSelect.value)mapChooseTheme(indicator,{fromHistory:true});
  else if(!indicator&&themeSelect.value!=='population')mapChooseTheme('population',{fromHistory:true});
+ mapSetVizMode(params.get('view')||mapDefaultView(),{fromHistory:true});
  switchTab(geoTabFromURL(),{fromHistory:true});
 }
 
@@ -4478,6 +4675,7 @@ document.addEventListener('click',event=>{
  strip.scrollBy({left:(Number(b.dataset.scrollDir)||1)*step,behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
 });
 mapInitThemePicker();
+mapInitViewPicker();
 themeSelect.addEventListener('change',()=>mapChooseTheme(themeSelect.value));
 panel.addEventListener('click',e=>{
  const b=e.target.closest('[data-map-action],[data-map-sort],[data-map-country-select]');if(!b)return;
