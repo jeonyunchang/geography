@@ -1939,7 +1939,15 @@ function val(field,id){return stat[field]?.[key(id)]}
 function fmt(n){return Number.isFinite(n)?numberFmt.format(Math.round(n)):'자료 없음'}
 function percent(n){return Number.isFinite(n)?pctFmt.format(n)+'%':'자료 없음'}
 function safe(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-function nameKR(c){if(!c)return '국가 정보 없음';try{const loc=new Intl.DisplayNames(['ko'],{type:'region'}).of(c.cca2);return loc||c.translations?.kor?.common||c.name?.common||'정보 없음'}catch{return c.translations?.kor?.common||c.name?.common||'정보 없음'}}
+// 콩고 두 국가는 지역 구분형 CLDR 표기 대신 학교 수업에 익숙한 국명으로 통일합니다.
+const COUNTRY_KO_NAME_OVERRIDES={CD:'콩고 민주 공화국',CG:'콩고 공화국'};
+function nameKR(c){
+ if(!c)return '국가 정보 없음';
+ const override=COUNTRY_KO_NAME_OVERRIDES[String(c.cca2||'').toUpperCase()];
+ if(override)return override;
+ try{const loc=new Intl.DisplayNames(['ko'],{type:'region'}).of(c.cca2);return loc||c.translations?.kor?.common||c.name?.common||'정보 없음'}
+ catch{return c.translations?.kor?.common||c.name?.common||'정보 없음'}
+}
 function yr(field,id){return statYear[field]?.[key(id)]||'미상'}
 function src(field,id){return statSource[field]?.[key(id)]||'World Bank'}
 function statTime(field,id){const v=val(field,id);if(!Number.isFinite(v))return '자료 없음';const y=yr(field,id);return y==='미상'?'기본정보 참고값·연도 미상':y+'년'}
@@ -2344,8 +2352,8 @@ const countrySearchAliases={
  SA:['사우디','사우디아라비아','Saudi Arabia'],IR:['이란','Iran'],IQ:['이라크','Iraq'],
  IL:['이스라엘','Israel'],PS:['팔레스타인','Palestine'],EG:['이집트','Egypt'],
  ZA:['남아공','남아프리카공화국','South Africa'],NG:['나이지리아','Nigeria'],
- ET:['에티오피아','Ethiopia'],KE:['케냐','Kenya'],CD:['콩고민주공화국','민주콩고','DR Congo','DRC'],
- CG:['콩고공화국','콩고','Republic of the Congo'],TW:['대만','타이완','Taiwan'],
+ ET:['에티오피아','Ethiopia'],KE:['케냐','Kenya'],CD:['콩고민주공화국','민주콩고','콩고-킨샤사','콩고킨샤사','DR Congo','DRC'],
+ CG:['콩고공화국','콩고','콩고-브라자빌','콩고브라자빌','Republic of the Congo'],TW:['대만','타이완','Taiwan'],
  VA:['바티칸','Vatican','Holy See'],CI:['코트디부아르','아이보리코스트','Ivory Coast','Cote dIvoire'],
  SZ:['에스와티니','스와질란드','Eswatini','Swaziland'],
  MK:['북마케도니아','North Macedonia','Macedonia']
